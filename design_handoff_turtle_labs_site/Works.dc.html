@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap');
+:root {
+  --bg:#0B0B0C; --bg2:#141416; --card:#18181B; --text:#F6F3EC; --muted:#A1A1AA; --faint:#71717A;
+  --line:rgba(246,243,236,0.12); --line2:rgba(246,243,236,0.08);
+  --green:#34C759; --green-ink:#04170B;
+  --red:#FF6B6B; --orange:#FF8A5C; --amber:#FFB35C; --greent:#4ADE80; --blue:#60A5FA; --cyan:#67E8F9;
+  --logo-filter: invert(1) grayscale(1) brightness(1.35);
+  --header-bg: rgba(11,11,12,0.85);
+}
+[data-theme="light"] {
+  --bg:#F3FAFE; --bg2:#FFFFFF; --card:#FFFFFF; --text:#18181B; --muted:#61616A; --faint:#8A8A93;
+  --line:rgba(24,24,27,0.12); --line2:rgba(24,24,27,0.08);
+  --red:#C80018; --orange:#FF4500; --amber:#E07800; --greent:#00A86B; --blue:#0066B2; --cyan:#0092C8;
+  --logo-filter: grayscale(1);
+  --header-bg: rgba(243,250,254,0.88);
+}
+html { scroll-behavior:smooth; }
+*, *::before, *::after { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; overflow-x:hidden; transition:background-color .25s ease, color .25s ease; }
+a { color:var(--green); text-decoration:none; }
+a:hover { color:var(--greent); }
+button:focus-visible, a:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+@keyframes tlmarquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+@keyframes tlfade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+@keyframes tlrise { from { opacity:0.15; transform:translateY(26px); } to { opacity:1; transform:none; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] { animation: tlrise linear both; animation-timeline: view(); animation-range: entry 0% entry 30%; }
+  }
+}
+@media (max-width: 1140px) {
+  [data-desktop-nav] { display:none !important; }
+  [data-hamburger] { display:inline-flex !important; }
+}
+</style>
+</helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#0B0B0C"></rect><rect x="120" y="90" width="160" height="120" fill="#34C759"></rect><text x="200" y="168" font-family="Outfit, sans-serif" font-size="52" font-weight="900" fill="#04170B" text-anchor="middle">WORK</text></svg></template>
+<div style="min-height:100vh; background:var(--bg);">
+
+  <header style="position:fixed; top:0; left:0; right:0; z-index:100; background:var(--header-bg); backdrop-filter:blur(16px); border-bottom:1px solid var(--line);">
+    <div style="max-width:1240px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+      <a href="Turtle Labs Landing.dc.html#hero" style="display:flex; align-items:center; gap:11px; color:var(--text); font-family:'Outfit',sans-serif; font-weight:800; font-size:22px; letter-spacing:-0.03em; white-space:nowrap;">
+        <span style="display:inline-block; flex-shrink:0; width:36px; height:36px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
+        <span>Turtle Labs</span>
+      </a>
+      <nav data-desktop-nav="1" style="display:flex; align-items:center; gap:26px;">
+        <sc-for list="{{ navLinks }}" as="nl" hint-placeholder-count="5">
+          <a href="{{ nl.href }}" style="color:{{ nl.color }}; font-size:14.5px; font-weight:600;" style-hover="color:var(--text)">{{ nl.label }}</a>
+        </sc-for>
+      </nav>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button onClick="{{ toggleTheme }}" style="display:inline-flex; align-items:center; gap:7px; padding:8px 14px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:13px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)"><span>{{ themeIcon }}</span><span>{{ themeLabel }}</span></button>
+        <a href="Turtle Labs Landing.dc.html#score-quiz" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:10px 20px; font-size:14px; font-weight:700; white-space:nowrap;" style-hover="background:#4ADE80; color:#04170B">Find Your Score</a>
+        <button data-hamburger="1" onClick="{{ toggleNav }}" style="display:none; width:40px; height:40px; border-radius:12px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:18px; cursor:pointer; align-items:center; justify-content:center;">☰</button>
+      </div>
+    </div>
+    <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="background:var(--bg); border-bottom:1px solid var(--line); padding:12px 24px 20px 24px; display:flex; flex-direction:column; gap:4px; animation:tlfade .25s ease;">
+        <sc-for list="{{ navLinks }}" as="nl" hint-placeholder-count="5">
+          <a href="{{ nl.href }}" onClick="{{ closeNav }}" style="color:var(--text); font-size:17px; font-weight:700; padding:12px 4px; border-bottom:1px solid var(--line2); font-family:'Outfit',sans-serif;">{{ nl.label }}</a>
+        </sc-for>
+      </div>
+    </sc-if>
+  </header>
+
+  <section style="padding:150px 24px 20px 24px; max-width:1000px; margin:0 auto; text-align:center;">
+    <div style="display:inline-flex; align-items:center; gap:8px; padding:7px 16px; border-radius:999px; border:1px solid rgba(52,199,89,0.45); color:var(--greent); font-size:13px; font-weight:600; margin-bottom:22px;"><span style="width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block;"></span>Portfolio & Showcase</div>
+    <h1 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(42px, 7vw, 76px); letter-spacing:-0.03em; line-height:1.04; color:var(--text); margin:0 0 20px 0;">The work that made brands <span style="background:linear-gradient(90deg,#C80018,#FF8C00,#00A86B,#0066B2); -webkit-background-clip:text; background-clip:text; color:transparent;">unmissable.</span></h1>
+    <p style="color:var(--muted); font-size:clamp(16px, 2.2vw, 20px); max-width:620px; margin:0 auto 34px auto;">Selected projects across brand identity, web, motion, packaging and editorial - each one built to remove friction and command attention.</p>
+    <div style="display:flex; gap:40px; justify-content:center; flex-wrap:wrap; padding-top:8px;">
+      <sc-for list="{{ heroStats }}" as="hs" hint-placeholder-count="3">
+        <div style="text-align:center;">
+          <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:38px; color:{{ hs.color }}; line-height:1;">{{ hs.value }}</div>
+          <div style="color:var(--muted); font-size:13.5px; margin-top:4px;">{{ hs.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <sc-if value="{{ listView }}" hint-placeholder-val="{{ true }}">
+  <div>
+  <section id="works" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:64px 24px 96px 24px;">
+    <div style="display:flex; justify-content:center; margin-bottom:36px;">
+      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+        <sc-for list="{{ filters }}" as="ft" hint-placeholder-count="5">
+          <button onClick="{{ ft.pick }}" style="padding:10px 22px; border-radius:999px; background:{{ ft.bg }}; color:{{ ft.fg }}; border:1px solid {{ ft.border }}; font-size:13.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">{{ ft.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:24px;">
+      <sc-for list="{{ filteredWorks }}" as="wk" hint-placeholder-count="9">
+        <div onClick="{{ wk.open }}" style="background:var(--card); border:1px solid var(--line); border-radius:24px; overflow:hidden; cursor:pointer; transition:transform .25s ease, border-color .25s ease;" style-hover="transform:perspective(900px) rotateX(1.5deg) translateY(-6px); border-color:var(--text)">
+          <div style="position:relative; height:220px; background:{{ wk.grad }}; display:flex; align-items:center; justify-content:center;">
+            <sc-if value="{{ wk.thumb }}" hint-placeholder-val="{{ false }}">
+              {{ wk.thumbEl }}
+            </sc-if>
+            <sc-if value="{{ wk.noThumb }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:'Outfit',sans-serif; font-weight:900; font-size:52px; color:{{ wk.accent }}; opacity:0.75;">{{ wk.initials }}</span>
+            </sc-if>
+            <sc-if value="{{ wk.video }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute; bottom:14px; right:14px; width:52px; height:52px; border-radius:50%; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.25); display:flex; align-items:center; justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" style="display:block; margin-left:3px;"><path d="M8 5v14l11-7z"></path></svg></span>
+            </sc-if>
+          </div>
+          <div style="padding:22px 24px; display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="background:{{ wk.tagBg }}; color:{{ wk.accent }}; border-radius:999px; padding:5px 14px; font-size:12px; font-weight:700;">{{ wk.tag }}</span>
+              <span style="color:var(--faint); font-size:13px;">{{ wk.loc }}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:20px; margin:0; color:var(--text);">{{ wk.title }}</h3>
+              <span style="color:var(--muted);">→</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ showPager }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:44px; padding-top:30px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
+        <button onClick="{{ goPrevPage }}" disabled="{{ pagerPrevDisabled }}" style="display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:999px; background:var(--bg2); color:{{ pagerPrevFg }}; border:1px solid var(--line); font-size:13.5px; font-weight:700; cursor:{{ pagerPrevCursor }}; font-family:'Inter',sans-serif; opacity:{{ pagerPrevOpacity }};" style-hover="border-color:var(--text)"><span>←</span> Prev</button>
+        <div style="display:flex; gap:6px; margin:0 4px;">
+          <sc-for list="{{ pageBtns }}" as="pg" hint-placeholder-count="2">
+            <button onClick="{{ pg.pick }}" style="min-width:42px; height:42px; padding:0 12px; border-radius:999px; background:{{ pg.bg }}; color:{{ pg.fg }}; border:1px solid {{ pg.border }}; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">{{ pg.label }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ goNextPage }}" disabled="{{ pagerNextDisabled }}" style="display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:999px; background:var(--bg2); color:{{ pagerNextFg }}; border:1px solid var(--line); font-size:13.5px; font-weight:700; cursor:{{ pagerNextCursor }}; font-family:'Inter',sans-serif; opacity:{{ pagerNextOpacity }};" style-hover="border-color:var(--text)">Next <span>→</span></button>
+      </div>
+    </sc-if>
+  </section>
+
+  <section id="clients" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 44px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Trusted By</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">Brands we've worked with</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">Across five countries and a dozen industries.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:1px; background:var(--line2); border:1px solid var(--line2); border-radius:20px; overflow:hidden;">
+      <sc-for list="{{ logoGrid }}" as="lg" hint-placeholder-count="30">
+        <div style="background:var(--bg); aspect-ratio:16/10; display:flex; align-items:center; justify-content:center; padding:18px;">
+          {{ lg.el }}
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="reviews" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Client Proof</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">What clients say</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">Real outcomes, told by the people who lived them.</p>
+    </div>
+    <div style="columns:3 300px; column-gap:24px;">
+      <sc-for list="{{ shownReviews }}" as="rv" hint-placeholder-count="9">
+        <div style="break-inside:avoid; margin-bottom:24px; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:30px 28px; display:flex; flex-direction:column; gap:20px;">
+          <div>
+            <div style="color:var(--text); font-size:32px; opacity:0.4; font-family:'Outfit',sans-serif; line-height:1;">“</div>
+            <p style="font-style:italic; color:var(--muted); font-size:15px; margin:6px 0 0 0;">{{ rv.quote }}</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:13px; border-top:1px solid var(--line); padding-top:16px;">
+            <span style="width:42px; height:42px; border-radius:50%; background:{{ rv.avBg }}; border:1px solid {{ rv.avBorder }}; color:{{ rv.avFg }}; display:inline-flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-weight:700; font-size:14px; flex-shrink:0;">{{ rv.initials }}</span>
+            <span style="display:flex; flex-direction:column;"><strong style="color:var(--text); font-size:14.5px;">{{ rv.name }}</strong><span style="font-size:12.5px; color:var(--muted);">{{ rv.loc }}</span></span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ hasMoreReviews }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; justify-content:center; margin-top:24px;">
+        <button onClick="{{ loadMoreReviews }}" style="display:inline-flex; align-items:center; gap:10px; background:var(--bg2); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:15px 34px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">{{ loadMoreLabel }}</button>
+      </div>
+    </sc-if>
+  </section>
+
+  <section id="services" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="color:var(--faint); font-size:12px; letter-spacing:0.16em; text-transform:uppercase; margin-bottom:12px;">What we do</div>
+    <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(36px, 5vw, 56px); color:var(--text); letter-spacing:-0.03em; margin:0 0 36px 0;">Our services.</h2>
+    <div>
+      <sc-for list="{{ services }}" as="sv" hint-placeholder-count="6">
+        <div style="border-top:1px solid var(--line);">
+          <div onClick="{{ sv.toggle }}" style="display:flex; align-items:center; gap:24px; padding:32px 8px; cursor:pointer; flex-wrap:wrap;">
+            <span style="color:{{ sv.numColor }}; font-family:'Outfit',sans-serif; font-weight:700; font-size:14px;">{{ sv.num }}</span>
+            <span style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(22px, 3vw, 30px); color:{{ sv.titleColor }}; flex:1; min-width:200px;">{{ sv.title }}</span>
+            <span style="background:{{ sv.c1bg }}; color:{{ sv.c1fg }}; border-radius:999px; padding:7px 16px; font-size:13px; font-weight:600;">{{ sv.chip1 }}</span>
+            <span style="background:{{ sv.c2bg }}; color:{{ sv.c2fg }}; border-radius:999px; padding:7px 16px; font-size:13px; font-weight:600;">{{ sv.chip2 }}</span>
+            <span style="background:{{ sv.c3bg }}; color:{{ sv.c3fg }}; border-radius:999px; padding:7px 16px; font-size:13px; font-weight:600;">{{ sv.chip3 }}</span>
+            <span style="width:44px; height:44px; border-radius:50%; background:{{ sv.arrowBg }}; color:{{ sv.arrowFg }}; border:1px solid var(--line); display:inline-flex; align-items:center; justify-content:center;">{{ sv.arrow }}</span>
+          </div>
+          <sc-if value="{{ sv.expanded }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:0 8px 32px 46px; max-width:720px; animation:tlfade .25s ease;">
+              <p style="color:var(--muted); font-size:15.5px; margin:0 0 14px 0;">{{ sv.desc }}</p>
+              <a href="Turtle Labs Landing.dc.html#services" style="color:var(--greent); font-size:14.5px; font-weight:700;">Get a proposal →</a>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid var(--line);"></div>
+    </div>
+  </section>
+
+  <section id="sectors" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 80px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 40px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Deep Experience</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">Sectors We Know</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">From ayurvedic wellness to metro rail, we've done the research.</p>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:900px; margin:0 auto 48px auto;">
+      <sc-for list="{{ sectors }}" as="sec" hint-placeholder-count="10">
+        <span style="padding:12px 26px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:15.5px;" style-hover="border-color:var(--text); transform:scale(1.03)">{{ sec }}</span>
+      </sc-for>
+    </div>
+    <div style="background:#E2F6EC; border:1px solid #00A86B; border-radius:24px; padding:52px 40px; text-align:center; max-width:840px; margin:0 auto; color:#003E2B;">
+      <span style="display:inline-block; padding:5px 13px; border-radius:999px; background:#00A86B; color:#FFF; font-size:11px; font-weight:800; text-transform:uppercase; margin-bottom:16px;">Get Sustainable Brand Playbook</span>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(28px, 4vw, 40px); margin:0 0 12px 0; color:#003E2B;">Not Ready Yet?</h2>
+      <p style="color:#003E2B; font-size:18px; max-width:600px; margin:0 auto 24px auto;">Start with the free Sustainable Brand Playbook 200+ founders already downloaded.</p>
+      <sc-if value="{{ playbookSent }}" hint-placeholder-val="{{ false }}">
+        <div style="color:#00A86B; font-weight:800; font-size:16px;">📘 Playbook sent - welcome aboard!</div>
+      </sc-if>
+      <sc-if value="{{ playbookNotSent }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submitPlaybook }}" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:480px; margin:0 auto;">
+          <input name="email" type="email" required="required" placeholder="Enter your email address..." style="flex:1; min-width:220px; padding:14px 20px; border-radius:999px; background:#FFFFFF; border:1px solid rgba(0,62,43,0.25); color:#003E2B; font-size:15px; font-family:'Inter',sans-serif;">
+          <button type="submit" style="background:#003E2B; color:#FFFFFF; border:none; border-radius:999px; padding:14px 26px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;">Send Me the Playbook</button>
+        </form>
+      </sc-if>
+    </div>
+  </section>
+
+  <section id="numbers" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Measurable Proof</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">The Numbers So Far</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">What happens when brands take their score seriously.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:20px; text-align:center;">
+      <sc-for list="{{ stats }}" as="stt" hint-placeholder-count="4">
+        <div style="background:var(--card); border:1px solid var(--line); border-radius:24px; padding:44px 20px;">
+          <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:48px; color:{{ stt.color }}; margin-bottom:6px; line-height:1;">{{ stt.value }}</div>
+          <div style="color:var(--muted); font-size:14.5px;">{{ stt.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="journal" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:36px;">
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(36px, 5vw, 56px); letter-spacing:-0.03em; margin:0; color:var(--text);">From the Journal</h2>
+      <a href="Journal.dc.html" style="color:var(--greent); font-size:15px; font-weight:700; text-decoration:underline; text-underline-offset:4px;">Read all articles →</a>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:28px;">
+      <sc-for list="{{ journalPreview }}" as="jr" hint-placeholder-count="3">
+        <a href="{{ jr.href }}" style="display:flex; flex-direction:column; gap:16px; color:var(--text);">
+          <div style="height:200px; border-radius:20px; background:{{ jr.grad }};"></div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <span style="background:{{ jr.tagBg }}; color:{{ jr.tagFg }}; border-radius:8px; padding:5px 12px; font-size:13px; font-weight:700;">{{ jr.tag }}</span>
+            <span style="color:var(--faint); font-size:14px;">{{ jr.date }}</span>
+          </div>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:21px; margin:0; color:var(--text); line-height:1.3;" style-hover="text-decoration:underline">{{ jr.title }}</h3>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="take-action" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 110px 24px;" data-tk="take">
+    <div style="background:var(--card); border:1px solid var(--line); border-radius:28px; padding:64px 40px; text-align:center; overflow:hidden; position:relative;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Take Action</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(34px, 5vw, 54px); letter-spacing:-0.03em; margin:0 0 14px 0; color:var(--text);">Let's make you unmissable.</h2>
+      <p style="color:var(--muted); font-size:19px; max-width:560px; margin:0 auto 30px auto;">One free call. Bring your score, leave with a plan.</p>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a href="Turtle Labs Landing.dc.html#book-call" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:16px 34px; font-size:16px; font-weight:700;" style-hover="background:#4ADE80; transform:translateY(-2px)">Book a Free Call →</a>
+        <a href="Turtle Labs Landing.dc.html#score-quiz" style="background:var(--bg2); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:16px 34px; font-size:16px; font-weight:700;" style-hover="border-color:var(--text)">Find Your Score</a>
+      </div>
+    </div>
+  </section>
+
+  </div>
+  </sc-if>
+
+  <!-- ============ CASE STUDY DETAIL VIEW ============ -->
+  <sc-if value="{{ detailView }}" hint-placeholder-val="{{ false }}">
+    <article style="max-width:940px; margin:0 auto; padding:120px 24px 40px 24px; animation:tlfade .3s ease;">
+      <button onClick="{{ backToWorks }}" style="display:inline-flex; align-items:center; gap:8px; background:var(--bg2); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:10px 20px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; margin-bottom:32px;" style-hover="border-color:var(--text)"><span>←</span> Back to Works</button>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+        <span style="background:{{ csTagBg }}; color:{{ csAccent }}; border-radius:999px; padding:6px 15px; font-size:12.5px; font-weight:700;">{{ csTag }}</span>
+        <span style="color:var(--faint); font-size:14px;">{{ csMeta }}</span>
+      </div>
+      <h1 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(32px, 5vw, 54px); letter-spacing:-0.02em; line-height:1.08; color:var(--text); margin:0 0 20px 0;">{{ csTitle }}</h1>
+      <p style="color:var(--muted); font-size:clamp(17px,2.2vw,21px); line-height:1.6; margin:0 0 34px 0;">{{ csDesc }}</p>
+      <sc-if value="{{ csHasMedia }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:40px;">
+          <sc-for list="{{ csGallery }}" as="gm" hint-placeholder-count="2">
+            <figure style="margin:0;">
+              <div style="position:relative; border-radius:24px; overflow:hidden; background:{{ gm.bg }}; display:flex; align-items:center; justify-content:center;">
+                {{ gm.el }}
+              </div>
+              <sc-if value="{{ gm.hasCaption }}" hint-placeholder-val="{{ false }}">
+                <figcaption style="color:var(--faint); font-size:13px; margin-top:10px; text-align:center;">{{ gm.caption }}</figcaption>
+              </sc-if>
+            </figure>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ csNoMedia }}" hint-placeholder-val="{{ false }}">
+        <div style="border-radius:24px; background:{{ csGrad }}; min-height:clamp(320px, 46vw, 540px); display:flex; align-items:center; justify-content:center; margin-bottom:40px;">
+          <span style="font-family:'Outfit',sans-serif; font-weight:900; font-size:72px; color:{{ csAccent }}; opacity:0.8;">{{ csInitials }}</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{ csHasStats }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:1px; background:var(--line2); border:1px solid var(--line2); border-radius:18px; overflow:hidden; margin-bottom:40px;">
+          <sc-for list="{{ csStats }}" as="st" hint-placeholder-count="6">
+            <div style="background:var(--bg2); padding:22px 22px;">
+              <div style="font-family:'Outfit',sans-serif; font-weight:900; font-size:30px; color:{{ csAccent }}; line-height:1; margin-bottom:8px;">{{ st.value }}</div>
+              <div style="color:var(--muted); font-size:12.5px; line-height:1.4;">{{ st.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ csHasStory }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; gap:2px; margin-bottom:44px;">
+          <sc-for list="{{ csStory }}" as="sec" hint-placeholder-count="4">
+            <div style="border-top:1px solid var(--line2); padding:26px 0; display:grid; grid-template-columns:64px 1fr; gap:20px; align-items:start;">
+              <div style="font-family:'Outfit',sans-serif; font-weight:900; font-size:20px; color:{{ csAccent }};">{{ sec.n }}</div>
+              <div>
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:20px; color:var(--text); margin:0 0 8px 0;">{{ sec.head }}</h3>
+                <p style="color:var(--muted); font-size:16px; line-height:1.65; margin:0;">{{ sec.body }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:1px; background:var(--line2); border:1px solid var(--line2); border-radius:18px; overflow:hidden; margin-bottom:40px;">
+        <sc-for list="{{ csFacts }}" as="cf" hint-placeholder-count="3">
+          <div style="background:var(--bg2); padding:20px 22px;">
+            <div style="color:var(--faint); font-size:10.5px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:8px;">{{ cf.label }}</div>
+            <div style="color:var(--text); font-size:16px; font-weight:600; font-family:'Outfit',sans-serif;">{{ cf.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:26px; color:var(--text); margin:0 0 18px 0;">Outcomes</h2>
+      <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:44px;">
+        <sc-for list="{{ csOutcomes }}" as="oc" hint-placeholder-count="3">
+          <div style="display:flex; align-items:flex-start; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 22px;">
+            <span style="color:var(--green-ink); background:var(--green); width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0;">✓</span>
+            <span style="color:var(--text); font-size:16px; line-height:1.5;">{{ oc }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:var(--card); border:1px solid var(--line); border-radius:24px; padding:40px 34px; text-align:center;">
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(24px,3.5vw,32px); color:var(--text); margin:0 0 10px 0;">Want results like this?</h3>
+        <p style="color:var(--muted); font-size:17px; margin:0 0 24px 0;">Let's scope a project built for your brand.</p>
+        <a href="Turtle Labs Landing.dc.html#services" style="display:inline-flex; background:var(--green); color:var(--green-ink); border-radius:999px; padding:15px 32px; font-size:16px; font-weight:700;" style-hover="background:#4ADE80; transform:translateY(-2px)">Start a project like this →</a>
+      </div>
+    </article>
+    <nav style="max-width:940px; margin:0 auto; padding:20px 24px 100px 24px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px;">
+      <sc-if value="{{ hasPrevCase }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ goPrevCase }}" style="text-align:left; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:24px 26px; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">
+          <div style="color:var(--faint); font-size:12px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">← Previous</div>
+          <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:18px; color:var(--text); line-height:1.3;">{{ prevCaseTitle }}</div>
+        </button>
+      </sc-if>
+      <sc-if value="{{ hasNextCase }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ goNextCase }}" style="text-align:right; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:24px 26px; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">
+          <div style="color:var(--faint); font-size:12px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">Next →</div>
+          <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:18px; color:var(--text); line-height:1.3;">{{ nextCaseTitle }}</div>
+        </button>
+      </sc-if>
+    </nav>
+    <section style="max-width:1240px; margin:0 auto; padding:0 24px 100px 24px;">
+      <div style="color:var(--faint); font-size:12px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:18px;">More work</div>
+      <div style="display:flex; gap:16px; overflow-x:auto; padding-bottom:14px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;">
+        <sc-for list="{{ csThumbs }}" as="ct" hint-placeholder-count="6">
+          <button onClick="{{ ct.open }}" style="flex:0 0 240px; scroll-snap-align:start; text-align:left; background:var(--card); border:1px solid {{ ct.border }}; border-radius:18px; overflow:hidden; cursor:pointer; padding:0; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">
+            <div style="position:relative; height:140px; background:{{ ct.grad }}; display:flex; align-items:center; justify-content:center;">
+              <sc-if value="{{ ct.thumb }}" hint-placeholder-val="{{ false }}">
+                {{ ct.thumbEl }}
+              </sc-if>
+              <sc-if value="{{ ct.noThumb }}" hint-placeholder-val="{{ true }}">
+                <span style="font-family:'Outfit',sans-serif; font-weight:900; font-size:36px; color:{{ ct.accent }}; opacity:0.75;">{{ ct.initials }}</span>
+              </sc-if>
+            </div>
+            <div style="padding:14px 16px;">
+              <div style="color:var(--faint); font-size:11.5px; margin-bottom:5px;">{{ ct.tag }}</div>
+              <div style="font-family:'Outfit',sans-serif; font-weight:700; font-size:15px; color:var(--text); line-height:1.3;">{{ ct.title }}</div>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+  </sc-if>
+
+  <footer style="border-top:1px solid var(--line); padding:64px 24px 32px 24px; background:var(--bg);">
+    <div style="max-width:1140px; margin:0 auto;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:40px; flex-wrap:wrap; padding-bottom:40px;">
+        <div>
+          <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(32px, 4.5vw, 46px); color:var(--text); letter-spacing:-0.03em; margin:0 0 14px 0;">Let's make you <span style="background:linear-gradient(90deg,#FF8C00,#00A86B,#00A3E0); -webkit-background-clip:text; background-clip:text; color:transparent; display:inline-block; padding-left:0.12em; margin-left:0.04em;">unmissable.</span></h2>
+          <div style="display:flex; gap:18px; font-size:15px; flex-wrap:wrap; align-items:center;">
+            <a href="tel:+917400531107" style="color:var(--text); font-weight:600;" style-hover="color:var(--greent)">+91 74005 31107</a>
+            <span style="color:var(--faint);">·</span>
+            <a href="mailto:info@turtlelabs.co.in" style="color:var(--text); font-weight:600;" style-hover="color:var(--greent)">info@turtlelabs.co.in</a>
+            <span style="color:var(--faint);">·</span>
+            <a href="https://wa.me/917400531107" target="_blank" style="color:var(--greent); font-weight:700;">WhatsApp →</a>
+          </div>
+        </div>
+        <a href="Turtle Labs Landing.dc.html#score-quiz" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:15px 30px; font-size:15px; font-weight:700; white-space:nowrap;" style-hover="background:#4ADE80">Find Your Score →</a>
+      </div>
+      <div style="display:flex; justify-content:space-between; gap:28px; flex-wrap:wrap; padding:26px 0; border-top:1px solid var(--line2); border-bottom:1px solid var(--line2);">
+        <div style="display:flex; gap:26px; font-size:14px; flex-wrap:wrap;">
+          <sc-for list="{{ navLinks }}" as="fl" hint-placeholder-count="5">
+            <a href="{{ fl.href }}" style="color:var(--muted);" style-hover="color:var(--text)">{{ fl.label }}</a>
+          </sc-for>
+        </div>
+        <div style="color:var(--muted); font-size:14px;">Kochi (HQ) · Nagpur · Bengaluru · New Delhi</div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-top:22px; flex-wrap:wrap; gap:16px; color:var(--faint); font-size:13px;">
+        <span style="display:flex; align-items:center; gap:10px;"><a href="https://turtlelabs.co.in/" target="_blank" aria-label="Turtle Labs" style="display:inline-block; width:22px; height:22px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></a> © 2026 Turtle Labs Creative Agency</span>
+        <div style="display:flex; gap:22px;">
+          <a href="https://turtlelabs.co.in/privacy-policy/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Privacy</a>
+          <a href="https://turtlelabs.co.in/terms-and-conditions/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <sc-if value="{{ workOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeWorkBackdrop }}" style="position:fixed; inset:0; background:rgba(0,0,0,0.72); backdrop-filter:blur(10px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; animation:tlfade .2s ease;">
+      <div style="background:var(--bg2); border:1px solid var(--line); border-radius:24px; max-width:1240px; width:100%; max-height:94vh; overflow-y:auto;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line2); gap:12px;">
+          <span style="color:var(--muted); font-size:13px;">{{ popupKicker }}</span>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <button onClick="{{ prevWork }}" aria-label="Previous" style="width:36px; height:36px; border-radius:50%; background:none; border:1px solid var(--line); color:var(--text); cursor:pointer; font-family:'Inter',sans-serif;">←</button>
+            <span style="color:var(--muted); font-size:13px;">{{ popupCounter }}</span>
+            <button onClick="{{ nextWork }}" aria-label="Next" style="width:36px; height:36px; border-radius:50%; background:none; border:1px solid var(--line); color:var(--text); cursor:pointer; font-family:'Inter',sans-serif;">→</button>
+            <button onClick="{{ closeWork }}" aria-label="Close" style="background:none; border:none; color:var(--muted); font-size:18px; cursor:pointer; margin-left:6px; font-family:'Inter',sans-serif;">✕</button>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));">
+          <div style="position:relative; background:{{ popupGrad }}; min-height:clamp(360px, 52vh, 620px); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+            <sc-if value="{{ popupHasMedia }}" hint-placeholder-val="{{ false }}">
+              {{ popupMediaEl }}
+            </sc-if>
+            <sc-if value="{{ popupNoMedia }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:'Outfit',sans-serif; font-weight:900; font-size:48px; color:{{ popupAccent }}; opacity:0.8;">{{ popupInitials }}</span>
+            </sc-if>
+          </div>
+          <div style="padding:32px 30px;">
+            <div style="color:{{ popupAccent }}; font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;">{{ popupKicker }}</div>
+            <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:25px; color:var(--text); margin:0 0 12px 0;">{{ popupTitle }}</h3>
+            <p style="color:var(--muted); font-size:14.5px; line-height:1.7; margin:0 0 18px 0;">{{ popupDesc }}</p>
+            <div style="background:var(--bg); border:1px solid var(--line2); border-radius:14px; padding:16px 18px; margin-bottom:20px;">
+              <div style="color:var(--faint); font-size:10px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px;">Outcomes</div>
+              <div style="display:flex; flex-direction:column; gap:7px;">
+                <sc-for list="{{ popupOutcomes }}" as="oc" hint-placeholder-count="3">
+                  <span style="color:var(--text); font-size:13.5px;"><span style="color:var(--greent);">✓</span> {{ oc }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+              <button onClick="{{ viewCaseStudy }}" style="display:inline-flex; align-items:center; gap:8px; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:12px 22px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">View case study →</button>
+              <a href="Turtle Labs Landing.dc.html#services" style="display:inline-flex; background:var(--green); color:var(--green-ink); border-radius:999px; padding:12px 24px; font-size:14px; font-weight:700;">Start a project like this →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ zoomOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeZoom }}" style="position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:2000; display:flex; align-items:center; justify-content:center; padding:24px; cursor:zoom-out; animation:tlfade .2s ease; overflow:auto;">
+      <sc-if value="{{ zoomOpen }}" hint-placeholder-val="{{ false }}">
+        {{ zoomEl }}
+      </sc-if>
+      <button onClick="{{ closeZoom }}" aria-label="Close" style="position:fixed; top:20px; right:24px; width:44px; height:44px; border-radius:50%; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.3); color:#fff; font-size:20px; cursor:pointer; font-family:'Inter',sans-serif;">✕</button>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { theme:'dark', navOpen:false, filter:'all', workIdx:-1, reviewsShown:9, playbookSent:false, expandedService:-1, caseId:null, page:1, lbItems:null, lbIdx:-1 };
+
+  componentDidMount() {
+    import('./tl-content.js').then(m => {
+      this._C = (m && m.TL_CONTENT) || {};
+      const hash = (location.hash || '').replace('#','');
+      if (hash && (this._C.works || []).some(w => w.id === hash)) this.setState({ caseId: hash });
+      else this.forceUpdate();
+    }).catch(() => { this._C = {}; });
+    const saved = localStorage.getItem('tl-theme') || 'dark';
+    this.applyTheme(saved);
+    this._onKey = (e) => {
+      if (this.state.lbIdx >= 0) {
+        const n = this._lbLen || 0;
+        if (e.key === 'Escape') this.setState({ lbIdx:-1, lbItems:null });
+        else if (e.key === 'ArrowRight' && n > 1) this.setState(s => ({ lbIdx:(s.lbIdx+1)%n }));
+        else if (e.key === 'ArrowLeft' && n > 1) this.setState(s => ({ lbIdx:(s.lbIdx-1+n)%n }));
+        return;
+      }
+      if (this.state.workIdx < 0) return;
+      if (e.key === 'ArrowRight') this.stepWork(1);
+      else if (e.key === 'ArrowLeft') this.stepWork(-1);
+      else if (e.key === 'Escape') this.setState({ workIdx:-1 });
+    };
+    window.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); }
+
+  applyTheme(t) {
+    if (t === 'light') document.documentElement.setAttribute('data-theme','light');
+    else document.documentElement.removeAttribute('data-theme');
+    this.setState({ theme:t });
+  }
+  works() { return (this._C && this._C.works) || []; }
+  stepWork(d) {
+    const W = this.works(); if (!W.length) return;
+    this.setState(s => ({ workIdx: (s.workIdx + d + W.length) % W.length }));
+  }
+  openCase(id) { try { history.replaceState(null,'', '#'+id); } catch(e){} window.scrollTo({ top:0 }); this.setState({ caseId:id, workIdx:-1 }); }
+  backToWorks() { try { history.replaceState(null,'', location.pathname); } catch(e){} window.scrollTo({ top:0 }); this.setState({ caseId:null }); }
+  mediaEl(w, fit, onOpen) {
+    if (!w) return null;
+    if (w.video) {
+      const vid = React.createElement('video', { key:w.video, controls:true, muted:true, autoPlay:true, playsInline:true, preload:'metadata', poster:w.thumb || '', controlsList:'nodownload', style:{ width:'100%', height:'100%', objectFit:'cover', display:'block' } }, React.createElement('source', { src:w.video, type:'video/mp4' }));
+      return onOpen ? React.createElement('div', { key:'vw', style:{ position:'relative', width:'100%', height:'100%' } }, vid, this.expandBtn(onOpen)) : vid;
+    }
+    if (w.image) return React.createElement('img', { key:w.image, src:w.image, alt:w.title, onClick:onOpen, title:'Click to expand', style:{ width:'100%', height:'100%', objectFit:'contain', display:'block', background:'#fff', cursor: onOpen ? 'zoom-in' : 'default' } });
+    if (w.thumb) return React.createElement('img', { key:w.thumb, src:w.thumb, alt:w.title, onClick:onOpen, title:'Click to expand', style:{ width:'100%', height:'100%', objectFit: fit || 'cover', display:'block', cursor: onOpen ? 'zoom-in' : 'default' } });
+    return null;
+  }
+  expandBtn(onOpen) {
+    return React.createElement('button', { key:'exp', onClick:onOpen, title:'Expand', 'aria-label':'Expand media', style:{ position:'absolute', top:'12px', right:'12px', zIndex:4, display:'inline-flex', alignItems:'center', gap:'6px', padding:'8px 12px', borderRadius:'999px', background:'rgba(0,0,0,0.6)', border:'1px solid rgba(255,255,255,0.28)', color:'#fff', fontSize:'12px', fontWeight:700, cursor:'pointer', fontFamily:'Inter,sans-serif' } }, 'Expand ⤢');
+  }
+  openLb(items, idx) { this.setState({ lbItems: items, lbIdx: idx }); }
+  // Normalized media list for a work's case study (supports w.media[] or single-field fallback).
+  galleryItems(w) {
+    if (!w) return [];
+    if (Array.isArray(w.media) && w.media.length) return w.media;
+    const arr = [];
+    if (w.video) arr.push({ kind:'video', src:w.video, poster:w.thumb });
+    if (w.image) arr.push({ kind:'image', src:w.image });
+    if (!w.video && !w.image && w.thumb) arr.push({ kind:'image', src:w.thumb, fit:w.thumbFit, bg:w.thumbBg });
+    return arr;
+  }
+  mediaItemEl(item, i, title, onOpen) {
+    const kind = (item.kind || 'image').toLowerCase();
+    if (kind === 'video') {
+      const vid = React.createElement('video', { key:'v'+i, controls:true, muted:true, playsInline:true, preload:'metadata', poster:item.poster || '', controlsList:'nodownload', style:{ width:'100%', height:'auto', maxHeight:'640px', objectFit:'contain', display:'block', background:'#000' } }, React.createElement('source', { src:item.src, type:item.mime || 'video/mp4' }));
+      return onOpen ? React.createElement('div', { key:'vw'+i, style:{ position:'relative', width:'100%' } }, vid, this.expandBtn(onOpen)) : vid;
+    }
+    if (kind === 'pdf' || kind === 'file') {
+      return React.createElement('a', { key:'f'+i, href:item.src, target:'_blank', rel:'noopener', style:{ display:'flex', alignItems:'center', gap:'16px', padding:'26px 28px', width:'100%', textDecoration:'none', color:'var(--text)', fontFamily:'Inter,sans-serif' } },
+        React.createElement('span', { style:{ width:'52px', height:'52px', borderRadius:'12px', background:'rgba(255,107,107,0.16)', color:'var(--red)', display:'inline-flex', alignItems:'center', justifyContent:'center', fontWeight:800, fontSize:'13px', flexShrink:0 } }, kind === 'pdf' ? 'PDF' : 'FILE'),
+        React.createElement('span', { style:{ display:'flex', flexDirection:'column', gap:'3px' } },
+          React.createElement('strong', { style:{ fontSize:'15px' } }, item.name || String(item.src).split('/').pop()),
+          React.createElement('span', { style:{ fontSize:'13px', color:'var(--muted)' } }, 'Open document →')));
+    }
+    return React.createElement('img', { key:'i'+i, src:item.src, alt:item.caption || title || '', onClick:onOpen, title:'Click to expand', style:{ width:'100%', height:'auto', display:'block', objectFit: item.fit || 'contain', cursor: onOpen ? 'zoom-in' : 'default' } });
+  }
+  galleryFor(w) {
+    const items = this.galleryItems(w);
+    const lbItems = items.filter(it => { const k=(it.kind||'image').toLowerCase(); return k!=='pdf' && k!=='file'; }).map(it => ({ kind:(it.kind||'image').toLowerCase(), src:it.src, poster:it.poster, title:w&&w.title }));
+    return items.map((item, i) => {
+      const kind = (item.kind || 'image').toLowerCase();
+      const bg = item.bg || (kind === 'video' ? '#000' : (kind === 'pdf' || kind === 'file') ? 'var(--card)' : '#fff');
+      const openable = kind !== 'pdf' && kind !== 'file';
+      const lbi = openable ? lbItems.findIndex(m => m.src === item.src) : -1;
+      const onOpen = openable ? () => this.openLb(lbItems, lbi >= 0 ? lbi : 0) : null;
+      return { el: this.mediaItemEl(item, i, w && w.title, onOpen), bg, hasCaption: !!item.caption, caption: item.caption || '' };
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const C = this._C || {};
+    const W = C.works || [];
+    const reviews = C.reviews || [];
+    const logos = C.logos || [];
+
+    const navLinks = [
+      { label:'Home', href:'Turtle Labs Landing.dc.html#hero', cur:false },
+      { label:'Works', href:'#works', cur:true },
+      { label:'Journal', href:'Journal.dc.html', cur:false },
+      { label:'Services', href:'Turtle Labs Landing.dc.html#services', cur:false }
+    ].map(n => ({ ...n, color: n.cur ? 'var(--text)' : 'var(--muted)' }));
+
+    const heroStats = [
+      { value:String(W.length || 9), label:'Featured projects', color:'var(--greent)' },
+      { value:'5', label:'Countries served', color:'var(--blue)' },
+      { value:'184', label:'Brands scored', color:'var(--amber)' }
+    ];
+
+    const filterDefs = [['all','All Work'],['identity','Brand Identity'],['digital','Web Development'],['video','Video & Motion'],['packaging','Packaging']];
+    const filters = filterDefs.map(f => ({
+      label:f[1],
+      bg: s.filter === f[0] ? 'var(--green)' : 'var(--bg2)',
+      fg: s.filter === f[0] ? 'var(--green-ink)' : 'var(--text)',
+      border: s.filter === f[0] ? 'var(--green)' : 'var(--line)',
+      pick: () => this.setState({ filter:f[0], page:1 })
+    }));
+    const filteredAll = W.map((w,i) => ({ ...w, _i:i })).filter(w => s.filter === 'all' || w.cat === s.filter);
+
+    const PAGE_SIZE = 6;
+    const totalPages = Math.max(1, Math.ceil(filteredAll.length / PAGE_SIZE));
+    const page = Math.min(Math.max(1, s.page), totalPages);
+    const pageStart = (page - 1) * PAGE_SIZE;
+    const pagedWorks = filteredAll.slice(pageStart, pageStart + PAGE_SIZE);
+    const filteredWorks = pagedWorks.map(w => ({
+      ...w,
+      video: !!w.video,
+      noThumb: !w.thumb,
+      thumbEl: w.thumb ? React.createElement('img', { src:w.thumb, alt:w.title, style:{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:w.thumbFit || 'cover', background:w.thumbBg || 'transparent' } }) : null,
+      open: () => this.setState({ workIdx:w._i })
+    }));
+
+    const gotoPage = (p) => { this.setState({ page: Math.min(Math.max(1, p), totalPages) }); const el = document.getElementById('works'); if (el) window.scrollTo({ top: el.offsetTop - 80, behavior:'smooth' }); };
+    const pageBtns = Array.from({ length: totalPages }, (_, i) => i + 1).map(p => ({
+      label: String(p),
+      bg: p === page ? 'var(--green)' : 'var(--bg2)',
+      fg: p === page ? 'var(--green-ink)' : 'var(--text)',
+      border: p === page ? 'var(--green)' : 'var(--line)',
+      pick: () => gotoPage(p)
+    }));
+
+    // logo grid
+    const logoGrid = logos.map((l,i) => ({
+      el: React.createElement('img', { src:l.src, alt:l.name, title:l.name, style:{ maxHeight:l.half ? '30px' : '48px', maxWidth:'100%', width:'auto', objectFit:'contain', filter:'var(--logo-filter)', opacity:0.75 } })
+    }));
+
+    // reviews
+    const shownReviews = reviews.slice(0, s.reviewsShown);
+    const remaining = Math.max(0, reviews.length - s.reviewsShown);
+
+    // services accordion
+    const services = (C.services || []).map((sv,i) => {
+      const exp = s.expandedService === i;
+      return {
+        num:String(i+1).padStart(2,'0'),
+        numColor: exp ? 'var(--greent)' : 'var(--faint)',
+        titleColor: exp ? 'var(--greent)' : 'var(--text)',
+        title:sv.title, desc:sv.desc, expanded:exp,
+        chip1:sv.chips[0][0], c1bg:sv.chips[0][1], c1fg:sv.chips[0][2],
+        chip2:sv.chips[1][0], c2bg:sv.chips[1][1], c2fg:sv.chips[1][2],
+        chip3:sv.chips[2][0], c3bg:sv.chips[2][1], c3fg:sv.chips[2][2],
+        arrow: exp ? '↓' : '→',
+        arrowBg: exp ? 'var(--green)' : 'transparent',
+        arrowFg: exp ? 'var(--green-ink)' : 'var(--text)',
+        toggle: () => this.setState(st => ({ expandedService: st.expandedService === i ? -1 : i }))
+      };
+    });
+
+    const journalPreview = (C.journal || []).slice(0,3).map(j => ({ ...j, href:`Journal.dc.html#${j.id}` }));
+
+    // case study detail
+    const caseIdx = W.findIndex(w => w.id === s.caseId);
+    const cs = caseIdx >= 0 ? W[caseIdx] : null;
+    const prevCase = caseIdx > 0 ? W[caseIdx - 1] : null;
+    const nextCase = (caseIdx >= 0 && caseIdx < W.length - 1) ? W[caseIdx + 1] : null;
+    const csGallery = this.galleryFor(cs);
+    const csThumbs = cs ? W.map(w => ({
+      title: w.title, tag: w.tag, initials: w.initials, accent: w.accent, grad: w.grad,
+      thumb: !!w.thumb, noThumb: !w.thumb,
+      thumbEl: w.thumb ? React.createElement('img', { src:w.thumb, alt:w.title, style:{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:w.thumbFit || 'cover', background:w.thumbBg || 'transparent' } }) : null,
+      border: w.id === cs.id ? 'var(--green)' : 'var(--line)',
+      open: () => this.openCase(w.id)
+    })) : [];
+    const csFacts = cs ? [
+      { label:'Category', value: cs.tag || '' },
+      { label:'Location', value: cs.loc || '' },
+      { label:'Timeline', value: cs.weeks || '' }
+    ].filter(f => f.value) : [];
+
+    // modal
+    const cw = (s.workIdx >= 0 && W[s.workIdx]) ? W[s.workIdx] : (W[0] || {});
+    const worksPrimary = W.map((w,i) => {
+      if (w.video) return { kind:'video', src:w.video, poster:w.thumb, title:w.title, wi:i };
+      if (w.image) return { kind:'image', src:w.image, title:w.title, wi:i };
+      if (w.thumb) return { kind:'image', src:w.thumb, title:w.title, wi:i };
+      return null;
+    }).filter(Boolean);
+    const openModalLb = () => { const li = worksPrimary.findIndex(m => m.wi === (s.workIdx >= 0 ? s.workIdx : 0)); this.openLb(worksPrimary, li >= 0 ? li : 0); };
+    let popupMediaEl = this.mediaEl(cw, cw.thumbFit, openModalLb);
+
+    const lbItems = s.lbItems || [];
+    const lbIdx = (s.lbIdx >= 0 && s.lbIdx < lbItems.length) ? s.lbIdx : -1;
+    this._lbLen = lbItems.length;
+    const lbCur = lbIdx >= 0 ? lbItems[lbIdx] : null;
+    let lbEl = null;
+    if (lbCur) {
+      if (lbCur.kind === 'video') lbEl = React.createElement('video', { key:'lbv'+lbIdx, src:lbCur.src, controls:true, autoPlay:true, muted:true, playsInline:true, controlsList:'nodownload', style:{ width:'auto', height:'auto', maxWidth:'92vw', maxHeight:'86vh', display:'block', background:'#000', borderRadius:'8px' } });
+      else lbEl = React.createElement('img', { key:'lbi'+lbIdx, src:lbCur.src, alt:lbCur.title||'', style:{ width:'auto', height:'auto', maxWidth:'92vw', maxHeight:'86vh', objectFit:'contain', display:'block', borderRadius:'8px' } });
+    }
+
+    return {
+      navLinks, heroStats, filters, filteredWorks, logoGrid, services, journalPreview,
+      sectors: C.sectors || [], stats: C.stats || [],
+      shownReviews, hasMoreReviews: remaining > 0, loadMoreLabel: `Load ${Math.min(remaining, reviews.length)} more reviews`,
+      loadMoreReviews: () => this.setState({ reviewsShown: reviews.length }),
+      themeIcon: s.theme === 'dark' ? '☀️' : '🌙', themeLabel: s.theme === 'dark' ? 'Light' : 'Dark',
+      toggleTheme: () => { const t = s.theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('tl-theme', t); this.applyTheme(t); },
+      navOpen: s.navOpen, toggleNav: () => this.setState(st => ({ navOpen:!st.navOpen })), closeNav: () => this.setState({ navOpen:false }),
+      playbookSent: s.playbookSent, playbookNotSent: !s.playbookSent,
+      submitPlaybook: (e) => { e.preventDefault(); this.setState({ playbookSent:true }); },
+      workOpen: s.workIdx >= 0,
+      popupCanExpand: !!popupMediaEl, openModalLb,
+      lbOpen: lbIdx >= 0, lbEl, lbHasNav: lbItems.length > 1,
+      lbCounter: lbIdx >= 0 ? `${lbIdx + 1} / ${lbItems.length}` : '',
+      closeLb: () => this.setState({ lbIdx:-1, lbItems:null }),
+      lbStop: (e) => e.stopPropagation(),
+      lbPrev: (e) => { if (e) e.stopPropagation(); const n = lbItems.length; if (n > 1) this.setState(st => ({ lbIdx:(st.lbIdx-1+n)%n })); },
+      lbNext: (e) => { if (e) e.stopPropagation(); const n = lbItems.length; if (n > 1) this.setState(st => ({ lbIdx:(st.lbIdx+1)%n })); },
+      listView: !cs, detailView: !!cs,
+      showPager: totalPages > 1,
+      pageBtns,
+      goPrevPage: () => gotoPage(page - 1),
+      goNextPage: () => gotoPage(page + 1),
+      pagerPrevDisabled: page <= 1, pagerNextDisabled: page >= totalPages,
+      pagerPrevCursor: page <= 1 ? 'not-allowed' : 'pointer', pagerNextCursor: page >= totalPages ? 'not-allowed' : 'pointer',
+      pagerPrevOpacity: page <= 1 ? 0.4 : 1, pagerNextOpacity: page >= totalPages ? 0.4 : 1,
+      pagerPrevFg: page <= 1 ? 'var(--faint)' : 'var(--text)', pagerNextFg: page >= totalPages ? 'var(--faint)' : 'var(--text)',
+      csTag: cs ? cs.tag : '', csTagBg: cs ? cs.tagBg : 'transparent', csAccent: cs ? cs.accent : 'var(--text)',
+      csMeta: cs ? [cs.loc, cs.weeks].filter(Boolean).join(' · ') : '',
+      csTitle: cs ? cs.title : '', csDesc: cs ? cs.desc : '',
+      csGrad: cs ? cs.grad : 'var(--card)', csInitials: cs ? cs.initials : '',
+      csGallery, csHasMedia: csGallery.length > 0, csNoMedia: !!cs && csGallery.length === 0,
+      csThumbs,
+      csFacts, csOutcomes: cs ? (cs.outcomes || []) : [],
+      csStats: cs ? (cs.stats || []) : [], csHasStats: !!(cs && cs.stats && cs.stats.length),
+      csStory: cs ? (cs.story || []) : [], csHasStory: !!(cs && cs.story && cs.story.length),
+      backToWorks: () => this.backToWorks(),
+      viewCaseStudy: () => this.openCase(cw.id),
+      hasPrevCase: !!prevCase, hasNextCase: !!nextCase,
+      prevCaseTitle: prevCase ? prevCase.title : '', nextCaseTitle: nextCase ? nextCase.title : '',
+      goPrevCase: () => prevCase && this.openCase(prevCase.id),
+      goNextCase: () => nextCase && this.openCase(nextCase.id),
+      popupKicker: cw.tag ? `${cw.tag} · ${cw.loc || ''}` : '',
+      popupCounter: `${(s.workIdx < 0 ? 0 : s.workIdx) + 1} / ${W.length}`,
+      popupGrad: cw.grad, popupAccent: cw.accent, popupInitials: cw.initials,
+      popupMediaEl, popupHasMedia: !!popupMediaEl, popupNoMedia: !popupMediaEl,
+      popupTitle: cw.title, popupDesc: cw.desc, popupOutcomes: cw.outcomes || [],
+      nextWork: () => this.stepWork(1), prevWork: () => this.stepWork(-1),
+      closeWork: () => this.setState({ workIdx:-1 }),
+      closeWorkBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ workIdx:-1 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

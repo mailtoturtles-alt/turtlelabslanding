@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap');
+:root {
+  --bg:#0B0B0C; --bg2:#141416; --card:#18181B; --text:#F6F3EC; --muted:#A1A1AA; --faint:#71717A;
+  --line:rgba(246,243,236,0.12); --line2:rgba(246,243,236,0.08);
+  --green:#34C759; --green-ink:#04170B;
+  --red:#FF6B6B; --orange:#FF8A5C; --amber:#FFB35C; --greent:#4ADE80; --blue:#60A5FA; --cyan:#67E8F9;
+  --logo-filter: invert(1) grayscale(1) brightness(1.35);
+  --header-bg: rgba(11,11,12,0.85);
+}
+[data-theme="light"] {
+  --bg:#F3FAFE; --bg2:#FFFFFF; --card:#FFFFFF; --text:#18181B; --muted:#61616A; --faint:#8A8A93;
+  --line:rgba(24,24,27,0.12); --line2:rgba(24,24,27,0.08);
+  --red:#C80018; --orange:#FF4500; --amber:#E07800; --greent:#00A86B; --blue:#0066B2; --cyan:#0092C8;
+  --logo-filter: grayscale(1);
+  --header-bg: rgba(243,250,254,0.88);
+}
+html { scroll-behavior:smooth; }
+*, *::before, *::after { box-sizing:border-box; }
+input, textarea, select { min-width:0; max-width:100%; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; overflow-x:hidden; transition:background-color .25s ease, color .25s ease; }
+a { color:var(--green); text-decoration:none; }
+a:hover { color:var(--greent); }
+input:focus, textarea:focus, select:focus, button:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+@keyframes tlmarquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+@keyframes tlfade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+@keyframes tlrise { from { opacity:0.15; transform:translateY(26px); } to { opacity:1; transform:none; } }
+@keyframes tlstickyin { from { opacity:0; transform:translateX(-50%) translateY(12px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] { animation: tlrise linear both; animation-timeline: view(); animation-range: entry 0% entry 30%; }
+  }
+}
+@media (max-width: 1140px) {
+  [data-desktop-nav] { display:none !important; }
+  [data-hamburger] { display:inline-flex !important; }
+  [data-nav-email] { display:none !important; }
+}
+@media (max-width: 900px) {
+  [data-sticky-cta] { display:none !important; }
+}
+</style>
+</helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#201e1d"></rect><rect x="120" y="90" width="160" height="120" fill="#ec3013"></rect><text x="200" y="168" font-family="Archivo, Helvetica, sans-serif" font-size="64" font-weight="800" fill="#f3f2f2" text-anchor="middle">TL</text></svg></template>
+<div style="min-height:100vh; background:var(--bg);">
+
+  <header data-screen-label="Header" style="position:fixed; top:0; left:0; right:0; z-index:100; background:var(--header-bg); backdrop-filter:blur(16px); border-bottom:1px solid var(--line);">
+    <div style="max-width:1240px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+      <a href="#hero" style="display:flex; align-items:center; gap:11px; color:var(--text); font-family:'Outfit',sans-serif; font-weight:800; font-size:22px; letter-spacing:-0.03em; white-space:nowrap;">
+        <span style="display:inline-block; flex-shrink:0; width:36px; height:36px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
+        <span>Turtle Labs</span>
+      </a>
+      <nav data-desktop-nav="1" style="display:flex; align-items:center; gap:26px;">
+        <sc-for list="{{ navLinks }}" as="nl" hint-placeholder-count="5">
+          <a href="{{ nl.href }}" target="{{ nl.target }}" style="color:var(--muted); font-size:14.5px; font-weight:600;" style-hover="color:var(--text)">{{ nl.label }}</a>
+        </sc-for>
+      </nav>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a data-nav-email="1" href="mailto:info@turtlelabs.co.in" style="color:var(--muted); font-size:13.5px;" style-hover="color:var(--text)">info@turtlelabs.co.in</a>
+        <button onClick="{{ toggleTheme }}" style="display:inline-flex; align-items:center; gap:7px; padding:8px 14px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:13px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)"><span>{{ themeIcon }}</span><span>{{ themeLabel }}</span></button>
+        <a data-desktop-nav="1" href="https://www.turtlelabs.co.in" target="_blank" style="display:inline-flex; background:var(--bg2); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:10px 20px; font-size:14px; font-weight:700; white-space:nowrap;" style-hover="border-color:var(--text)">Main Site ↗</a>
+        <a href="#score-quiz" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:10px 20px; font-size:14px; font-weight:700; white-space:nowrap;" style-hover="background:#4ADE80; color:#04170B">Find Your Score</a>
+        <button data-hamburger="1" onClick="{{ toggleNav }}" style="display:none; width:40px; height:40px; border-radius:12px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:18px; cursor:pointer; align-items:center; justify-content:center;">☰</button>
+      </div>
+    </div>
+    <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="background:var(--bg); border-bottom:1px solid var(--line); padding:12px 24px 20px 24px; display:flex; flex-direction:column; gap:4px; animation:tlfade .25s ease;">
+        <sc-for list="{{ navLinks }}" as="nl" hint-placeholder-count="5">
+          <a href="{{ nl.href }}" target="{{ nl.target }}" onClick="{{ closeNav }}" style="color:var(--text); font-size:17px; font-weight:700; padding:12px 4px; border-bottom:1px solid var(--line2); font-family:'Outfit',sans-serif;">{{ nl.label }}</a>
+        </sc-for>
+        <a href="https://www.turtlelabs.co.in" target="_blank" style="color:var(--text); font-size:17px; font-weight:700; padding:12px 4px; border-bottom:1px solid var(--line2); font-family:'Outfit',sans-serif;">Main Site ↗</a>
+        <a href="mailto:info@turtlelabs.co.in" style="color:var(--muted); font-size:14px; padding:12px 4px;">info@turtlelabs.co.in</a>
+      </div>
+    </sc-if>
+  </header>
+
+  <section id="hero" data-screen-label="Hero" style="padding:150px 24px 0 24px; text-align:center; background:var(--bg);">
+    <div style="max-width:920px; margin:0 auto;">
+      <div style="display:inline-flex; align-items:center; gap:8px; padding:7px 16px; border-radius:999px; border:1px solid rgba(52,199,89,0.45); color:var(--greent); font-size:13px; font-weight:600;"><span style="width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block;"></span>Open for new projects - 2026</div>
+      <h1 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(42px, 7vw, 78px); letter-spacing:-0.03em; line-height:1.05; color:var(--text); margin:26px 0 20px 0;">Your Brand, <span style="background:linear-gradient(90deg,#C80018,#FF8C00,#FFA500,#00A86B,#0066B2,#00A3E0); -webkit-background-clip:text; background-clip:text; color:transparent;">Under Water</span></h1>
+      <p style="color:var(--muted); font-size:clamp(16px, 2.2vw, 20px); max-width:640px; margin:0 auto 34px auto;">Most brands are sinking slowly and never notice the leak. We find the holes, fix the story, and make you unmissable.</p>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a href="#score-quiz" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:15px 32px; font-size:16px; font-weight:700;" style-hover="background:#4ADE80; color:#04170B; transform:translateY(-2px)">Find Your Score →</a>
+        <a href="#work-samples" style="background:var(--bg2); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:15px 32px; font-size:16px; font-weight:700;" style-hover="border-color:var(--text)">View Work Samples</a>
+      </div>
+      <div style="margin-top:26px;"><span style="display:inline-flex; align-items:center; gap:8px; padding:8px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--muted); font-size:13px;"><span style="width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block;"></span>{{ carbonLabel }}</span></div>
+    </div>
+    <div style="margin-top:64px;">
+      <div style="color:var(--faint); font-size:12px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:18px;">Trusted by teams across 5 countries</div>
+      <div style="overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);">
+        {{ clientLogoMarquee }}
+      </div>
+      <div style="border-top:1px solid var(--line2); border-bottom:1px solid var(--line2); margin-top:26px; padding:15px 0; overflow:hidden;">
+        <div style="display:flex; gap:48px; width:max-content; animation:tlmarquee 34s linear infinite; align-items:center;">
+          <sc-for list="{{ stripItems }}" as="si" hint-placeholder-count="6">
+            <span style="display:flex; align-items:center; gap:48px;"><span style="color:var(--faint); font-size:13px; letter-spacing:0.15em; font-weight:600;">{{ si.label }}</span><span style="color:{{ si.dot }}; font-size:9px;">●</span></span>
+          </sc-for>
+          <sc-for list="{{ stripItems }}" as="si2" hint-placeholder-count="6">
+            <span style="display:flex; align-items:center; gap:48px;"><span style="color:var(--faint); font-size:13px; letter-spacing:0.15em; font-weight:600;">{{ si2.label }}</span><span style="color:{{ si2.dot }}; font-size:9px;">●</span></span>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="score-quiz" data-screen-label="Score Quiz" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 28px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Get Your Brand Score</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">Your Brand Score</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">See exactly where your brand is losing people, in two minutes.</p>
+      <sc-if value="{{ showTickerNow }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;"><span style="display:inline-flex; align-items:center; gap:9px; padding:8px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--muted); font-size:13px; animation:tlfade .4s ease;"><span style="width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block;"></span>{{ tickerMsg }}</span></div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ stageIntro }}" hint-placeholder-val="{{ true }}">
+      <div style="background:var(--bg2); border:1px solid var(--line); border-radius:24px; padding:48px 40px; display:grid; grid-template-columns:auto 1fr; gap:48px; align-items:center; max-width:960px; margin:0 auto;">
+        <div style="position:relative; display:flex; align-items:center; justify-content:center;">
+          <svg width="210" height="210" viewBox="0 0 220 220" style="transform:rotate(-90deg);"><circle cx="110" cy="110" r="90" fill="none" stroke="var(--line)" stroke-width="12"></circle><circle cx="110" cy="110" r="90" fill="none" stroke="var(--green)" stroke-width="12" stroke-linecap="round" stroke-dasharray="8 18" opacity="0.5"></circle></svg>
+          <div style="position:absolute; text-align:center;"><div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:52px; color:var(--muted); line-height:1;">?</div><div style="font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em;">Your Score</div></div>
+        </div>
+        <div>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:26px; margin:0 0 12px 0; color:var(--text);">10-Question Brand Health &amp; Sustainability Audit</h3>
+          <p style="color:var(--muted); font-size:16px; margin:0 0 22px 0;">Evaluates your business across 5 essential benchmarks: Messaging &amp; Positioning, Visual Identity, Website Experience, Product Story, and Digital Presence.</p>
+          <button onClick="{{ startQuiz }}" style="background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:15px 32px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80">Start My Score →</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ stageQuiz }}" hint-placeholder-val="{{ false }}">
+      <div style="position:relative; background:var(--bg2); border:1px solid var(--line); border-radius:24px; padding:40px; max-width:840px; margin:0 auto; animation:tlfade .3s ease;">
+        <button onClick="{{ exitQuiz }}" aria-label="Close quiz" style="position:absolute; top:18px; right:18px; width:34px; height:34px; border-radius:50%; background:var(--bg); border:1px solid var(--line); color:var(--muted); font-size:18px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif;" style-hover="color:var(--text); border-color:var(--text)">✕</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; padding-right:40px; margin-bottom:12px;">
+          <span style="color:var(--cyan); font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;">{{ quizCat }}</span>
+          <span style="color:var(--muted); font-size:13px; white-space:nowrap;">{{ quizProgress }}</span>
+        </div>
+        <div style="height:6px; border-radius:999px; background:var(--line); overflow:hidden; margin-bottom:24px;">
+          <div style="height:100%; width:{{ quizProgressPct }}; background:var(--green); border-radius:999px; transition:width .3s ease;"></div>
+        </div>
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(20px, 3vw, 27px); margin:0 0 22px 0; color:var(--text);">{{ quizQuestion }}</h3>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:30px;">
+          <sc-for list="{{ quizOptions }}" as="opt" hint-placeholder-count="4">
+            <button onClick="{{ opt.pick }}" style="background:{{ opt.bg }}; color:{{ opt.fg }}; border:1px solid {{ opt.border }}; border-radius:16px; padding:16px 20px; font-size:15.5px; font-family:'Inter',sans-serif; font-weight:{{ opt.weight }}; text-align:left; cursor:pointer; display:flex; justify-content:space-between; gap:12px; transition:all .15s ease;" style-hover="border-color:var(--text)"><span>{{ opt.label }}</span><span style="opacity:0.6; font-size:13px; white-space:nowrap;">{{ opt.pts }}</span></button>
+          </sc-for>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div style="display:flex; gap:10px;">
+            <button onClick="{{ exitQuiz }}" style="background:none; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:13px 24px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="color:var(--text); border-color:var(--text)">Close</button>
+            <button onClick="{{ quizPrev }}" style="visibility:{{ prevVisibility }}; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:13px 26px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;">Back</button>
+          </div>
+          <button onClick="{{ quizNext }}" disabled="{{ nextDisabled }}" style="background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:13px 26px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; opacity:{{ nextOpacity }};">{{ nextLabel }}</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ stageResult }}" hint-placeholder-val="{{ false }}">
+      <div style="background:var(--bg2); border:1px solid var(--line); border-radius:24px; padding:48px 32px; max-width:960px; margin:0 auto; text-align:center; animation:tlfade .3s ease;">
+        <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;">Your Brand Health Diagnostic</div>
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(28px, 4vw, 40px); margin:0 0 8px 0; color:var(--text);">Your Brand Score: {{ totalScore }}/100</h3>
+        <p style="color:var(--muted); max-width:600px; margin:0 auto 24px auto; font-size:16px;">We identified 3 critical friction points currently pulling revenue away from your business.</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:16px; margin-bottom:32px; text-align:left;">
+          <sc-for list="{{ weaknesses }}" as="w" hint-placeholder-count="3">
+            <div style="background:#FDE8E8; border:1px solid #C80018; border-radius:16px; padding:18px;">
+              <div style="color:#C80018; font-weight:700; font-size:15px; margin-bottom:6px;">⚠️ {{ w.title }}</div>
+              <div style="color:#50000B; font-size:13.5px;">High friction area pulling down customer trust and conversion efficiency. Needs immediate strategic alignment.</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:var(--bg); border:1px solid var(--line); border-radius:16px; padding:28px; max-width:580px; margin:0 auto;">
+          <h4 style="font-family:'Outfit',sans-serif; font-size:18px; margin:0 0 6px 0; color:var(--text);">Get Your Full 8-Page Sustainability Breakdown</h4>
+          <p style="font-size:14px; color:var(--muted); margin:0 0 18px 0;">Enter your email to receive your tailored recommendations and download your shareable result card.</p>
+          <sc-if value="{{ quizEmailSent }}" hint-placeholder-val="{{ false }}">
+            <div style="color:var(--greent); font-weight:700; font-size:15px;">✓ Breakdown on its way - check your inbox.</div>
+          </sc-if>
+          <sc-if value="{{ quizEmailNotSent }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ submitQuizEmail }}" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+              <input name="email" type="email" required="required" placeholder="Enter your business email..." style="flex:1; min-width:220px; padding:14px 20px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:15px; font-family:'Inter',sans-serif;">
+              <button type="submit" style="background:transparent; color:#FFFFFF; border:2px solid var(--green); border-radius:999px; padding:13px 25px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:rgba(52,199,89,0.14)">Email My Breakdown</button>
+            </form>
+          </sc-if>
+        </div>
+        <div style="margin-top:28px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+          <button onClick="{{ openCardModal }}" style="background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:14px 26px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">Generate Shareable Result Card</button>
+          <a href="https://calendly.com/turtlelabsdesign/30min" target="_blank" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:14px 26px; font-size:15px; font-weight:700; display:inline-flex; align-items:center;" style-hover="background:#4ADE80">Book Free Strategy Call</a>
+        </div>
+        <div style="margin-top:16px; text-align:center;">
+          <button onClick="{{ askRetake }}" style="background:none; border:none; color:var(--muted); font-size:14px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; text-decoration:underline; text-underline-offset:3px;" style-hover="color:var(--text)">Retake the assessment</button>
+        </div>
+      </div>
+    </sc-if>
+  </section>
+
+  <section id="silent-leak" data-screen-label="Silent Leak" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:40px 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">The Problem</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">The Silent Leak</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">Small gaps in your brand are costing you buyers today.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:24px;">
+      <sc-for list="{{ problems }}" as="pb" hint-placeholder-count="4">
+        <div style="background:{{ pb.bg }}; color:{{ pb.fg }}; border-radius:24px; padding:36px 28px; position:relative;" style-hover="transform:translateY(-4px)">
+          <span style="display:inline-block; padding:5px 13px; border-radius:999px; background:{{ pb.tagBg }}; color:{{ pb.tagFg }}; font-size:11px; font-weight:800; text-transform:uppercase; margin-bottom:16px;">{{ pb.tag }}</span>
+          <span style="position:absolute; top:22px; right:22px; font-family:'Outfit',sans-serif; font-size:13px; font-weight:700; opacity:0.7;">{{ pb.step }}</span>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:23px; margin:0 0 10px 0;">{{ pb.title }}</h3>
+          <p style="font-size:15px; margin:0; color:{{ pb.fg }}; opacity:0.85;">{{ pb.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="work-samples" data-screen-label="Selected Works" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:32px;">
+      <div>
+        <div style="color:var(--faint); font-size:12px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:10px;">Portfolio &amp; Showcase</div>
+        <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(36px, 5vw, 56px); letter-spacing:-0.03em; margin:0; color:var(--text);">Selected works</h2>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <sc-for list="{{ filters }}" as="ft" hint-placeholder-count="5">
+          <button onClick="{{ ft.pick }}" style="padding:9px 20px; border-radius:999px; background:{{ ft.bg }}; color:{{ ft.fg }}; border:1px solid {{ ft.border }}; font-size:13.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">{{ ft.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:24px;">
+      <sc-for list="{{ homeWorks }}" as="wk" hint-placeholder-count="6">
+        <div onClick="{{ wk.open }}" style="background:var(--card); border:1px solid var(--line); border-radius:24px; overflow:hidden; cursor:pointer; transition:transform .25s ease, border-color .25s ease;" style-hover="transform:perspective(900px) rotateX(1.5deg) translateY(-6px); border-color:var(--text)">
+          <div style="position:relative; height:220px; background:{{ wk.grad }}; display:flex; align-items:center; justify-content:center;">
+            <sc-if value="{{ wk.thumb }}" hint-placeholder-val="{{ false }}">
+              {{ wk.thumbEl }}
+            </sc-if>
+            <sc-if value="{{ wk.noThumb }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:'Outfit',sans-serif; font-weight:900; font-size:52px; color:{{ wk.accent }}; opacity:0.75;">{{ wk.initials }}</span>
+            </sc-if>
+            <sc-if value="{{ wk.video }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ wk.playVideo }}" aria-label="Play video" style="position:absolute; bottom:14px; right:14px; width:56px; height:56px; border-radius:50%; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.25); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF" style="display:block; margin-left:3px;"><path d="M8 5v14l11-7z"></path></svg></button>
+            </sc-if>
+          </div>
+          <div style="padding:22px 24px; display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="background:{{ wk.tagBg }}; color:{{ wk.accent }}; border-radius:999px; padding:5px 14px; font-size:12px; font-weight:700;">{{ wk.tag }}</span>
+              <span style="color:var(--faint); font-size:13px;">{{ wk.weeks }}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:20px; margin:0; color:var(--text);">{{ wk.title }}</h3>
+              <span style="color:var(--muted);">→</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex; justify-content:center; margin-top:44px;">
+      <a href="Works.dc.html" style="display:inline-flex; align-items:center; gap:10px; background:var(--bg2); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:15px 34px; font-size:15px; font-weight:700; letter-spacing:0.02em;" style-hover="border-color:var(--text); transform:translateY(-2px)">View more work <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section id="measured" data-screen-label="Methodology" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Our Methodology</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">Five Things, Scored</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">The same five areas we review before any client project.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1.25fr; gap:36px; background:var(--bg2); border:1px solid var(--line); border-radius:24px; padding:40px; align-items:center;">
+      <div style="display:flex; flex-direction:column; gap:11px;">
+        <sc-for list="{{ methodItems }}" as="mi" hint-placeholder-count="5">
+          <button onClick="{{ mi.pick }}" style="display:flex; align-items:center; gap:16px; padding:14px 20px; border-radius:999px; background:{{ mi.bg }}; color:{{ mi.fg }}; border:1px solid {{ mi.border }}; cursor:pointer; font-family:'Inter',sans-serif; text-align:left; transition:all .15s ease;" style-hover="transform:translateX(5px)">
+            <span style="width:34px; height:34px; border-radius:50%; background:{{ mi.numBg }}; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-weight:800; font-size:13px; flex-shrink:0;">{{ mi.num }}</span>
+            <span style="font-weight:700; font-size:15.5px;">{{ mi.label }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="background:var(--bg); border:1px solid var(--line); border-radius:24px; padding:40px 36px;">
+        <div style="color:var(--blue); font-size:12.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;">{{ methodCat }}</div>
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:28px; margin:0 0 12px 0; color:var(--text);">{{ methodTitle }}</h3>
+        <p style="color:var(--muted); font-size:16.5px; margin:0 0 26px 0;">{{ methodBody }}</p>
+        <a href="#score-quiz" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:12px 26px; font-size:14.5px; font-weight:700; display:inline-flex;">See My Score</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" data-screen-label="Services" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="color:var(--faint); font-size:12px; letter-spacing:0.16em; text-transform:uppercase; margin-bottom:12px;">What we do</div>
+    <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(36px, 5vw, 56px); color:var(--text); letter-spacing:-0.03em; margin:0 0 36px 0;">Our services.</h2>
+    <div>
+      <sc-for list="{{ services }}" as="sv" hint-placeholder-count="6">
+        <div style="border-top:1px solid var(--line);">
+          <div onClick="{{ sv.toggle }}" style="display:flex; align-items:center; gap:24px; padding:32px 8px; cursor:pointer; flex-wrap:wrap;">
+            <span style="color:{{ sv.numColor }}; font-family:'Outfit',sans-serif; font-weight:700; font-size:14px;">{{ sv.num }}</span>
+            <span style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(22px, 3vw, 30px); color:{{ sv.titleColor }}; flex:1; min-width:200px;">{{ sv.title }}</span>
+            <span style="background:{{ sv.c1bg }}; color:{{ sv.c1fg }}; border-radius:999px; padding:7px 16px; font-size:13px; font-weight:600;">{{ sv.chip1 }}</span>
+            <span style="background:{{ sv.c2bg }}; color:{{ sv.c2fg }}; border-radius:999px; padding:7px 16px; font-size:13px; font-weight:600;">{{ sv.chip2 }}</span>
+            <span style="background:{{ sv.c3bg }}; color:{{ sv.c3fg }}; border-radius:999px; padding:7px 16px; font-size:13px; font-weight:600;">{{ sv.chip3 }}</span>
+            <span style="width:44px; height:44px; border-radius:50%; background:{{ sv.arrowBg }}; color:{{ sv.arrowFg }}; border:1px solid var(--line); display:inline-flex; align-items:center; justify-content:center;">{{ sv.arrow }}</span>
+          </div>
+          <sc-if value="{{ sv.expanded }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:0 8px 32px 46px; max-width:720px; animation:tlfade .25s ease;">
+              <p style="color:var(--muted); font-size:15.5px; margin:0 0 14px 0;">{{ sv.desc }}</p>
+              <button onClick="{{ sv.proposal }}" style="background:none; border:none; color:var(--greent); font-size:14.5px; font-weight:700; cursor:pointer; padding:0; font-family:'Inter',sans-serif;">Get a proposal →</button>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid var(--line);"></div>
+    </div>
+  </section>
+
+  <section id="before-after" data-screen-label="Before After" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Real Transformation</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">Same Brand, Transformed</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">A side by side look at what two months of clarity does.</p>
+    </div>
+    <div ref="{{ sliderContainerRef }}" style="position:relative; max-width:960px; height:440px; margin:0 auto; border-radius:24px; overflow:hidden; border:1px solid var(--line); user-select:none; touch-action:pan-y; cursor:ew-resize;">
+      <div style="position:absolute; inset:0; background:#FDE8E8; color:#50000B; padding:48px 56px; display:flex; flex-direction:column; justify-content:center; align-items:flex-end; text-align:right;">
+        <span style="display:inline-block; width:fit-content; padding:6px 16px; border-radius:999px; background:#C80018; color:#FFF; font-size:12.5px; font-weight:800; text-transform:uppercase; margin-bottom:20px;">Before Clarity</span>
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(24px, 3.5vw, 36px); margin:0 0 14px 0;">DTORR Dubai · Technical Equipment</h3>
+        <p style="max-width:560px; font-size:16.5px; margin:0;">Generic specs sheet, confusing jargon, low mobile conversion rate, competing strictly on price discounts in the Gulf market.</p>
+      </div>
+      <div ref="{{ sliderAfterRef }}" style="position:absolute; inset:0; background:#E2F6EC; color:#003E2B; padding:48px 56px; display:flex; flex-direction:column; justify-content:center; clip-path:{{ sliderClip }};">
+        <span style="display:inline-block; width:fit-content; padding:6px 16px; border-radius:999px; background:#00A86B; color:#FFF; font-size:12.5px; font-weight:800; text-transform:uppercase; margin-bottom:20px;">After Turtle Labs</span>
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(24px, 3.5vw, 36px); margin:0 0 14px 0;">DTORR Dubai · Tough Brand Positioning</h3>
+        <p style="max-width:560px; font-size:16.5px; margin:0;">Unmistakable enterprise authority, +42% conversion lift, 85% lower page load payload, zero discount negotiations.</p>
+      </div>
+      <div ref="{{ sliderHandleRef }}" style="position:absolute; top:0; bottom:0; left:{{ sliderLeft }}; width:3px; background:#18181B; transform:translateX(-50%); cursor:ew-resize;">
+        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:50%; background:#18181B; color:#FFF; display:flex; align-items:center; justify-content:center; font-weight:700;">↔</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" data-screen-label="Testimonials" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Client Proof</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">Brands Like Yours</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">Real outcomes, told by the people who lived them.</p>
+    </div>
+    <div ref="{{ tmScrollRef }}" onScroll="{{ tmOnScroll }}" style="display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; padding:4px 4px 16px 4px; -webkit-overflow-scrolling:touch;">
+      <sc-for list="{{ testimonials }}" as="tm" hint-placeholder-count="3">
+        <div style="flex:0 0 340px; scroll-snap-align:start; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:36px 30px; display:flex; flex-direction:column; justify-content:space-between; gap:24px;">
+          <div>
+            <div style="color:var(--text); font-size:34px; opacity:0.4; font-family:'Outfit',sans-serif; line-height:1;">“</div>
+            <p style="font-style:italic; color:var(--muted); font-size:15.5px; margin:8px 0 0 0;">{{ tm.quote }}</p>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px; border-top:1px solid var(--line); padding-top:18px;">
+            <span style="width:44px; height:44px; border-radius:50%; background:{{ tm.avBg }}; border:1px solid {{ tm.avBorder }}; color:{{ tm.avFg }}; display:inline-flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-weight:700; font-size:14px;">{{ tm.initials }}</span>
+            <span style="display:flex; flex-direction:column;"><strong style="color:var(--text); font-size:15px;">{{ tm.name }}</strong><span style="font-size:13px; color:var(--muted);">{{ tm.loc }}</span></span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:22px; margin-top:26px;">
+      <button onClick="{{ tmPrev }}" aria-label="Previous" style="width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--card); color:var(--text); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; line-height:1;">‹</button>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <sc-for list="{{ tmDots }}" as="td" hint-placeholder-count="6">
+          <button onClick="{{ td.go }}" aria-label="Go to review" style="width:{{ td.dotW }}; height:9px; border-radius:999px; border:none; padding:0; cursor:pointer; background:{{ td.dotBg }}; transition:width 0.25s ease, background 0.25s ease;"></button>
+        </sc-for>
+      </div>
+      <button onClick="{{ tmNext }}" aria-label="Next" style="width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--card); color:var(--text); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; line-height:1;">›</button>
+    </div>
+  </section>
+
+  <section id="framework" data-screen-label="Framework" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Proven Process</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">How We Work</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">Four steps from unclear to unmistakable.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:20px;">
+      <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+        <div style="background:{{ st.bg }}; color:{{ st.fg }}; border-radius:24px; padding:32px 26px; position:relative;" style-hover="transform:translateY(-4px)">
+          <span style="display:inline-block; padding:5px 13px; border-radius:999px; background:{{ st.tagBg }}; color:{{ st.tagFg }}; font-size:11px; font-weight:800; text-transform:uppercase; margin-bottom:16px;">{{ st.tag }}</span>
+          <span style="position:absolute; top:22px; right:22px; font-family:'Outfit',sans-serif; font-size:13px; font-weight:700; opacity:0.7;">{{ st.step }}</span>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:22px; margin:0 0 10px 0;">{{ st.title }}</h3>
+          <p style="font-size:15px; margin:0; opacity:0.85; color:{{ st.fg }};">{{ st.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="expertise" data-screen-label="Sectors" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 40px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Deep Experience</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">Sectors We Know</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">From ayurvedic wellness to metro rail, we've done the research.</p>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:900px; margin:0 auto;">
+      <sc-for list="{{ sectors }}" as="sec" hint-placeholder-count="10">
+        <span style="padding:12px 26px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:15.5px;" style-hover="border-color:var(--text); transform:scale(1.03)">{{ sec }}</span>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="playbook" data-screen-label="Playbook" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="background:#E2F6EC; border:1px solid #00A86B; border-radius:24px; padding:56px 40px; text-align:center; max-width:840px; margin:0 auto; color:#003E2B;">
+      <span style="display:inline-block; padding:5px 13px; border-radius:999px; background:#00A86B; color:#FFF; font-size:11px; font-weight:800; text-transform:uppercase; margin-bottom:16px;">Get Sustainable Brand Playbook</span>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(28px, 4vw, 40px); margin:0 0 12px 0; color:#003E2B;">Not Ready Yet?</h2>
+      <p style="color:#003E2B; font-size:18px; max-width:600px; margin:0 auto 24px auto;">Start with the free Sustainable Brand Playbook 200+ founders already downloaded.</p>
+      <sc-if value="{{ playbookSent }}" hint-placeholder-val="{{ false }}">
+        <div style="color:#00A86B; font-weight:800; font-size:16px;">{{ playbookSentMsg }}</div>
+      </sc-if>
+      <sc-if value="{{ playbookNotSent }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submitPlaybook }}" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:480px; margin:0 auto;">
+          <input name="email" type="email" required="required" placeholder="Enter your email address..." style="flex:1; min-width:220px; padding:14px 20px; border-radius:999px; background:#FFFFFF; border:1px solid rgba(0,62,43,0.25); color:#003E2B; font-size:15px; font-family:'Inter',sans-serif;">
+          <button type="submit" style="background:#003E2B; color:#FFFFFF; border:none; border-radius:999px; padding:14px 26px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;">Send Me the Playbook</button>
+        </form>
+      </sc-if>
+    </div>
+  </section>
+
+  <section id="impact" data-screen-label="Impact" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Measurable Proof</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">The Numbers So Far</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">What happens when brands take their score seriously.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:20px; text-align:center;">
+      <sc-for list="{{ stats }}" as="stt" hint-placeholder-count="4">
+        <div style="background:var(--card); border:1px solid var(--line); border-radius:24px; padding:44px 20px;">
+          <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:48px; color:{{ stt.color }}; margin-bottom:6px; line-height:1;">{{ stt.value }}</div>
+          <div style="color:var(--muted); font-size:14.5px;">{{ stt.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="journal" data-screen-label="Journal" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:36px;">
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(36px, 5vw, 56px); letter-spacing:-0.03em; margin:0; color:var(--text);">Journal</h2>
+      <a href="Journal.dc.html" style="color:var(--greent); font-size:15px; font-weight:700; text-decoration:underline; text-underline-offset:4px;">See all articles →</a>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:28px;">
+      <sc-for list="{{ journal }}" as="jr" hint-placeholder-count="3">
+        <a href="Journal.dc.html" style="display:flex; flex-direction:column; gap:16px; color:var(--text);">
+          <div style="height:200px; border-radius:20px; background:{{ jr.grad }};"></div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <span style="background:{{ jr.tagBg }}; color:{{ jr.tagFg }}; border-radius:8px; padding:5px 12px; font-size:13px; font-weight:700;">{{ jr.tag }}</span>
+            <span style="color:var(--faint); font-size:14px;">{{ jr.date }}</span>
+          </div>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:21px; margin:0; color:var(--text); line-height:1.3;" style-hover="text-decoration:underline">{{ jr.title }}</h3>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="book-call" data-screen-label="Book Call" data-reveal="1" style="max-width:1240px; margin:0 auto; padding:0 24px 110px 24px;">
+    <div style="text-align:center; max-width:720px; margin:0 auto 48px auto;">
+      <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg2); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;">Take Action</div>
+      <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(32px, 4.5vw, 50px); letter-spacing:-0.02em; margin:0 0 12px 0; color:var(--text);">Let's Fix This</h2>
+      <p style="color:var(--muted); font-size:19px; margin:0;">One free call. Bring your score, leave with a plan.</p>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--line); border-radius:24px; padding:44px; max-width:900px; margin:0 auto;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:36px;">
+        <div>
+          <div style="margin-bottom:20px; font-weight:700; font-size:18px; font-family:'Outfit',sans-serif; color:var(--text);">{{ calMonthLabel }}</div>
+          <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:7px; text-align:center;">
+            <sc-for list="{{ calDays }}" as="cd" hint-placeholder-count="21">
+              <button onClick="{{ cd.pick }}" disabled="{{ cd.disabled }}" style="padding:11px 0; border-radius:999px; background:{{ cd.bg }}; color:{{ cd.fg }}; border:none; font-size:{{ cd.fs }}; cursor:{{ cd.cursor }}; opacity:{{ cd.opacity }}; font-family:'Inter',sans-serif; font-weight:{{ cd.weight }};">{{ cd.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <h4 style="font-size:17px; margin:0 0 6px 0; font-family:'Outfit',sans-serif; color:var(--text);">Your session</h4>
+          <div style="font-size:14px; color:var(--muted); margin:0 0 4px 0;">Selected date</div>
+          <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:24px; color:var(--text); margin:0 0 8px 0;">{{ bookedSummary }}</div>
+          <div style="font-size:12.5px; color:var(--faint); margin:0 0 22px 0;">30-minute call · you'll pick the time on Calendly · {{ slotsTzLabel }}</div>
+          <sc-if value="{{ booked }}" hint-placeholder-val="{{ false }}">
+            <div style="color:var(--greent); font-weight:700; font-size:15px; text-align:center; padding:14px; border:1px solid rgba(52,199,89,0.4); border-radius:16px;">🎉 {{ bookedSummary }} is pre-filled in the Calendly tab we just opened - just pick a time and confirm.</div>
+          </sc-if>
+          <sc-if value="{{ bookShowEmail }}" hint-placeholder-val="{{ false }}">
+            <form onSubmit="{{ submitBookingEmail }}" style="display:flex; flex-direction:column; gap:10px;">
+              <label style="font-size:13.5px; color:var(--muted);">Where should we send the invite?</label>
+              <input name="email" type="email" required="required" placeholder="Your work email..." style="width:100%; padding:14px 18px; border-radius:999px; background:var(--bg); border:1px solid var(--line); color:var(--text); font-size:15px; font-family:'Inter',sans-serif;">
+              <button type="submit" style="width:100%; background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:16px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80">Continue to Calendly →</button>
+            </form>
+          </sc-if>
+          <sc-if value="{{ bookShowCta }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ startBooking }}" style="width:100%; background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:16px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80">Schedule on Calendly →</button>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Workbook download" style="max-width:1240px; margin:0 auto; padding:0 24px 96px 24px;">
+    <div style="background:var(--card); border:1px solid var(--line); border-radius:28px; padding:clamp(36px,5vw,56px) clamp(28px,4vw,48px); display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:280px;">
+        <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 15px; border-radius:999px; border:1px solid rgba(52,199,89,0.45); color:var(--greent); font-size:11.5px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:16px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--green);"></span>Free download · PDF</div>
+        <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(30px,4.5vw,46px); letter-spacing:-0.03em; margin:0 0 12px 0; color:var(--text);">Brand Strategy Workbook</h2>
+        <p style="color:var(--muted); font-size:clamp(16px,2vw,19px); max-width:560px; margin:0 0 24px 0;">A guided, fill-in-the-blanks workbook that helps you build a sharper brand strategy in minutes: foundation, audience, positioning, voice and a 90-day plan.</p>
+        <button onClick="{{ openWorkbook }}" style="display:inline-flex; align-items:center; gap:11px; background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:17px 32px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; white-space:nowrap;" style-hover="background:#4ADE80; transform:translateY(-2px)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 11 5 5 5-5"></path><path d="M4 21h16"></path></svg> Download free workbook</button>
+      </div>
+      <button onClick="{{ openWorkbook }}" aria-label="Preview the workbook" style="flex:0 0 clamp(280px,38%,440px); border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#f3f2f2; cursor:pointer; padding:0; line-height:0; box-shadow:0 18px 50px rgba(0,0,0,0.28);" style-hover="transform:translateY(-3px)"><img src="assets/workbook-cover.png" alt="Brand Strategy Workbook cover" style="width:100%; height:auto; display:block;"></button>
+    </div>
+  </section>
+
+  <footer data-screen-label="Footer" style="border-top:1px solid var(--line); padding:64px 24px 32px 24px; background:var(--bg);">
+    <div style="max-width:1140px; margin:0 auto;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:40px; flex-wrap:wrap; padding-bottom:40px;">
+        <div>
+          <h2 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(32px, 4.5vw, 46px); color:var(--text); letter-spacing:-0.03em; margin:0 0 14px 0;">Let's make you <span style="background:linear-gradient(90deg,#FF8C00,#00A86B,#00A3E0); -webkit-background-clip:text; background-clip:text; color:transparent; display:inline-block; padding-left:0.12em; margin-left:0.04em;">unmissable.</span></h2>
+          <div style="display:flex; gap:18px; font-size:15px; flex-wrap:wrap; align-items:center;">
+            <a href="tel:+917400531107" style="color:var(--text); font-weight:600;" style-hover="color:var(--greent)">+91 74005 31107</a>
+            <span style="color:var(--faint);">·</span>
+            <a href="mailto:info@turtlelabs.co.in" style="color:var(--text); font-weight:600;" style-hover="color:var(--greent)">info@turtlelabs.co.in</a>
+            <span style="color:var(--faint);">·</span>
+            <a href="https://wa.me/917400531107" target="_blank" style="color:var(--greent); font-weight:700;">WhatsApp →</a>
+          </div>
+        </div>
+        <a href="#score-quiz" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:15px 30px; font-size:15px; font-weight:700; white-space:nowrap;" style-hover="background:#4ADE80">Find Your Score →</a>
+      </div>
+      <div style="display:flex; justify-content:space-between; gap:28px; flex-wrap:wrap; padding:26px 0; border-top:1px solid var(--line2); border-bottom:1px solid var(--line2);">
+        <div style="display:flex; gap:26px; font-size:14px; flex-wrap:wrap;">
+          <sc-for list="{{ navLinks }}" as="fl" hint-placeholder-count="5">
+            <a href="{{ fl.href }}" target="{{ fl.target }}" style="color:var(--muted);" style-hover="color:var(--text)">{{ fl.label }}</a>
+          </sc-for>
+        </div>
+        <div style="color:var(--muted); font-size:14px;">Kochi (HQ) · Nagpur · Bengaluru · New Delhi</div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-top:22px; flex-wrap:wrap; gap:16px; color:var(--faint); font-size:13px;">
+        <span style="display:flex; align-items:center; gap:10px;"><a href="https://turtlelabs.co.in/" target="_blank" aria-label="Turtle Labs" style="display:inline-block; width:22px; height:22px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></a> © 2026 Turtle Labs Creative Agency</span>
+        <span style="display:inline-flex; align-items:center; gap:8px;"><span style="width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block;"></span>{{ footerCarbon }}</span>
+        <div style="display:flex; gap:22px;">
+          <a href="https://turtlelabs.co.in/privacy-policy/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Privacy</a>
+          <a href="https://turtlelabs.co.in/terms-and-conditions/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Terms</a>
+          <a href="https://drive.google.com/file/d/1HnRfvnvEWze1m-0Gzq0IAfMPVtYZiYlC/view?usp=sharing" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Carbon Transparency</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <sc-if value="{{ showSticky }}" hint-placeholder-val="{{ false }}">
+    <div data-sticky-cta="1" style="position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:90; display:flex; align-items:center; gap:16px; background:var(--bg2); border:1px solid var(--line); border-radius:999px; padding:10px 12px 10px 24px; box-shadow:0 14px 40px rgba(0,0,0,0.35); animation:tlstickyin .3s ease;">
+      <span style="color:var(--text); font-size:14px; font-weight:600; white-space:nowrap;">Your brand score in 2 minutes</span>
+      <a href="#score-quiz" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:10px 20px; font-size:14px; font-weight:700; white-space:nowrap;">Find Your Score →</a>
+    </div>
+  </sc-if>
+
+  <!-- Floating right-side Workbook tab (always visible) -->
+  <button onClick="{{ openWorkbook }}" aria-label="Download the free Brand Strategy Workbook" style="position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:96; display:flex; flex-direction:column; align-items:center; gap:12px; padding:18px 11px; border:none; border-radius:16px 0 0 16px; background:var(--green); color:var(--green-ink); cursor:pointer; box-shadow:-8px 0 28px rgba(0,0,0,0.32); font-family:'Outfit',sans-serif; font-weight:800;" style-hover="background:#4ADE80">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 11 5 5 5-5"></path><path d="M4 21h16"></path></svg>
+    <span style="writing-mode:vertical-rl; text-orientation:mixed; letter-spacing:0.1em; font-size:12.5px; white-space:nowrap;">BRAND STRATEGY WORKBOOK · FREE</span>
+  </button>
+
+  <!-- Workbook lead-capture modal -->
+  <sc-if value="{{ workbookOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeWorkbookBackdrop }}" style="position:fixed; inset:0; z-index:1200; background:rgba(0,0,0,0.74); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; padding:22px; animation:tlfade .22s ease;">
+      <div style="position:relative; background:var(--bg2); border:1px solid var(--line); border-radius:24px; max-width:480px; width:100%; overflow:hidden; animation:tlrise .3s ease;">
+        <button onClick="{{ closeWorkbook }}" aria-label="Close" style="position:absolute; top:16px; right:18px; width:34px; height:34px; border-radius:50%; background:var(--bg); border:1px solid var(--line); color:var(--muted); font-size:18px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:2;" style-hover="color:var(--text); border-color:var(--text)">✕</button>
+        <div style="padding:38px 34px 34px 34px;">
+          <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 15px; border-radius:999px; border:1px solid rgba(52,199,89,0.45); color:var(--greent); font-size:11.5px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:18px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--green);"></span>Free download · PDF</div>
+          <sc-if value="{{ workbookNotSent }}" hint-placeholder-val="{{ true }}">
+            <div style="border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#f3f2f2; line-height:0; margin-bottom:18px;"><img src="assets/workbook-cover.png" alt="Brand Strategy Workbook cover" style="width:100%; height:auto; display:block;"></div>
+            <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:26px; color:var(--text); margin:0 0 10px 0; letter-spacing:-0.02em;">Brand Strategy Workbook</h3>
+            <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0 0 24px 0;">A guided workbook that helps you build a sharper brand strategy in minutes. Drop your email and it's yours.</p>
+            <form onSubmit="{{ submitWorkbook }}" style="display:flex; flex-direction:column; gap:12px;">
+              <input name="wb_name" type="text" placeholder="Your name (optional)" style="width:100%; padding:14px 18px; border-radius:14px; background:var(--bg); border:1px solid var(--line); color:var(--text); font-size:15px; font-family:'Inter',sans-serif;">
+              <input name="wb_email" type="email" required="required" placeholder="Email address" style="width:100%; padding:14px 18px; border-radius:14px; background:var(--bg); border:1px solid var(--line); color:var(--text); font-size:15px; font-family:'Inter',sans-serif;">
+              <button type="submit" style="display:inline-flex; align-items:center; justify-content:center; gap:9px; background:var(--green); color:var(--green-ink); border:none; border-radius:14px; padding:15px 24px; font-size:15.5px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; margin-top:4px;" style-hover="background:#4ADE80"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 11 5 5 5-5"></path><path d="M4 21h16"></path></svg> Download the workbook</button>
+              <span style="color:var(--faint); font-size:12px; text-align:center;">No spam. Unsubscribe anytime.</span>
+            </form>
+          </sc-if>
+          <sc-if value="{{ workbookSent }}" hint-placeholder-val="{{ false }}">
+            <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:26px; color:var(--text); margin:0 0 10px 0; letter-spacing:-0.02em;">Your workbook is downloading ✓</h3>
+            <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0 0 8px 0;">Thanks for taking the first step to build your brand. A copy has also been emailed to {{ workbookEmail }}. Check your inbox (and spam, just in case).</p>
+            <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0 0 22px 0;">Feel free to connect with Turtle Labs anytime. Need assistance with building your brand strategy? Book a call below.</p>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <a href="{{ calLink }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; gap:9px; background:var(--green); color:var(--green-ink); border-radius:14px; padding:15px 24px; font-size:15.5px; font-weight:700; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg> Book a meeting</a>
+              <button onClick="{{ downloadWorkbookAgain }}" style="display:inline-flex; align-items:center; justify-content:center; gap:9px; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:14px; padding:14px 24px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 11 5 5 5-5"></path><path d="M4 21h16"></path></svg> Download again</button>
+            </div>
+            <span style="display:block; color:var(--faint); font-size:12px; text-align:center; margin-top:14px;">Sent from info@turtlelabs.co.in</span>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ pathModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closePathBackdrop }}" style="position:fixed; inset:0; z-index:120; background:rgba(0,0,0,0.72); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; padding:24px; animation:tlfade .2s ease;">
+      <div style="position:relative; background:var(--bg2); border:1px solid var(--line); border-radius:24px; padding:40px 40px 36px 40px; max-width:520px; width:100%; text-align:center; animation:tlrise .3s ease;">
+        <button onClick="{{ closePathModal }}" aria-label="Close" style="position:absolute; top:18px; right:18px; width:34px; height:34px; border-radius:50%; background:var(--bg); border:1px solid var(--line); color:var(--muted); font-size:18px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;" style-hover="color:var(--text); border-color:var(--text)">✕</button>
+        <div style="display:inline-flex; padding:7px 18px; border-radius:999px; background:var(--bg); border:1px solid var(--line); color:var(--text); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:16px;">Choose Your Path</div>
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(24px, 4vw, 30px); margin:0 0 12px 0; color:var(--text);">How would you like to proceed?</h3>
+        <p style="color:var(--muted); font-size:15.5px; margin:0 auto 28px auto; max-width:400px;">Both paths use the same 10-question audit. Choose what works for you.</p>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <button onClick="{{ beginDetailed }}" style="width:100%; background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:16px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80">Detailed Analysis →</button>
+          <button onClick="{{ beginQuick }}" style="width:100%; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:16px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">Quick Score</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ retakeConfirmOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeRetakeBackdrop }}" style="position:fixed; inset:0; z-index:120; background:rgba(0,0,0,0.72); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; padding:24px; animation:tlfade .2s ease;">
+      <div style="position:relative; background:var(--bg2); border:1px solid var(--line); border-radius:24px; padding:40px; max-width:480px; width:100%; text-align:center; animation:tlrise .3s ease;">
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:clamp(22px, 3.5vw, 27px); margin:0 0 12px 0; color:var(--text);">Your score is already here</h3>
+        <p style="color:var(--muted); font-size:15.5px; margin:0 auto 28px auto; max-width:380px;">Do you wish to reevaluate? Your current results will be cleared.</p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <button onClick="{{ closeRetake }}" style="background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:14px 28px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">Keep my score</button>
+          <button onClick="{{ confirmRetake }}" style="background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:14px 28px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80">Yes, reevaluate</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:fixed; bottom:24px; right:24px; z-index:95; display:flex; flex-direction:column; align-items:flex-end; gap:14px;">
+    <sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="width:min(340px, calc(100vw - 48px)); background:var(--bg2); border:1px solid var(--line); border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.5); animation:tlfade .25s ease;">
+        <div style="background:linear-gradient(160deg, rgba(52,199,89,0.12), var(--bg2)); padding:16px 20px; border-bottom:1px solid var(--line2); display:flex; align-items:center; gap:12px;">
+          <span style="width:36px; height:36px; border-radius:50%; background:var(--green); display:inline-flex; align-items:center; justify-content:center; font-size:18px;">🐢</span>
+          <span style="display:flex; flex-direction:column;"><span style="color:var(--text); font-weight:700; font-size:14px;">Turtle Assistant</span><span style="color:var(--greent); font-size:11px; display:flex; align-items:center; gap:6px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--green); display:inline-block;"></span>Quick answers, instantly</span></span>
+          <button onClick="{{ toggleChat }}" aria-label="Close chat" style="margin-left:auto; width:30px; height:30px; border-radius:50%; background:none; border:1px solid var(--line); color:var(--muted); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px; line-height:1; font-family:'Inter',sans-serif;" style-hover="border-color:var(--green); color:var(--text)">✕</button>
+        </div>
+        <div style="padding:16px 20px 20px 20px; display:flex; flex-direction:column; gap:10px; max-height:340px; overflow-y:auto;">
+          <div style="background:var(--bg); border:1px solid var(--line2); border-radius:14px 14px 14px 4px; padding:12px 14px; color:var(--text); font-size:13px; line-height:1.5; max-width:90%;">{{ chatGreeting }}</div>
+          <sc-if value="{{ chatAnswerOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="background:rgba(52,199,89,0.12); border-radius:14px 14px 4px 14px; padding:10px 14px; color:var(--text); font-size:13px; font-weight:600; align-self:flex-end; max-width:85%;">{{ chatTopicLabel }}</div>
+            <div style="background:var(--bg); border:1px solid var(--line2); border-radius:14px 14px 14px 4px; padding:12px 14px; color:var(--text); font-size:13px; line-height:1.6; max-width:92%; animation:tlfade .3s ease;">{{ chatAnswer }}</div>
+            <sc-if value="{{ chatSubsOpen }}" hint-placeholder-val="{{ false }}">
+              <span style="color:var(--muted); font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-top:2px;">{{ chatSubPrompt }}</span>
+              <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                <sc-for list="{{ chatSubs }}" as="sb" hint-placeholder-count="4">
+                  <button onClick="{{ sb.pick }}" style="border:1px solid {{ sb.borderColor }}; background:{{ sb.bgColor }}; color:{{ sb.fgColor }}; border-radius:12px; padding:9px 13px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--green)">{{ sb.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ chatSubOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="background:var(--bg); border:1px solid rgba(52,199,89,0.35); border-radius:14px; padding:12px 14px; color:var(--text); font-size:13px; line-height:1.6; max-width:100%; animation:tlfade .25s ease;"><strong style="display:block; color:var(--greent); font-size:12.5px; margin-bottom:4px;">{{ chatSubLabel }}</strong>{{ chatSubDetail }}</div>
+            </sc-if>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:2px;">
+              <a href="{{ chatCtaHref }}" target="{{ chatCtaTarget }}" onClick="{{ chatCtaClick }}" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:700; cursor:pointer;">{{ chatCtaLabel }}</a>
+              <button onClick="{{ chatBack }}" style="background:none; border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;">← Other topics</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ chatTopicsOpen }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;">
+              <sc-for list="{{ chatTopics }}" as="ct" hint-placeholder-count="5">
+                <button onClick="{{ ct.pick }}" style="border:1px solid rgba(52,199,89,0.45); background:none; color:var(--greent); border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:rgba(52,199,89,0.12)">{{ ct.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+    <div style="display:flex; gap:12px;">
+      <a href="https://wa.me/917400531107" target="_blank" aria-label="Chat on WhatsApp" style="width:54px; height:54px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(37,211,102,0.35);" style-hover="transform:scale(1.08)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.8-4.4-4-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .6l-.4.6-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l1.8.9c.3.1.5.2.5.3.1.2.1.6-.1 1.1z"></path></svg></a>
+      <button onClick="{{ toggleChat }}" aria-label="Open chat assistant" style="width:54px; height:54px; border-radius:50%; background:var(--bg2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:22px;" style-hover="border-color:var(--green)">{{ chatToggleIcon }}</button>
+    </div>
+  </div>
+
+  <sc-if value="{{ workOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeWorkBackdrop }}" style="position:fixed; inset:0; background:rgba(0,0,0,0.72); backdrop-filter:blur(10px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px; animation:tlfade .2s ease;">
+      <div style="background:var(--bg2); border:1px solid var(--line); border-radius:24px; max-width:1240px; width:100%; max-height:94vh; overflow-y:auto;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid var(--line2); gap:12px;">
+          <span style="color:var(--muted); font-size:13px;">{{ popupKicker }}</span>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <button onClick="{{ prevWork }}" style="width:36px; height:36px; border-radius:50%; background:none; border:1px solid var(--line); color:var(--text); cursor:pointer; font-family:'Inter',sans-serif;">←</button>
+            <span style="color:var(--muted); font-size:13px;">{{ popupCounter }}</span>
+            <button onClick="{{ nextWork }}" style="width:36px; height:36px; border-radius:50%; background:none; border:1px solid var(--line); color:var(--text); cursor:pointer; font-family:'Inter',sans-serif;">→</button>
+            <button onClick="{{ closeWork }}" style="background:none; border:none; color:var(--muted); font-size:18px; cursor:pointer; margin-left:6px; font-family:'Inter',sans-serif;">✕</button>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));">
+          <div style="position:relative; background:{{ popupGrad }}; min-height:clamp(360px, 52vh, 620px); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+            <sc-if value="{{ popupHasMedia }}" hint-placeholder-val="{{ false }}">
+              {{ popupMediaEl }}
+            </sc-if>
+            <sc-if value="{{ popupNoMedia }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:'Outfit',sans-serif; font-weight:900; font-size:48px; color:{{ popupAccent }}; opacity:0.8;">{{ popupInitials }}</span>
+            </sc-if>
+            <sc-if value="{{ popupCanExpand }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ openLb }}" aria-label="Expand media" style="position:absolute; top:12px; right:12px; z-index:4; display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:999px; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.28); color:#fff; font-size:12px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:rgba(0,0,0,0.8)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg> Expand</button>
+            </sc-if>
+            <button onClick="{{ prevWork }}" aria-label="Previous item" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; background:rgba(0,0,0,0.55); border:1px solid rgba(255,255,255,0.28); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:3; padding:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+            <button onClick="{{ nextWork }}" aria-label="Next item" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; background:rgba(0,0,0,0.55); border:1px solid rgba(255,255,255,0.28); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:3; padding:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
+          </div>
+          <div style="padding:32px 30px;">
+            <div style="color:{{ popupAccent }}; font-size:11px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px;">{{ popupKicker }}</div>
+            <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:25px; color:var(--text); margin:0 0 12px 0;">{{ popupTitle }}</h3>
+            <p style="color:var(--muted); font-size:14.5px; line-height:1.7; margin:0 0 18px 0;">{{ popupDesc }}</p>
+            <div style="background:var(--bg); border:1px solid var(--line2); border-radius:14px; padding:16px 18px; margin-bottom:20px;">
+              <div style="color:var(--faint); font-size:10px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px;">Outcomes</div>
+              <div style="display:flex; flex-direction:column; gap:7px;">
+                <sc-for list="{{ popupOutcomes }}" as="oc" hint-placeholder-count="3">
+                  <span style="color:var(--text); font-size:13.5px;"><span style="color:var(--greent);">✓</span> {{ oc }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:space-between;">
+              <a href="{{ popupCaseHref }}" style="display:inline-flex; align-items:center; gap:8px; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:12px 22px; font-size:14px; font-weight:700; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">View case study →</a>
+              <button onClick="{{ openProposalFromWork }}" style="background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:12px 24px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;">Start a project like this →</button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; gap:8px; padding:16px;">
+          <sc-for list="{{ popupDots }}" as="dt" hint-placeholder-count="6">
+            <button onClick="{{ dt.pick }}" style="width:{{ dt.w }}; height:8px; border-radius:99px; background:{{ dt.bg }}; border:none; cursor:pointer; padding:0; transition:all .2s ease;"></button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeLb }}" style="position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index:2000; display:flex; align-items:center; justify-content:center; padding:24px; animation:tlfade .2s ease;">
+      <sc-if value="{{ lbHasNav }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ lbPrev }}" aria-label="Previous" style="position:fixed; left:16px; top:50%; transform:translateY(-50%); width:52px; height:52px; border-radius:50%; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.25); color:#fff; font-size:22px; cursor:pointer; z-index:2; font-family:'Inter',sans-serif;" style-hover="background:rgba(0,0,0,0.8)">←</button>
+      </sc-if>
+      <div onClick="{{ lbStop }}" style="max-width:92vw; max-height:86vh; display:flex; align-items:center; justify-content:center;">{{ lbEl }}</div>
+      <sc-if value="{{ lbHasNav }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ lbNext }}" aria-label="Next" style="position:fixed; right:16px; top:50%; transform:translateY(-50%); width:52px; height:52px; border-radius:50%; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.25); color:#fff; font-size:22px; cursor:pointer; z-index:2; font-family:'Inter',sans-serif;" style-hover="background:rgba(0,0,0,0.8)">→</button>
+      </sc-if>
+      <div style="position:fixed; bottom:22px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.7); font-size:13px; font-family:'Inter',sans-serif;">{{ lbCounter }}</div>
+      <button onClick="{{ closeLb }}" aria-label="Close" style="position:fixed; top:18px; right:20px; width:44px; height:44px; border-radius:50%; background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.3); color:#fff; font-size:20px; cursor:pointer; z-index:2; font-family:'Inter',sans-serif;">✕</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ welcomeOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeWelcomeBackdrop }}" style="position:fixed; inset:0; background:rgba(0,0,0,0.74); backdrop-filter:blur(10px); z-index:1200; display:flex; align-items:center; justify-content:center; padding:22px; animation:tlfade .22s ease;">
+      <div style="position:relative; background:var(--bg2); border:1px solid var(--line); border-radius:24px; max-width:520px; width:100%; overflow:hidden; animation:tlrise .3s ease;">
+        <button onClick="{{ closeWelcome }}" aria-label="Close" style="position:absolute; top:16px; right:18px; width:34px; height:34px; border-radius:50%; background:var(--bg); border:1px solid var(--line); color:var(--muted); font-size:18px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:2;" style-hover="color:var(--text); border-color:var(--text)">✕</button>
+        <div style="padding:38px 32px 30px 32px;">
+          <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 15px; border-radius:999px; border:1px solid rgba(52,199,89,0.45); color:var(--greent); font-size:11.5px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:16px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--green);"></span>Welcome to Turtle Labs</div>
+          <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:25px; color:var(--text); margin:0 0 6px 0; letter-spacing:-0.02em;">Excited to see you here.</h3>
+          <p style="color:var(--muted); font-size:15px; margin:0 0 24px 0;">How can we help you today?</p>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+
+            <button onClick="{{ welcomeAudit }}" style="display:flex; align-items:center; gap:16px; text-align:left; background:var(--bg); border:1px solid var(--line); border-radius:16px; padding:16px 18px; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--greent); background:rgba(52,199,89,0.06)">
+              <span style="flex-shrink:0; width:46px; height:46px; border-radius:12px; background:rgba(52,199,89,0.12); color:var(--greent); display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></span>
+              <span style="flex:1; min-width:0;">
+                <span style="display:block; font-family:'Outfit',sans-serif; font-weight:700; font-size:16px; color:var(--text);">Take the Brand Sustainability Audit</span>
+                <span style="display:block; color:var(--muted); font-size:13px; margin-top:2px;">Score your brand in 2 minutes across 5 key areas.</span>
+              </span>
+              <span style="flex-shrink:0; color:var(--faint); font-size:18px;">→</span>
+            </button>
+
+            <button onClick="{{ welcomeWorkbook }}" style="display:flex; align-items:center; gap:16px; text-align:left; background:var(--bg); border:1px solid var(--line); border-radius:16px; padding:16px 18px; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--greent); background:rgba(52,199,89,0.06)">
+              <span style="flex-shrink:0; width:46px; height:46px; border-radius:12px; background:rgba(52,199,89,0.12); color:var(--greent); display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+              <span style="flex:1; min-width:0;">
+                <span style="display:block; font-family:'Outfit',sans-serif; font-weight:700; font-size:16px; color:var(--text);">Get a Free Brand Strategy Workbook</span>
+                <span style="display:block; color:var(--muted); font-size:13px; margin-top:2px;">A guided PDF to sharpen your strategy in minutes.</span>
+              </span>
+              <span style="flex-shrink:0; color:var(--faint); font-size:18px;">→</span>
+            </button>
+
+            <button onClick="{{ welcomeBook }}" style="display:flex; align-items:center; gap:16px; text-align:left; background:var(--bg); border:1px solid var(--line); border-radius:16px; padding:16px 18px; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--greent); background:rgba(52,199,89,0.06)">
+              <span style="flex-shrink:0; width:46px; height:46px; border-radius:12px; background:rgba(52,199,89,0.12); color:var(--greent); display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
+              <span style="flex:1; min-width:0;">
+                <span style="display:block; font-family:'Outfit',sans-serif; font-weight:700; font-size:16px; color:var(--text);">Book a Strategy Call</span>
+                <span style="display:block; color:var(--muted); font-size:13px; margin-top:2px;">Grab a free 30-minute strategy call with our team.</span>
+              </span>
+              <span style="flex-shrink:0; color:var(--faint); font-size:18px;">→</span>
+            </button>
+
+          </div>
+          <div style="border-top:1px solid var(--line); margin-top:22px; padding-top:16px;">
+            <button onClick="{{ welcomeWorks }}" style="display:inline-flex; align-items:center; gap:8px; background:none; border:none; padding:0; color:var(--greent); font-size:14.5px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="gap:12px">See our works <span>→</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ proposalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeProposalBackdrop }}" style="position:fixed; inset:0; background:rgba(0,0,0,0.72); backdrop-filter:blur(10px); z-index:1002; display:flex; align-items:center; justify-content:center; padding:20px; animation:tlfade .25s ease;">
+      <div style="background:var(--bg2); border:1px solid var(--line); border-radius:24px; max-width:860px; width:100%; max-height:92vh; overflow-y:auto; position:relative; display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));">
+        <button onClick="{{ closeProposal }}" style="position: absolute; top: 16px; right: 20px; background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; z-index: 2; font-family: 'Inter',sans-serif">✕</button>
+        <div style="background:linear-gradient(160deg, rgba(52,199,89,0.1), var(--bg)); padding:40px 32px; display:flex; flex-direction:column; justify-content:space-between; gap:28px; border-right:1px solid var(--line2);">
+          <div>
+            <div style="display:inline-flex; padding:6px 14px; border-radius:999px; border:1px solid rgba(52,199,89,0.45); color:var(--greent); font-size:11.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:16px;">Free · No obligation</div>
+            <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:27px; color:var(--text); margin:0 0 12px 0; letter-spacing:-0.02em;">Liked what you saw?</h2>
+            <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0;">Get a scoped proposal with timelines and pricing, usually within one working day.</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span style="color:var(--text); font-size:13px; display:flex; gap:10px; align-items:center;"><span style="color: var(--greent);">✓</span> 184 brands scored across industries</span>
+            <span style="color:var(--text); font-size:13px; display:flex; gap:10px; align-items:center;"><span style="color:var(--greent);">✓</span> Serving UAE · AU · EU · SG · IN</span>
+            <span style="color:var(--text); font-size:13px; display:flex; gap:10px; align-items:center;"><span style="color: var(--greent);">✓</span>Get a reply from a strategist, not a bot</span>
+          </div>
+        </div>
+        <div style="padding:40px 34px;">
+          <sc-if value="{{ proposalSent }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; height:100%; text-align:center; padding:32px 0;">
+              <span style="width:64px; height:64px; border-radius:50%; background:rgba(52,199,89,0.15); display:flex; align-items:center; justify-content:center; font-size:28px; color:var(--greent);">✓</span>
+              <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:22px; color:var(--text); margin:0;">Request received!</h3>
+              <p style="color:var(--muted); font-size:14.5px; margin:0; max-width:320px;">Our strategist will send your proposal to your email within one working day.</p>
+              <button onClick="{{ closeProposal }}" style="background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:12px 28px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; margin-top:8px;">Done</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ proposalNotSent }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ submitProposal }}" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <input name="name" required="required" placeholder="Name" style="grid-column:1/3; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14px; font-family:'Inter',sans-serif;">
+              <input name="email" type="email" required="required" placeholder="Email" style="background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14px; font-family:'Inter',sans-serif;">
+              <input name="contact" required="required" placeholder="Contact number" style="background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14px; font-family:'Inter',sans-serif;">
+              <select name="service" value="{{ proposalService }}" onChange="{{ setProposalService }}" style="background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:15px 18px; color:var(--text); font-size:14px; font-family:'Inter',sans-serif;">
+                <option value="" style="font-style: italic; color: #d7d3d3; text-decoration-line: none; font-weight: 300">Services required</option>
+                <option value="Web development">Web development</option>
+                <option value="Brand systems">Brand systems</option>
+                <option value="Digital marketing">Digital marketing</option>
+                <option value="Motion &amp; video">Motion &amp; video</option>
+                <option value="Packaging &amp; print">Packaging &amp; print</option>
+                <option value="Editorial design">Editorial design</option>
+              </select>
+              <input name="quantity" placeholder="Brand Name" style="background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14px; font-family:'Inter',sans-serif;">
+              <textarea name="note" placeholder="Enter website or add a note (optional)" rows="3" style="grid-column:1/3; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14px; font-family:'Inter',sans-serif; resize:none;"></textarea>
+              <button type="submit" style="grid-column:1/3; background:var(--green); color:var(--green-ink); border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; margin-top:4px;" style-hover="background:#4ADE80">Get Proposal →</button>
+            </form>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ cardModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeCardBackdrop }}" style="position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(10px); z-index:1003; display:flex; align-items:center; justify-content:center; padding:20px; animation:tlfade .2s ease;">
+      <div style="background:var(--bg2); border:1px solid var(--line); border-radius:24px; max-width:600px; width:100%; padding:36px; position:relative; text-align:center;">
+        <button onClick="{{ closeCardModal }}" style="position:absolute; top:18px; right:22px; background:none; border:none; color:var(--muted); font-size:19px; cursor:pointer; font-family:'Inter',sans-serif;">✕</button>
+        <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:24px; color:var(--text); margin:0 0 8px 0;">Your Brand Sustainability Card</h3>
+        <p style="color:var(--muted); font-size:14px; margin:0 0 20px 0;">Generated live on screen. Download or share with your co-founders.</p>
+        <canvas ref="{{ cardCanvasRef }}" width="480" height="280" style="max-width:100%; border-radius:16px; border:1px solid var(--line);"></canvas>
+        <div style="display:flex; gap:12px; justify-content:center; margin-top:20px;">
+          <a href="{{ cardDataUrl }}" download="turtle-labs-brand-score.png" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:13px 26px; font-size:14.5px; font-weight:700;">Download Card</a>
+          <button onClick="{{ closeCardModal }}" style="background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:13px 26px; font-size:14.5px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;">Close</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;stickyCta&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Engagement&quot;}, &quot;showTicker&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Engagement&quot;}, &quot;leadPopupOnLoad&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Engagement&quot;}, &quot;proposalOnScroll&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Engagement&quot;}, &quot;calendlyUrl&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://calendly.com/turtlelabsdesign/30min&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Booking&quot;}}">
+class Component extends DCLogic {
+  state = {
+    theme: 'dark', navOpen: false,
+    quizStage: 'intro', qIndex: 0, tmActive: 0, answers: Array(10).fill(null), totalScore: 0, weakCats: [], pathModalOpen: false, quizMode: 'detailed', retakeConfirmOpen: false,
+    quizEmailSent: false, playbookSent: false,
+    filter: 'all', workIdx: -1, blobUrls: {}, lbIdx: -1,
+    videoSrc: '', videoTitle: '',
+    expandedService: -1,
+    proposalOpen: false, proposalSent: false, proposalService: '',
+    welcomeOpen: false,
+    chatOpen: false, chatTopic: -1, chatSub: -1,
+    showSticky: false, tickerIdx: 0,
+    workbookOpen: false, workbookSent: false,
+    selDateISO: '', booked: false, leadEmail: '', bookAskEmail: false,
+    sliderPct: 45, cardModalOpen: false, cardDataUrl: '',
+    carbonLabel: '⚡ 28 KB payload · 0.06g CO2 per view', footerCarbon: '⚡ 28 KB · Sustainable Low-Carbon Site',
+    statVals: [0, 0, 0]
+  };
+
+  QUIZ = [
+    { cat: 'Messaging & Positioning', ci: 'Category 1 of 5', q: 'How quickly can a first-time website visitor explain what your business does?', opts: [['Under 3 seconds clearly without jargon',10],['5 to 10 seconds after reading a paragraph',7],['Only after scrolling through multiple pages',4],['They often get confused and bounce',1]] },
+    { cat: 'Messaging & Positioning', ci: 'Category 1 of 5', q: 'Does your brand positioning differentiate you clearly from key market rivals?', opts: [['Yes, we own an unmistakable unfair advantage',10],['Somewhat, though competitors use similar wording',6],['Not really, we describe standard industry features',3],['We frequently compete strictly on price discounts',0]] },
+    { cat: 'Visual Identity', ci: 'Category 2 of 5', q: 'How consistent is your visual brand system across pitch decks, web, and social?', opts: [['Strict design system implemented across all touchpoints',10],['Mostly consistent with occasional minor variations',7],['Fragmented-different templates created ad-hoc',4],["Outdated visuals that don't match our current size",1]] },
+    { cat: 'Visual Identity', ci: 'Category 2 of 5', q: 'How does your target audience perceive your overall visual quality?', opts: [['Premium, trustworthy market authority',10],['Clean and functional but generic',7],['Slightly dated compared to newer competitors',4],['Looks like a budget DIY setup',1]] },
+    { cat: 'Website Experience', ci: 'Category 3 of 5', q: "What is your primary website's mobile load time and experience?", opts: [['Instant (< 1.5 seconds) with optimized light page weight',10],['2 to 3 seconds, mostly smooth',7],['4 to 6 seconds with heavy image pop-in',4],['Very slow on mobile connections',1]] },
+    { cat: 'Website Experience', ci: 'Category 3 of 5', q: 'How straightforward is the main buyer journey on your site?', opts: [['Frictionless-single clear outcome CTA on every screen',10],['Good, though some pages have competing links',7],['Confusing navigation with unclear next steps',4],['High visitor drop-off before booking or buying',1]] },
+    { cat: 'Packaging & Product Story', ci: 'Category 4 of 5', q: 'How effectively does your packaging or product design communicate sustainability?', opts: [['Authentic, minimal, zero-waste storytelling embedded',10],['Standard eco-friendly claims mentioned in text',7],['Basic packaging without environmental context',4],['Excessive materials that contradict sustainability values',1]] },
+    { cat: 'Packaging & Product Story', ci: 'Category 4 of 5', q: 'Do buyers share or recommend your unboxing/product experience organically?', opts: [['Regularly shared on social media by customers',10],['Occasionally mentioned positively',7],['Rarely noticed or commented on',3],['Never',0]] },
+    { cat: 'Digital Presence', ci: 'Category 5 of 5', q: 'How engaging is your digital content and organic search authority?', opts: [['High conversion intent leads driven organically',10],['Steady traffic but mixed lead quality',7],['Low organic engagement, heavy ad dependence',4],['Inconsistent posting and weak search visibility',1]] },
+    { cat: 'Digital Presence', ci: 'Category 5 of 5', q: 'How well do your digital assets reflect your core brand values?', opts: [['Every piece of content reinforces our tough brand identity',10],['Most content aligns well',7],['Content feels transactional or disconnected',4],['No structured digital content strategy',1]] }
+  ];
+
+  WORKS = [
+    { cat:'video', tag:'Video & Motion', title:'Real Estate - Teaser Ad - 95', initials:'DT', accent:'#FF8A5C', tagBg:'rgba(255,69,0,0.15)', grad:'linear-gradient(135deg,#1F0A05,#33150A)', weeks:'6 weeks', loc:'Dubai, UAE', video:'assets/video/95canal-heights.mp4', thumb:'assets/video/95canal-heights-thumb.png', desc:'A high-impact brand trailer positioning tough industrial equipment for Gulf enterprise buyers - scripted, shot and scored to cut through a spec-sheet market.', outcomes:['2.1M organic views in the launch quarter','+38% lift in inbound enterprise enquiries','Adopted as the opener at 3 Gulf trade expos'] },
+    { cat:'identity', tag:'Brand Identity', title:'WYSAX Systems Design', initials:'WY', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#06180E,#0C2A16)', thumb:'assets/video/wysax-system-design.png', weeks:'5 weeks', loc:'Toronto, Canada', video:'', desc:'Complete brand architecture for a B2B enterprise software company entering the North American market - logo system, typography hierarchy, colour grammar and pitch templates.', outcomes:['New brand launched across 12 touchpoints in 6 weeks','Series A pitch deck redesign led to a $2M close','NPS score up 31 points post-rebrand'] },
+    { cat:'identity', tag:'Brand Identity', title:'USH Naturals Branding', initials:'OW', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#081A10,#10301C)', thumb:'assets/video/ush-naturals.png', weeks:'4 weeks', loc:'Kochi, India', video:'', desc:'A complete brand identity for a natural foods company - logo system, leaf-mark, typography and packaging-ready guidelines built around the promise of delivering nature\'s goodness.', outcomes:['Cohesive identity rolled out across pack and web','+52% repeat orders on the D2C store','Stocked by 2 national retail chains'] },
+    { cat:'digital', tag:'Web Development', title:'LSP Sustainable Tech Portal', initials:'LS', accent:'#60A5FA', tagBg:'rgba(0,102,178,0.15)', grad:'linear-gradient(135deg,#050D1A,#0A1B33)', weeks:'6 weeks', loc:'London, UK', video:'', desc:'An ultra-light web platform with live carbon emission analytics - engineered for sub-second loads on any connection, anywhere.', outcomes:['0.4s median page load worldwide','85% lighter payload than the previous site','+42% demo bookings within 60 days'] },
+    { cat:'packaging', tag:'Packaging Design', title:'Malabar Reserve Specialty Pack', initials:'MR', accent:'#FFB35C', tagBg:'rgba(255,140,0,0.15)', grad:'linear-gradient(135deg,#1F1405,#33230A)', weeks:'8 weeks', loc:'Singapore', video:'', desc:'Zero-plastic compostable pouch packaging with an embedded QR origin-tracing story for a specialty coffee exporter.', outcomes:['100% compostable pack, zero plastic','30% of buyers scanned the QR origin story','+19% shelf pickup in retail trials'] },
+    { cat:'packaging', tag:'Event Collateral', title:'The Ritz London - Spring ’26 Collateral', initials:'RZ', accent:'#60A5FA', tagBg:'rgba(0,102,178,0.15)', grad:'linear-gradient(135deg,#0A1428,#132247)', weeks:'4 weeks', loc:'London, UK', video:'', thumb:'assets/video/ritz-logo-thumb.png', thumbFit:'contain', thumbBg:'#ffffff', image:'assets/video/ritz-leaflet.png', desc:'A seasonal event leaflet for The Ritz London - a full spread announcing the Spring ’26 programme, from the Bollinger La Grande Année launch to the Caviar & Champagne Experience, set in the hotel’s house typographic style.', outcomes:['Two-page leaflet spanning the full Spring ’26 events calendar','Typeset in the hotel’s heritage brand style','Print-ready collateral for in-house and guest distribution'] },
+    { cat:'video', tag:'Event Film', title:'IUCN - Leaders Forum Highlights', initials:'MT', accent:'#67E8F9', tagBg:'rgba(0,163,224,0.15)', grad:'linear-gradient(135deg,#051318,#0A2630)', thumb:'assets/video/iucn-leaders-forum-thumb.png', weeks:'3 weeks', loc:'Geneva, Switzerland', video:'assets/video/iucn-leaders-forum.mp4', desc:'Event coverage of the IUCN Leaders Forum - headlined by Ban Ki-moon - cut into an impactful highlights film that asks the hard questions and inspires action.', outcomes:['Distilled a full-day forum into a sharp highlights film','Framed around questions that provoke and inspire action','Amplified the Forum\'s message to a global audience'] }
+  ];
+
+  SERVICES = [
+    { title:'Web development', chips:[['Code','rgba(200,0,24,0.15)','var(--red)'],['Performance','rgba(255,69,0,0.15)','var(--orange)'],['Builds','rgba(255,140,0,0.15)','var(--amber)']], desc:'Ultra-light, fast-loading sites and platforms - engineered for sub-second loads, low carbon budgets and conversion-first buyer journeys.' },
+    { title:'Brand systems', chips:[['Identity','rgba(200,0,24,0.15)','var(--red)'],['Colour','rgba(255,140,0,0.15)','var(--amber)'],['Typography','rgba(0,163,224,0.15)','var(--cyan)']], desc:'Identity, colour grammar and typography systems that survive every touchpoint - from pitch decks to packaging.' },
+    { title:'Digital marketing', chips:[['Campaigns','rgba(0,168,107,0.15)','var(--greent)'],['Social','rgba(0,168,107,0.15)','var(--greent)'],['SEO','rgba(0,102,178,0.15)','var(--blue)']], desc:'Full-funnel campaigns, social content systems and search visibility that compounds - built to convert, measured monthly.' },
+    { title:'Motion & video', chips:[['Films','rgba(0,102,178,0.15)','var(--blue)'],['Reels','rgba(0,163,224,0.15)','var(--cyan)'],['Animation','rgba(0,163,224,0.15)','var(--cyan)']], desc:'Brand films, product reels and motion systems that tell your story in seconds - cinematic where it counts, light where it loads.' },
+    { title:'Packaging & print', chips:[['Structural','rgba(255,140,0,0.15)','var(--amber)'],['Covers','rgba(200,0,24,0.15)','var(--red)'],['Sustainable','rgba(0,168,107,0.15)','var(--greent)']], desc:'Zero-waste structural packaging and print collateral with sustainability embedded in the story, not stapled on.' },
+    { title:'Editorial design', chips:[['Print','rgba(255,69,0,0.15)','var(--orange)'],['Layouts','rgba(255,140,0,0.15)','var(--amber)'],['Publications','rgba(0,102,178,0.15)','var(--blue)']], desc:'Reports, catalogues and publications with editorial-grade layout systems - designed to be read, kept and shared.' }
+  ];
+
+  METHOD = [
+    { label:'Messaging & Positioning', numBg:'#C80018', body:'Evaluating value clarity, target buyer resonance, and competitive differentiation to eliminate confusion.' },
+    { label:'Visual Identity System', numBg:'#FF4500', body:'Auditing logo versatility, typography hierarchy, color harmony, and touchpoint consistency across all collateral.' },
+    { label:'Website Experience', numBg:'#FF8C00', body:'Measuring page load speed, mobile responsiveness, UX friction points, and clear outcome-driven CTAs.' },
+    { label:'Packaging & Product Story', numBg:'#00A86B', body:'Reviewing unboxing touchpoints, eco-material honesty, and organic customer recommendation loops.' },
+    { label:'Digital Presence', numBg:'#00A3E0', body:'Analyzing organic search authority, social proof alignment, and conversion asset performance.' }
+  ];
+
+  CHAT = [
+    { label:'Services & pricing', answer:'We work across six practices. Tap any one for a breakdown - pricing is scoped per project, and most engagements start with a free brand score and strategy call.', subPrompt:'Select a service for details:', subs:[
+      { label:'Web Development', detail:'Custom sites, web apps, and e-commerce - fast, lightweight, SEO-ready builds on modern stacks.' },
+      { label:'Brand Systems', detail:'Logo, identity, typography, colour, and full guideline systems that stay consistent across every touchpoint.' },
+      { label:'Digital Marketing', detail:'Performance campaigns, SEO, social, and content that turns attention into qualified leads.' },
+      { label:'Motion & Video', detail:'Event films, explainers, and ads - multi-language edits and highlight reels that capture the best moments.' },
+      { label:'Packaging & Print', detail:'Product packaging, catalogues, and event collateral designed for shelf, stand, and hand.' },
+      { label:'Editorial Design', detail:'Reports, brochures, and publication layouts built on disciplined typographic systems.' }
+    ], cta:'Get a proposal', href:'#services', action:'proposal' },
+    { label:'Process & timelines', answer:'Four steps take you from unclear to unmistakable. Tap a step to see what happens - most projects run 3–8 weeks with checkpoints at every stage.', subPrompt:'Pick a step:', subs:[
+      { label:'01 · Research', detail:'Uncovering hidden leaks, analysing audience drop-offs, and mapping your actual market opportunity.' },
+      { label:'02 · Position', detail:'Defining your unfair advantage and sharpening your core message into a 3-second hook.' },
+      { label:'03 · Design', detail:'Crafting tough visual systems and ultra-light digital assets that load blazingly fast.' },
+      { label:'04 · Grow', detail:'Deploying new touchpoints, tracking measurable revenue lift, and scaling with confidence.' }
+    ], cta:'See how we work', href:'#framework' },
+    { label:'Brand score quiz', answer:'The 10-question audit takes about 2 minutes and scores five areas of your brand. Tap an area to see what we look at - you get the full 8-page breakdown by email.', subPrompt:'Pick an area we score:', subs:[
+      { label:'Messaging & Positioning', detail:'How clearly your positioning separates you from rivals and lands in three seconds.' },
+      { label:'Visual Identity', detail:'Consistency of logo, type, colour, and system across every asset and channel.' },
+      { label:'Website Experience', detail:'Load speed, mobile experience, and how frictionless the buyer journey is.' },
+      { label:'Packaging & Product Story', detail:'How well packaging and product touchpoints tell an honest, shareable story.' },
+      { label:'Digital Presence', detail:'Organic search authority, social proof, and conversion-asset performance.' }
+    ], cta:'Start the quiz', href:'#score-quiz' },
+    { label:'Book a call', answer:"Pick a date and time in the booking section - it's a free strategy session. Bring your score, leave with a plan.", cta:'Book a call', href:'#book-call' },
+    { label:'Offices & contact', answer:'We work from four cities. Tap one for its details - or call +91 74005 31107, email info@turtlelabs.co.in, or tap the green button to WhatsApp us.', subPrompt:'Pick an office:', subs:[
+      { label:'Kochi (HQ)', detail:'Our headquarters and main studio - strategy, brand, and production.' },
+      { label:'Nagpur', detail:'Central-India base for client servicing and print production.' },
+      { label:'Bengaluru', detail:'Tech and digital hub - web, product, and performance marketing.' },
+      { label:'New Delhi', detail:'North-India presence for events, coverage, and enterprise clients.' }
+    ], cta:'WhatsApp us', href:'https://wa.me/917400531107', target:'_blank' }
+  ];
+
+  TICKER = [
+    'A logistics brand in Dubai scored 71 · 2h ago',
+    'A wellness startup in Kochi scored 58 · 5h ago',
+    'A SaaS team in Toronto scored 82 · yesterday',
+    'A retail brand in Singapore scored 64 · yesterday',
+    'A fintech in Bengaluru scored 76 · 2 days ago'
+  ];
+
+  componentDidMount() {
+    // Single shared content source - overrides the inline fallbacks below.
+    import('./tl-content.js').then(m => {
+      const C = m && m.TL_CONTENT; if (!C) return;
+      this._shared = C;
+      if (C.works) this.WORKS = C.works;
+      if (C.services) this.SERVICES = C.services;
+      this.forceUpdate();
+    }).catch(() => {});
+    const saved = localStorage.getItem('tl-theme') || 'dark';
+    this.applyTheme(saved);
+    // Re-align to the URL hash after content/layout settles (cross-page anchors like #services)
+    if (location.hash && location.hash.length > 1) {
+      const target = location.hash.slice(1);
+      [250, 700, 1300].forEach(t => setTimeout(() => { const el = document.getElementById(target); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: t === 250 ? 'auto' : 'smooth' }); }, t));
+    }
+    this._ticker = setInterval(() => this.setState(s => ({ tickerIdx: (s.tickerIdx + 1) % this.TICKER.length })), 4500);
+    this._onScroll = () => {
+      const y = window.scrollY;
+      const leak = document.getElementById('silent-leak');
+      const leakTop = leak ? leak.getBoundingClientRect().top + y : window.innerHeight * 0.9;
+      const show = y > leakTop - window.innerHeight * 0.4 && y < document.body.scrollHeight - window.innerHeight * 2.2;
+      if (show !== this.state.showSticky) this.setState({ showSticky: show });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    // Welcome chooser popup on load (once per session)
+    if ((this.props.leadPopupOnLoad ?? true) && !sessionStorage.getItem('tl-proposal-shown')) {
+      this._leadTimer = setTimeout(() => {
+        if (!sessionStorage.getItem('tl-proposal-shown')) {
+          sessionStorage.setItem('tl-proposal-shown', '1');
+          this.setState({ welcomeOpen: true });
+        }
+      }, 1400);
+    }
+    // Proposal popup once per visit after scrolling past services
+    const svc = document.getElementById('before-after');
+    if (svc && (this.props.proposalOnScroll ?? true)) {
+      this._propObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !sessionStorage.getItem('tl-proposal-shown')) {
+            sessionStorage.setItem('tl-proposal-shown', '1');
+            this.setState({ proposalOpen: true });
+          }
+        });
+      }, { threshold: 0.35 });
+      this._propObs.observe(svc);
+    }
+    // Impact counters
+    const imp = document.getElementById('impact');
+    if (imp) {
+      this._impObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !this._counted) { this._counted = true; this.runCounters(); }
+        });
+      }, { threshold: 0.3 });
+      this._impObs.observe(imp);
+    }
+    // Carbon calculator
+    setTimeout(() => {
+      let totalBytes = 118 * 1024;
+      try {
+        const res = performance.getEntriesByType('resource');
+        let sum = 0; res.forEach(r => { if (r.transferSize) sum += r.transferSize; });
+        if (sum > 0) totalBytes = sum;
+      } catch (e) {}
+      const kb = Math.round(totalBytes / 1024);
+      const co2 = ((totalBytes / (1024*1024*1024)) * 0.2 * 1000 + 0.05).toFixed(2);
+      this.setState({ carbonLabel: `⚡ ${kb} KB payload · ${co2}g CO2 per view`, footerCarbon: `⚡ ${kb} KB · Sustainable Low-Carbon Site` });
+    }, 900);
+    this.initSlider();
+    this._onKey = (e) => {
+      if (this.state.lbIdx >= 0) {
+        const n = (this._lbList || []).length;
+        if (e.key === 'Escape') this.setState({ lbIdx: -1 });
+        else if (e.key === 'ArrowRight' && n > 1) this.setState(s => ({ lbIdx: (s.lbIdx + 1) % n }));
+        else if (e.key === 'ArrowLeft' && n > 1) this.setState(s => ({ lbIdx: (s.lbIdx - 1 + n) % n }));
+        return;
+      }
+      if (this.state.workIdx >= 0) {
+        if (e.key === 'ArrowRight') this.stepWork(1);
+        if (e.key === 'ArrowLeft') this.stepWork(-1);
+        if (e.key === 'Escape') this.setState({ workIdx: -1 });
+      } else if (e.key === 'Escape') this.setState({ proposalOpen: false, welcomeOpen: false, videoSrc: '', cardModalOpen: false });
+    };
+    window.addEventListener('keydown', this._onKey);
+    this._blobPending = {};
+    this.ensureVideo();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState || prevState.workIdx !== this.state.workIdx) this.ensureVideo();
+  }
+
+  ensureVideo(idx) {
+    const i = (idx === undefined) ? this.state.workIdx : idx;
+    const w = i >= 0 ? this.WORKS[i] : null;
+    const src = w && w.video;
+    this.ensureVideoSrc(src);
+  }
+  ensureVideoSrc(src) {
+    if (!src || (this.state.blobUrls && this.state.blobUrls[src]) || this._blobPending[src]) return;
+    this._blobPending[src] = true;
+    fetch(src).then(r => r.blob()).then(b => {
+      const url = URL.createObjectURL(b);
+      this._blobPending[src] = false;
+      this.setState(s => ({ blobUrls: { ...s.blobUrls, [src]: url } }));
+    }).catch(() => { this._blobPending[src] = false; });
+  }
+  componentWillUnmount() {
+    clearInterval(this._ticker);
+    clearTimeout(this._leadTimer);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('keydown', this._onKey);
+    if (this._propObs) this._propObs.disconnect();
+    if (this._impObs) this._impObs.disconnect();
+  }
+
+  applyTheme(t) {
+    if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    this.setState({ theme: t });
+  }
+
+  runCounters() {
+    const targets = [184, 34, 5];
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      const p = Math.min(1, step / 16);
+      this.setState({ statVals: targets.map(t => Math.round(t * p)) });
+      if (p >= 1) clearInterval(timer);
+    }, 55);
+  }
+
+  initSlider() {
+    this.sliderContainerRef = this.sliderContainerRef || React.createRef();
+    const c = this.sliderContainerRef.current;
+    if (!c) return;
+    let dragging = false;
+    const update = (x, commit) => {
+      const r = c.getBoundingClientRect();
+      let pct = Math.max(0, Math.min(100, ((x - r.left) / r.width) * 100));
+      const after = this.sliderAfterRef.current, handle = this.sliderHandleRef.current;
+      if (after) after.style.clipPath = `polygon(0 0, ${pct}% 0, ${pct}% 100%, 0 100%)`;
+      if (handle) handle.style.left = `${pct}%`;
+      if (commit) this.setState({ sliderPct: pct });
+    };
+    c.addEventListener('mousedown', e => { dragging = true; update(e.clientX); });
+    window.addEventListener('mousemove', e => { if (dragging) update(e.clientX); });
+    window.addEventListener('mouseup', e => { if (dragging) { dragging = false; update(e.clientX, true); } });
+    c.addEventListener('touchstart', e => { dragging = true; update(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchmove', e => { if (dragging) update(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchend', () => { dragging = false; });
+  }
+
+  stepWork(d) {
+    this.setState(s => {
+      const workIdx = (s.workIdx + d + this.WORKS.length) % this.WORKS.length;
+      this.ensureVideo(workIdx);
+      return { workIdx };
+    });
+  }
+
+  scrollToId(id) {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+  }
+  downloadWorkbook() {
+    const a = document.createElement('a');
+    a.href = 'assets/brand-strategy-workbook.pdf';
+    a.download = 'Turtle-Labs-Brand-Strategy-Workbook.pdf';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  finishQuiz() {
+    const quickIdx = [0, 2, 4, 6, 8];
+    const active = this.state.quizMode === 'quick' ? quickIdx : this.QUIZ.map((_, i) => i);
+    const cats = {};
+    active.forEach(i => { const c = this.QUIZ[i].cat; cats[c] = cats[c] || { score: 0, max: 0 }; cats[c].max += 10; });
+    let total = 0, maxTotal = 0;
+    active.forEach(i => {
+      maxTotal += 10;
+      const a = this.state.answers[i];
+      if (a !== null) { const pts = this.QUIZ[i].opts[a][1]; cats[this.QUIZ[i].cat].score += pts; total += pts; }
+    });
+    const scaled = maxTotal ? Math.round(total / maxTotal * 100) : 0;
+    const weak = Object.keys(cats).map(n => ({ name: n, score: cats[n].score, max: cats[n].max, ratio: cats[n].score / cats[n].max }))
+      .sort((a, b) => a.ratio - b.ratio).slice(0, 3);
+    this.setState({ quizStage: 'result', totalScore: scaled, weakCats: weak });
+  }
+
+  drawCard() {
+    const canvas = this.cardCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const score = this.state.totalScore || 68;
+    ctx.fillStyle = '#F3FAFE'; ctx.fillRect(0, 0, 480, 280);
+    ctx.strokeStyle = '#FF8C00'; ctx.lineWidth = 4; ctx.strokeRect(10, 10, 460, 260);
+    const dots = [['#C80018',60,45,10],['#FF4500',42,60,8],['#FF5500',60,62,9],['#FF4500',78,60,8],['#FF8C00',46,78,8],['#00A86B',60,80,9],['#0066B2',74,78,8]];
+    dots.forEach(d => { ctx.fillStyle = d[0]; ctx.beginPath(); ctx.arc(d[1], d[2], d[3], 0, Math.PI*2); ctx.fill(); });
+    ctx.fillStyle = '#18181B'; ctx.font = 'bold 20px Outfit, sans-serif'; ctx.fillText('TURTLE LABS', 115, 55);
+    ctx.fillStyle = '#52525B'; ctx.font = '12px Inter, sans-serif'; ctx.fillText('Sustainable Brand Health Audit', 115, 75);
+    ctx.fillStyle = '#FF8C00'; ctx.font = 'bold 54px Outfit, sans-serif'; ctx.fillText(`${score}/100`, 30, 175);
+    ctx.fillStyle = '#18181B'; ctx.font = 'bold 16px Outfit, sans-serif'; ctx.fillText('AUDIT SCORE', 30, 205);
+    ctx.fillStyle = '#C80018'; ctx.font = 'bold 12px Inter, sans-serif'; ctx.fillText('TOP IMPROVEMENT AREAS:', 220, 130);
+    ctx.fillStyle = '#18181B'; ctx.font = '12px Inter, sans-serif';
+    const weak = this.state.weakCats.length ? this.state.weakCats.map(w => w.name) : ['Messaging & Positioning', 'Website Experience', 'Visual Identity'];
+    weak.forEach((w, i) => ctx.fillText(`• ${w}`, 220, 155 + i * 22));
+    ctx.fillStyle = '#52525B'; ctx.font = 'italic 11px Inter, sans-serif'; ctx.fillText('Creating Tough Brands · Founded 2014 in Kerala', 30, 250);
+    this.setState({ cardDataUrl: canvas.toDataURL('image/png') });
+  }
+
+  openCalendly(email, dateISO) {
+    const base = this.props.calendlyUrl ?? 'https://calendly.com/turtlelabsdesign/30min';
+    const params = [];
+    if (dateISO) { params.push('month=' + dateISO.slice(0, 7)); params.push('date=' + dateISO); }
+    if (email) params.push('email=' + encodeURIComponent(email));
+    const url = params.length ? `${base}?${params.join('&')}` : base;
+    try { window.open(url, '_blank', 'noopener'); } catch (e) {}
+  }
+
+  renderVals() {
+    const s = this.state;
+    const _sharedC = this._shared || {};
+    const _fallbackLogos = ['assets/logos/c-3eh.png','assets/logos/c-tata-trusts.png','assets/logos/c-amberr.png','assets/logos/c-baidyanath.png','assets/logos/c-cini.png','assets/logos/c-kavya-k.png','assets/logos/c-fyp.png','assets/logos/c-fx.png','assets/logos/c-haldirams.png','assets/logos/c-ss1.png','assets/logos/c-indian-railway.png','assets/logos/c-iucn.png','assets/logos/c-kadambi-group.png','assets/logos/c-kadambi-hr.png','assets/logos/c-kadambi-seva.png','assets/logos/c-dhara.png','assets/logos/c-cibic.png','assets/logos/c-berry.png','assets/logos/c-lafifa.png','assets/logos/c-ss4.png','assets/logos/c-natural-intelligence.png','assets/logos/c-nature-monk.png','assets/logos/c-idias.png','assets/logos/c-sol101.png','assets/logos/c-sadhu.png','assets/logos/c-safal.png','assets/logos/c-ada.png','assets/logos/c-ss5.png','assets/logos/c-ss6.png','assets/logos/c-ss7.png','assets/logos/c-ss8.png','assets/logos/c-ss9.png','assets/logos/c-ritz.png','assets/logos/c-ush.png','assets/logos/c-zs-gemstone.png'];
+    const clientLogos = _sharedC.logos ? _sharedC.logos.map(function(l){ return l.src; }) : _fallbackLogos;
+    const logosReady = true;
+    const clientLogoMarquee = React.createElement('div', { style: { display: 'flex', gap: '16px', width: 'max-content', animation: 'tlmarquee 80s linear infinite', alignItems: 'center', gap: '40px' } },
+      clientLogos.concat(clientLogos).map((src, i) => { const half = ['c-dhara.png','c-amberr.png','c-kavya-k.png','c-safal.png','c-ush.png'].some(h => src.indexOf(h) !== -1); return React.createElement('img', { key: i, src, alt: i < clientLogos.length ? 'Client logo' : '', style: { height: half ? '28px' : '56px', width: 'auto', flexShrink: 0, filter: 'var(--logo-filter)', opacity: 0.72 } }); })
+    );
+    this.sliderContainerRef = this.sliderContainerRef || React.createRef();
+    this.sliderAfterRef = this.sliderAfterRef || React.createRef();
+    this.sliderHandleRef = this.sliderHandleRef || React.createRef();
+    this.cardCanvasRef = this.cardCanvasRef || React.createRef();
+    this.tmScrollRef = this.tmScrollRef || React.createRef();
+    const navLinks = [
+      { label: 'Home', href: '#hero', target: '_self' },
+      { label: 'Works', href: '#work-samples', target: '_self' },
+      { label: 'Journal', href: '#journal', target: '_self' },
+      { label: 'Services', href: '#services', target: '_self' }
+    ];
+
+    const stripLabels = ['DESIGN SYSTEMS','UX DESIGN','WEB DEVELOPMENT','MOBILE APPS','DATA VISUALISATION','DIGITAL MARKETING','IDENTITY DESIGN'];
+    const stripDots = ['#C80018','#FF4500','#FF8C00','#00A86B','#0066B2','#00A3E0','#C80018'];
+    const stripItems = stripLabels.map((l, i) => ({ label: l, dot: stripDots[i] }));
+
+    // Quiz
+    const quickIdx = [0, 2, 4, 6, 8];
+    const activeIdx = s.quizMode === 'quick' ? quickIdx : this.QUIZ.map((_, i) => i);
+    const quizTotal = activeIdx.length;
+    const realIdx = activeIdx[Math.min(s.qIndex, quizTotal - 1)];
+    const q = this.QUIZ[realIdx];
+    const ans = s.answers[realIdx];
+    const quizOptions = q.opts.map((o, i) => ({
+      label: o[0], pts: `+${o[1]} pts`,
+      bg: ans === i ? 'var(--text)' : 'var(--bg)',
+      fg: ans === i ? 'var(--bg)' : 'var(--text)',
+      border: ans === i ? 'var(--text)' : 'var(--line)',
+      weight: ans === i ? '700' : '400',
+      pick: () => this.setState(st => { const a = st.answers.slice(); a[realIdx] = i; return { answers: a }; })
+    }));
+    const isLast = s.qIndex === quizTotal - 1;
+
+    // Works
+    const filters = [['all','All Work'],['video','Video & Motion'],['identity','Brand Identities'],['digital','Digital Systems'],['packaging','Packaging Story']].map(f => ({
+      label: f[1],
+      bg: s.filter === f[0] ? 'var(--green)' : 'var(--bg2)',
+      fg: s.filter === f[0] ? 'var(--green-ink)' : 'var(--text)',
+      border: s.filter === f[0] ? 'var(--green)' : 'var(--line)',
+      pick: () => this.setState({ filter: f[0] })
+    }));
+    const mapWorkCard = (w) => ({
+      ...w,
+      video: !!w.video,
+      noThumb: !w.thumb,
+      thumbEl: w.thumb ? React.createElement('img', { src: w.thumb, alt: w.title, style: { position:'absolute', inset:0, width:'100%', height:'100%', objectFit: w.thumbFit || 'cover', background: w.thumbBg || 'transparent' } }) : null,
+      open: () => { this.setState({ workIdx: w._i }); this.ensureVideo(w._i); },
+      playVideo: (e) => { e.stopPropagation(); this.setState({ workIdx: w._i }); this.ensureVideo(w._i); }
+    });
+    const indexed = this.WORKS.map((w, i) => ({ ...w, _i: i }));
+    const filteredWorks = indexed.filter(w => s.filter === 'all' || w.cat === s.filter).map(mapWorkCard);
+
+    // Homepage set: featured order by default; when a filter tab is active, show the filtered works.
+    const featIds = (this._shared && this._shared.featured) || [];
+    let featWorks = featIds.map(id => indexed.find(w => w.id === id)).filter(Boolean);
+    if (!featWorks.length) featWorks = indexed.slice(0, 6);
+    const homeWorks = (s.filter === 'all' ? featWorks.slice(0, 6) : indexed.filter(w => w.cat === s.filter)).map(mapWorkCard);
+
+    const cw = s.workIdx >= 0 ? this.WORKS[s.workIdx] : this.WORKS[0];
+    const lbList = this.WORKS.map((w, i) => {
+      if (w.video) return { kind: 'video', src: (s.blobUrls && s.blobUrls[w.video]) || w.video, raw: w.video, poster: w.thumb, title: w.title, wi: i };
+      if (w.image) return { kind: 'image', src: w.image, title: w.title, wi: i };
+      if (w.thumb) return { kind: 'image', src: w.thumb, title: w.title, wi: i };
+      return null;
+    }).filter(Boolean);
+    this._lbList = lbList;
+    const openLb = () => { const li = lbList.findIndex(m => m.wi === (s.workIdx >= 0 ? s.workIdx : 0)); this.setState({ lbIdx: li >= 0 ? li : 0 }); };
+    const lbIdx = (s.lbIdx >= 0 && s.lbIdx < lbList.length) ? s.lbIdx : -1;
+    const lbCur = lbIdx >= 0 ? lbList[lbIdx] : null;
+    if (lbCur && lbCur.kind === 'video' && lbCur.raw && !(s.blobUrls && s.blobUrls[lbCur.raw])) this.ensureVideoSrc(lbCur.raw);
+    let lbEl = null;
+    if (lbCur) {
+      if (lbCur.kind === 'video') lbEl = React.createElement('video', { key: 'lbv' + lbIdx, src: lbCur.src, poster: lbCur.poster || '', controls: true, autoPlay: true, muted: true, playsInline: true, controlsList: 'nodownload', style: { width: 'auto', height: 'auto', maxWidth: '92vw', maxHeight: '86vh', display: 'block', background: '#000', borderRadius: '8px' } });
+      else lbEl = React.createElement('img', { key: 'lbi' + lbIdx, src: lbCur.src, alt: lbCur.title || '', style: { width: 'auto', height: 'auto', maxWidth: '92vw', maxHeight: '86vh', objectFit: 'contain', display: 'block', borderRadius: '8px' } });
+    }
+    let popupMediaEl = null;
+    if (cw.video) {
+      const vurl = s.blobUrls && s.blobUrls[cw.video];
+      if (vurl) {
+        popupMediaEl = React.createElement('video', {
+          key: vurl, controls: true, muted: true, autoPlay: true, playsInline: true,
+          preload: 'auto', poster: cw.thumb || '', controlsList: 'nodownload',
+          style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' }
+        }, React.createElement('source', { src: vurl, type: 'video/mp4' }));
+      } else {
+        popupMediaEl = React.createElement('div', {
+          key: 'loading' + cw.video,
+          style: { position: 'absolute', inset: 0, backgroundImage: cw.thumb ? `url(${cw.thumb})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }
+        }, React.createElement('div', {
+          style: { padding: '10px 16px', borderRadius: '999px', background: 'rgba(0,0,0,0.6)', color: '#fff', fontSize: '13px', fontFamily: 'Inter,sans-serif' }
+        }, 'Loading video…'));
+      }
+    } else if (cw.image) {
+      popupMediaEl = React.createElement('img', {
+        key: cw.image, src: cw.image, alt: cw.title, onClick: openLb, title: 'Click to expand',
+        style: { width: '100%', height: '100%', objectFit: 'contain', display: 'block', background: '#ffffff', cursor: 'zoom-in' }
+      });
+    } else if (cw.thumb) {
+      popupMediaEl = React.createElement('img', {
+        key: cw.thumb, src: cw.thumb, alt: cw.title, onClick: openLb, title: 'Click to expand',
+        style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block', cursor: 'zoom-in' }
+      });
+    }
+    const popupDots = this.WORKS.map((w, i) => ({
+      w: i === s.workIdx ? '22px' : '8px',
+      bg: i === s.workIdx ? 'var(--green)' : 'var(--line)',
+      pick: () => { this.setState({ workIdx: i }); this.ensureVideo(i); }
+    }));
+
+    // Methodology
+    this._mIdx = this._mIdx ?? 0;
+    const mIdx = s.methodIdx ?? 0;
+    const methodItems = this.METHOD.map((m, i) => ({
+      num: String(i + 1).padStart(2, '0'), label: m.label, numBg: m.numBg,
+      bg: mIdx === i ? 'var(--text)' : 'var(--bg)',
+      fg: mIdx === i ? 'var(--bg)' : 'var(--text)',
+      border: mIdx === i ? 'var(--text)' : 'var(--line)',
+      pick: () => this.setState({ methodIdx: i })
+    }));
+
+    // Services
+    const services = this.SERVICES.map((sv, i) => {
+      const exp = s.expandedService === i;
+      return {
+        num: String(i + 1).padStart(2, '0'),
+        numColor: exp ? 'var(--greent)' : 'var(--faint)',
+        titleColor: exp ? 'var(--greent)' : 'var(--text)',
+        title: sv.title, desc: sv.desc, expanded: exp,
+        chip1: sv.chips[0][0], c1bg: sv.chips[0][1], c1fg: sv.chips[0][2],
+        chip2: sv.chips[1][0], c2bg: sv.chips[1][1], c2fg: sv.chips[1][2],
+        chip3: sv.chips[2][0], c3bg: sv.chips[2][1], c3fg: sv.chips[2][2],
+        arrow: exp ? '↓' : '→',
+        arrowBg: exp ? 'var(--green)' : 'transparent',
+        arrowFg: exp ? 'var(--green-ink)' : 'var(--text)',
+        toggle: () => this.setState(st => ({ expandedService: st.expandedService === i ? -1 : i })),
+        proposal: () => this.setState({ proposalOpen: true, proposalSent: false, proposalService: sv.title })
+      };
+    });
+
+    // Problems / steps / testimonials / sectors / stats
+    const themes = {
+      dark: { bg:'#18181B', fg:'#F6F3EC', tagBg:'#FF8C00', tagFg:'#0B0B0C' },
+      rose: { bg:'#FDE8E8', fg:'#50000B', tagBg:'#C80018', tagFg:'#FFFFFF' },
+      mint: { bg:'#E2F6EC', fg:'#003E2B', tagBg:'#00A86B', tagFg:'#FFFFFF' },
+      amber: { bg:'#FFF4E5', fg:'#4A2800', tagBg:'#FF8C00', tagFg:'#0B0B0C' }
+    };
+    const problems = [
+      { t:'dark', tag:'01 - Clarity', step:'01 / 04', title:'The Clarity Gap', desc:'Buyers move to competitors when your core value proposition takes more than 3 seconds to understand.' },
+      { t:'rose', tag:'02 - Trust', step:'02 / 04', title:'The Trust Drift', desc:'Outdated visual touchpoints and inconsistent messaging make enterprise clients doubt your true scale.' },
+      { t:'mint', tag:'03 - Energy', step:'03 / 04', title:'The Energy Drain', desc:'Bloated digital assets slow down page loads, drive mobile visitors away, and waste energy.' },
+      { t:'amber', tag:'04 - Margins', step:'04 / 04', title:'The Friction Barrier', desc:'Weak positioning forces your sales team into price wars instead of commanding premium value.' }
+    ].map(p => ({ ...p, ...themes[p.t] }));
+    const steps = [
+      { t:'rose', tag:'01 - Research', step:'01 / 04', title:'Research', desc:'Uncovering hidden leaks, analyzing audience drop-offs, and mapping your actual market opportunity.' },
+      { t:'mint', tag:'02 - Position', step:'02 / 04', title:'Position', desc:'Defining your unfair advantage and sharpening your core message into a 3-second hook.' },
+      { t:'amber', tag:'03 - Design', step:'03 / 04', title:'Design', desc:'Crafting tough, sustainable visual systems and ultra-light digital assets that load blazingly fast.' },
+      { t:'dark', tag:'04 - Grow', step:'04 / 04', title:'Grow', desc:'Deploying your new touchpoints, tracking measurable revenue lift, and scaling with confidence.' }
+    ].map(p => ({ ...p, ...themes[p.t] }));
+    const testimonials = _sharedC.reviews || [
+      { quote:'"Turtle Labs turned our technical specs into a story that enterprise buyers in the Gulf couldn\'t ignore. Our inbound deal size doubled in 90 days."', name:'DTORR Industrial', loc:'Dubai, UAE', initials:'DT', avBg:'rgba(0,102,178,0.12)', avBorder:'var(--blue)', avFg:'var(--blue)' },
+      { quote:'"Our brand went from generic SaaS to an unmistakable market leader in under 60 days. The clarity they brought saved us months of wasted marketing spend."', name:'WYSAX Systems', loc:'Toronto, Canada', initials:'WY', avBg:'rgba(0,168,107,0.12)', avBorder:'var(--greent)', avFg:'var(--greent)' },
+      { quote:'"They don\'t just design; they eliminate every piece of fluff until your message is unbreakable. Working with Turtle Labs was our best investment of 2024."', name:'LSP Sustainable Tech', loc:'London, UK', initials:'LS', avBg:'rgba(0,163,224,0.12)', avBorder:'var(--cyan)', avFg:'var(--cyan)' },
+      { quote:'"Excellent. I enjoyed working with Turtle Labs - fast, flexible and did a very good job. Collaborative and genuinely committed to quality. I would definitely recommend his services, and I would hire him again."', name:'Michel Paszto · The Ritz Hotel', loc:'London, UK · Event Collateral Design', initials:'MP', avBg:'rgba(236,48,19,0.12)', avBorder:'var(--red)', avFg:'var(--red)' },
+      { quote:'"Turtle Labs handled our branding, product catalogue and event collaterals end to end. The catalogue finally does our range justice, and the identity carried cleanly across every touchpoint. Reliable, sharp, and easy to work with."', name:'ABS Trading', loc:'Dubai, UAE · Branding & Catalogue', initials:'AB', avBg:'rgba(0,102,178,0.12)', avBorder:'var(--blue)', avFg:'var(--blue)' },
+      { quote:'"For our Leaders Forum in Jeju, Turtle Labs cut a single event film that carried multiple languages in one piece and captured the very best moments of the days. Exactly the coverage the moment deserved."', name:'IUCN', loc:'Jeju · Leaders Forum Coverage', initials:'IU', avBg:'rgba(0,168,107,0.12)', avBorder:'var(--greent)', avFg:'var(--greent)' }
+    ];
+    const tmScrollTo = (i) => { const c = this.tmScrollRef.current; if (!c) return; const card = c.children[i]; if (card) c.scrollTo({ left: card.offsetLeft - c.offsetLeft, behavior: 'smooth' }); this.setState({ tmActive: i }); };
+    const tmDots = testimonials.map((_, i) => ({ go: () => tmScrollTo(i), dotW: i === s.tmActive ? '26px' : '9px', dotBg: i === s.tmActive ? 'var(--text)' : 'var(--line)' }));
+    const journal = (_sharedC.journal && _sharedC.journal.slice(0,3)) || [
+      { grad:'linear-gradient(135deg, rgba(0,102,178,0.35), rgba(0,0,0,0) 65%), var(--card)', tag:'Process', tagBg:'rgba(0,163,224,0.15)', tagFg:'var(--cyan)', date:'Jul 14, 2026', title:'The case for design systems in early-stage startups' },
+      { grad:'linear-gradient(135deg, rgba(0,168,107,0.32), rgba(0,0,0,0) 65%), var(--card)', tag:'Accessibility', tagBg:'rgba(0,168,107,0.15)', tagFg:'var(--greent)', date:'Jun 28, 2026', title:'Accessibility is not an afterthought - it is a feature' },
+      { grad:'linear-gradient(135deg, rgba(255,69,0,0.32), rgba(0,0,0,0) 65%), var(--card)', tag:'Branding', tagBg:'rgba(255,69,0,0.15)', tagFg:'var(--orange)', date:'Jun 3, 2026', title:'How visual contrast shapes the way people trust brands' }
+    ];
+    const sectors = _sharedC.sectors || ['Ayurvedic Wellness','Metro & Transit Infrastructure','Renewable Energy','B2B Enterprise SaaS','Specialty Organic Coffee','Sustainable Cold-Chain Logistics','Gulf Market Retail','Artisan Handloom & Craft','Circular Packaging Systems','Fintech for SMBs'];
+    const stats = [
+      { value: String(s.statVals[0]), label: 'Brands Scored', color: 'var(--greent)' },
+      { value: `+${s.statVals[1]}%`, label: 'Average Score Lift', color: 'var(--blue)' },
+      { value: String(s.statVals[2]), label: 'Countries Served (UAE, AU, EU, SG, IN)', color: 'var(--red)' },
+      { value: '0.06g', label: 'CO2 / Page View (Live Calculated)', color: 'var(--cyan)' }
+    ];
+
+    // Calendar
+    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1);
+    // grid starts on the Monday of this week; show 2 weeks
+    const gridStart = new Date(today); gridStart.setDate(today.getDate() - ((today.getDay()+6)%7));
+    const gridDates = Array.from({length:14}, (_,i) => { const d = new Date(gridStart); d.setDate(gridStart.getDate()+i); return d; });
+    const isWeekend = (d) => d.getDay()===0 || d.getDay()===6;
+    const selectable = (d) => d >= tomorrow && !isWeekend(d);
+    const firstOpen = gridDates.find(selectable) || tomorrow;
+    let selISO = s.selDateISO;
+    if (!selISO || !gridDates.some(d => iso(d)===selISO && selectable(d))) selISO = iso(firstOpen);
+    const monthFmt = new Intl.DateTimeFormat(undefined, { month:'long', year:'numeric' });
+    const spanMonths = [...new Set([gridDates[0], gridDates[13]].map(d => monthFmt.format(d)))].join(' – ');
+    const headerDefs = ['M','T','W','T','F','S','S'].map(l => ({ label:l, isHeader:true, disabled:true, bg:'transparent', fg:'var(--faint)', fs:'11px', weight:'400', cursor:'default', opacity:'1', pick:()=>{} }));
+    const dayItems = gridDates.map(d => {
+      const di = iso(d); const ok = selectable(d); const sel = di===selISO;
+      return {
+        label: String(d.getDate()), isHeader:false, disabled: !ok,
+        bg: sel ? 'var(--green)' : 'var(--bg)',
+        fg: sel ? 'var(--green-ink)' : (ok ? 'var(--text)' : 'var(--faint)'),
+        fs:'14px', weight: sel ? '700' : '400',
+        cursor: ok ? 'pointer' : 'default', opacity: ok ? '1' : '0.3',
+        pick: ok ? () => this.setState({ selDateISO: di, booked:false, bookAskEmail:false }) : () => {}
+      };
+    });
+    const calDays = headerDefs.concat(dayItems);
+    const calMonthLabel = `Select a Date · ${spanMonths}`;
+    const selDateObj = new Date(selISO + 'T00:00:00');
+    const selDateLabel = new Intl.DateTimeFormat(undefined, { weekday:'short', month:'short', day:'numeric' }).format(selDateObj);
+    const userTz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) { return 'local time'; } })();
+
+    // Chat
+    const topic = s.chatTopic >= 0 ? this.CHAT[s.chatTopic] : null;
+    const chatTopics = this.CHAT.map((c, i) => ({ label: c.label, pick: () => this.setState({ chatTopic: i, chatSub: -1 }) }));
+    const subsList = topic && topic.subs ? topic.subs : [];
+    const activeSub = (topic && topic.subs && s.chatSub >= 0) ? topic.subs[s.chatSub] : null;
+    const chatSubs = subsList.map((sb, i) => ({ label: sb.label, pick: () => this.setState({ chatSub: i }),
+      bgColor: i === s.chatSub ? 'rgba(52,199,89,0.16)' : 'var(--bg)',
+      borderColor: i === s.chatSub ? 'var(--green)' : 'var(--line2)',
+      fgColor: i === s.chatSub ? 'var(--greent)' : 'var(--text)' }));
+
+    return {
+      navLinks, stripItems, clientLogos, logosReady, clientLogoMarquee,
+      toggleTheme: () => { const t = s.theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('tl-theme', t); this.applyTheme(t); },
+      themeIcon: s.theme === 'dark' ? '☀️' : '🌙', themeLabel: s.theme === 'dark' ? 'Light' : 'Dark',
+      navOpen: s.navOpen, toggleNav: () => this.setState(st => ({ navOpen: !st.navOpen })), closeNav: () => this.setState({ navOpen: false }),
+      carbonLabel: s.carbonLabel, footerCarbon: s.footerCarbon,
+      showTickerNow: (this.props.showTicker ?? true) && s.quizStage === 'intro', tickerMsg: this.TICKER[s.tickerIdx],
+      // quiz
+      stageIntro: s.quizStage === 'intro', stageQuiz: s.quizStage === 'quiz', stageResult: s.quizStage === 'result',
+      startQuiz: () => this.setState({ pathModalOpen: true }),
+      pathModalOpen: s.pathModalOpen,
+      closePathModal: () => this.setState({ pathModalOpen: false }),
+      closePathBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ pathModalOpen: false }); },
+      beginDetailed: () => this.setState({ pathModalOpen: false, quizStage: 'quiz', quizMode: 'detailed', qIndex: 0 }),
+      beginQuick: () => this.setState({ pathModalOpen: false, quizStage: 'quiz', quizMode: 'quick', qIndex: 0 }),
+      retakeConfirmOpen: s.retakeConfirmOpen,
+      askRetake: () => this.setState({ retakeConfirmOpen: true }),
+      closeRetake: () => this.setState({ retakeConfirmOpen: false }),
+      closeRetakeBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ retakeConfirmOpen: false }); },
+      confirmRetake: () => this.setState({ retakeConfirmOpen: false, quizStage: 'intro', qIndex: 0, answers: Array(this.QUIZ.length).fill(null), quizEmailSent: false }),
+      quizCat: q.ci, quizProgress: `Question ${s.qIndex + 1} of ${quizTotal}`, quizQuestion: q.q, quizOptions,
+      quizProgressPct: `${Math.round(((s.qIndex + 1) / quizTotal) * 100)}%`,
+      exitQuiz: () => this.setState({ quizStage: 'intro', qIndex: 0, answers: Array(this.QUIZ.length).fill(null) }),
+      prevVisibility: s.qIndex === 0 ? 'hidden' : 'visible',
+      nextDisabled: ans === null, nextOpacity: ans === null ? '0.5' : '1',
+      nextLabel: isLast ? 'Calculate My Score' : 'Next Question',
+      quizPrev: () => this.setState(st => ({ qIndex: Math.max(0, st.qIndex - 1) })),
+      quizNext: () => { if (ans === null) return; if (isLast) this.finishQuiz(); else this.setState(st => ({ qIndex: st.qIndex + 1 })); },
+      totalScore: s.totalScore,
+      weaknesses: s.weakCats.map(w => ({ title: `${w.name} (${w.score}/${w.max || 20} pts)` })),
+      quizEmailSent: s.quizEmailSent, quizEmailNotSent: !s.quizEmailSent,
+      submitQuizEmail: (e) => { e.preventDefault(); const em=(e.target.email.value||'').trim(); this.setState({ quizEmailSent: true, leadEmail: this.state.leadEmail || em }); },
+      openCardModal: () => { this.setState({ cardModalOpen: true }, () => this.drawCard()); },
+      cardModalOpen: s.cardModalOpen, cardDataUrl: s.cardDataUrl, cardCanvasRef: this.cardCanvasRef,
+      closeCardModal: () => this.setState({ cardModalOpen: false }),
+      closeCardBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ cardModalOpen: false }); },
+      // problems etc
+      problems, steps, testimonials, sectors, stats, journal,
+      tmScrollRef: this.tmScrollRef, tmDots,
+      tmOnScroll: () => { const c = this.tmScrollRef.current; if (!c) return; let best = 0, bd = Infinity; for (let i = 0; i < c.children.length; i++) { const d = Math.abs(c.children[i].offsetLeft - c.offsetLeft - c.scrollLeft); if (d < bd) { bd = d; best = i; } } if (best !== s.tmActive) this.setState({ tmActive: best }); },
+      tmPrev: () => tmScrollTo(Math.max(0, s.tmActive - 1)),
+      tmNext: () => tmScrollTo(Math.min(testimonials.length - 1, s.tmActive + 1)),
+      // works
+      filters, filteredWorks, homeWorks,
+      workOpen: s.workIdx >= 0,
+      popupCanExpand: !!popupMediaEl, openLb,
+      lbOpen: lbIdx >= 0, lbEl, lbHasNav: lbList.length > 1,
+      lbCounter: lbIdx >= 0 ? `${lbIdx + 1} / ${lbList.length}` : '',
+      closeLb: () => this.setState({ lbIdx: -1 }),
+      lbStop: (e) => e.stopPropagation(),
+      lbPrev: (e) => { if (e) e.stopPropagation(); const n = lbList.length; if (n > 1) this.setState(st => ({ lbIdx: (st.lbIdx - 1 + n) % n })); },
+      lbNext: (e) => { if (e) e.stopPropagation(); const n = lbList.length; if (n > 1) this.setState(st => ({ lbIdx: (st.lbIdx + 1) % n })); },
+      popupKicker: `${cw.tag} · ${cw.loc}`, popupCounter: `${(s.workIdx < 0 ? 0 : s.workIdx) + 1} / ${this.WORKS.length}`,
+      popupGrad: cw.grad, popupAccent: cw.accent, popupInitials: cw.initials,
+      popupMediaEl, popupHasMedia: !!popupMediaEl, popupNoMedia: !popupMediaEl,
+      popupTitle: cw.title, popupDesc: cw.desc, popupOutcomes: cw.outcomes, popupDots,
+      nextWork: () => this.stepWork(1), prevWork: () => this.stepWork(-1),
+      closeWork: () => this.setState({ workIdx: -1 }),
+      closeWorkBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ workIdx: -1 }); },
+      openProposalFromWork: () => this.setState({ workIdx: -1, proposalOpen: true, proposalSent: false }),
+      // video
+      videoOpen: !!s.videoSrc, videoSrc: s.videoSrc, videoTitle: s.videoTitle, videoPoster: s.videoPoster || '',
+      shareLabel: s.videoLinkCopied ? '✓ Link copied' : '🔗 Copy share link',
+      popupCaseHref: cw && cw.id ? ('Works.dc.html#' + cw.id) : 'Works.dc.html',
+      copyVideoLink: () => {
+        const url = new URL(location.href);
+        url.hash = 'work';
+        const link = url.href;
+        const done = () => { this.setState({ videoLinkCopied: true }); setTimeout(() => this.setState({ videoLinkCopied: false }), 2000); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(done).catch(done); else done();
+      },
+      closeVideo: () => this.setState({ videoSrc: '' }),
+      closeVideoBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ videoSrc: '' }); },
+      // methodology
+      methodItems,
+      methodCat: `Category ${String(mIdx + 1).padStart(2, '0')} of 05`,
+      methodTitle: this.METHOD[mIdx].label, methodBody: this.METHOD[mIdx].body,
+      // services
+      services,
+      // slider
+      sliderContainerRef: this.sliderContainerRef, sliderAfterRef: this.sliderAfterRef, sliderHandleRef: this.sliderHandleRef,
+      sliderClip: `polygon(0 0, ${s.sliderPct}% 0, ${s.sliderPct}% 100%, 0 100%)`, sliderLeft: `${s.sliderPct}%`,
+      // playbook
+      playbookSent: s.playbookSent, playbookNotSent: !s.playbookSent,
+      playbookSentMsg: `📘 Sent! The playbook is downloading and a copy has been emailed to ${s.leadEmail || 'your inbox'}.`,
+      submitPlaybook: (e) => { e.preventDefault(); const em=(e.target.email.value||'').trim(); this.downloadWorkbook(); this.setState({ playbookSent: true, leadEmail: em || this.state.leadEmail }); },
+      // booking
+      calDays, calMonthLabel, booked: s.booked, bookedSummary: selDateLabel,
+      slotsTzLabel: `Times in your timezone (${userTz})`,
+      calendlyUrl: this.props.calendlyUrl ?? 'https://calendly.com/turtlelabsdesign/30min',
+      // booking states: ask email only if we don't already have a lead email on file
+      bookShowCta: !s.booked && !s.bookAskEmail,
+      bookShowEmail: !s.booked && s.bookAskEmail,
+      leadEmailKnown: !!s.leadEmail,
+      startBooking: () => {
+        this.openCalendly(s.leadEmail || null, selISO);
+        this.setState({ booked: true, bookAskEmail: false });
+      },
+      submitBookingEmail: (e) => {
+        e.preventDefault();
+        const email = (e.target.email.value || '').trim();
+        this.openCalendly(email, selISO);
+        this.setState({ leadEmail: email, booked: true, bookAskEmail: false });
+      },
+      // welcome chooser
+      welcomeOpen: s.welcomeOpen,
+      closeWelcome: () => this.setState({ welcomeOpen: false }),
+      closeWelcomeBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ welcomeOpen: false }); },
+      welcomeAudit: () => this.setState({ welcomeOpen: false, pathModalOpen: true }),
+      welcomeWorkbook: () => this.setState({ welcomeOpen: false, workbookOpen: true, workbookSent: false }),
+      welcomeBook: () => { this.setState({ welcomeOpen: false }); setTimeout(() => this.scrollToId('book-call'), 120); },
+      welcomeWorks: () => { this.setState({ welcomeOpen: false }); setTimeout(() => this.scrollToId('work-samples'), 120); },
+      // proposal
+      proposalOpen: s.proposalOpen, proposalSent: s.proposalSent, proposalNotSent: !s.proposalSent,
+      proposalService: s.proposalService,
+      setProposalService: (e) => this.setState({ proposalService: e.target.value }),
+      closeProposal: () => this.setState({ proposalOpen: false }),
+      closeProposalBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ proposalOpen: false }); },
+      submitProposal: (e) => { e.preventDefault(); const em=(e.target.email && e.target.email.value||'').trim(); this.setState({ proposalSent: true, leadEmail: this.state.leadEmail || em }); },
+      // chat
+      chatOpen: s.chatOpen, toggleChat: () => this.setState(st => ({ chatOpen: !st.chatOpen })),
+      chatToggleIcon: s.chatOpen ? '✕' : '💬',
+      chatGreeting: 'Hi! I can answer quick questions about Turtle Labs. Pick a topic:',
+      chatTopics, chatTopicsOpen: !topic, chatAnswerOpen: !!topic,
+      chatTopicLabel: topic ? topic.label : '', chatAnswer: topic ? topic.answer : '',
+      chatCtaLabel: topic ? topic.cta : '', chatCtaHref: topic ? topic.href : '#', chatCtaTarget: topic && topic.target ? topic.target : '_self',
+      chatCtaClick: topic && topic.action === 'proposal' ? (e) => { e.preventDefault(); this.setState({ proposalOpen: true, proposalSent: false, chatOpen: false }); } : () => { this.setState({ chatOpen: false }); },
+      chatBack: () => this.setState({ chatTopic: -1, chatSub: -1 }),
+      chatSubsOpen: !!topic && subsList.length > 0, chatSubs, chatSubPrompt: topic && topic.subPrompt ? topic.subPrompt : '',
+      chatSubOpen: !!activeSub, chatSubLabel: activeSub ? activeSub.label : '', chatSubDetail: activeSub ? activeSub.detail : '',
+      workbookOpen: s.workbookOpen, workbookSent: s.workbookSent, workbookNotSent: !s.workbookSent,
+      workbookEmail: s.leadEmail || 'your inbox',
+      calLink: 'https://calendly.com/turtlelabs/intro-call',
+      openWorkbook: () => this.setState({ workbookOpen: true }),
+      closeWorkbook: () => this.setState({ workbookOpen: false }),
+      closeWorkbookBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ workbookOpen: false }); },
+      submitWorkbook: (e) => { e.preventDefault(); const em = (e.target.wb_email.value || '').trim(); this.downloadWorkbook(); this.setState({ workbookSent: true, leadEmail: em || this.state.leadEmail }); },
+      downloadWorkbookAgain: () => this.downloadWorkbook(),
+      // sticky
+      showSticky: (this.props.stickyCta ?? true) && s.showSticky && !s.proposalOpen && s.workIdx < 0
+    };
+  }
+}
+</script>
+</body>
+</html>

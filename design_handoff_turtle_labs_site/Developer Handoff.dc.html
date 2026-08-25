@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  doc-page:not(:defined){visibility:hidden}
+</style>
+<script src="./doc-page.js"></script>
+<style>
+  h1,h2,h3,h4{font-family:'Outfit',sans-serif;}
+  body{font-family:'Inter',system-ui,sans-serif;color:#201e1d;}
+  a{color:#c8261a;}
+  code{font-family:ui-monospace,'SF Mono',Menlo,monospace;background:#f3f2f2;border:1px solid #e3e0dd;border-radius:4px;padding:1px 5px;font-size:0.88em;}
+  pre{background:#141414;color:#f3f2f2;border-radius:8px;padding:16px 18px;overflow-x:auto;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12.5px;line-height:1.6;break-inside:avoid;}
+  pre code{background:none;border:none;color:inherit;padding:0;}
+  .kicker{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#c8261a;font-weight:700;margin:0 0 6px 0;}
+  .lead{font-size:15px;color:#4a4644;line-height:1.6;}
+  .rule{border:none;border-top:2px solid #201e1d;margin:34px 0 26px 0;}
+  .box{border:1px solid #e3e0dd;border-left:3px solid #c8261a;background:#faf9f8;padding:14px 18px;margin:16px 0;break-inside:avoid;border-radius:0 6px 6px 0;}
+  .box.warn{border-left-color:#d98c00;background:#fffaf0;}
+  .box.ok{border-left-color:#1a8f4c;background:#f2fbf5;}
+  table.t{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+  table.t th{text-align:left;background:#201e1d;color:#f3f2f2;padding:9px 12px;font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;}
+  table.t td{padding:9px 12px;border-bottom:1px solid #eae7e4;vertical-align:top;}
+  .step{display:flex;gap:14px;margin:0 0 14px 0;break-inside:avoid;}
+  .step .n{flex:0 0 28px;height:28px;background:#c8261a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;}
+  .step .b{flex:1;}
+  .step .b b{font-family:'Outfit',sans-serif;}
+  ul.tight{margin:8px 0;padding-left:20px;}
+  ul.tight li{margin:0 0 5px 0;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;background:#f3e1df;color:#c8261a;font-family:'Outfit',sans-serif;}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:4px;font-family:'Outfit',sans-serif;}
+  .pill.free{background:#e6f4ec;color:#1a8f4c;}
+  .pill.paid{background:#fef0e6;color:#d98c00;}
+</style>
+</helmet>
+<doc-page margin="0.7in">
+
+  <header slot="header" style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #201e1d;padding-bottom:8px;font-size:11px;color:#8a8582;font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">
+    <span>Turtle Labs Website</span>
+    <span>Developer Handoff</span>
+  </header>
+  <footer slot="footer" style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e3e0dd;padding-top:7px;font-size:10.5px;color:#a8a3a0;">
+    <span>Confidential - Turtle Labs</span>
+    <span>info@turtlelabs.co.in</span>
+  </footer>
+
+  <p class="kicker">Handoff Document</p>
+  <h1 style="font-size:38px;font-weight:900;letter-spacing:-0.02em;margin:0 0 10px 0;">Turtle Labs Website</h1>
+  <p class="lead" style="max-width:600px;">Everything needed to take this design from a working prototype to a live, database-backed website. Written for two readers: a <b>developer</b> (Sections 3-6) and a <b>non-coder founder</b> (Section 7). Start with Section 1.</p>
+
+  <hr class="rule">
+
+  <h2 style="font-size:22px;margin:0 0 4px 0;">1. What you have</h2>
+  <p class="lead">A complete, high-fidelity front-end built in HTML/CSS/JavaScript (React under the hood). Every screen, flow, animation and interaction is finished and clickable. What is <i>not</i> yet built: the server, the database, real email sending, and login. Those are Section 4 onward.</p>
+
+  <table class="t">
+    <thead><tr><th>File</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td><code>Turtle Labs Landing.dc.html</code></td><td>Home page - hero, score quiz, works, services, testimonials, journal preview, booking, workbook &amp; playbook capture.</td></tr>
+      <tr><td><code>Works.dc.html</code></td><td>Works listing + full case-study view with media gallery, lightbox, pagination.</td></tr>
+      <tr><td><code>Journal.dc.html</code></td><td>Journal listing + article reader (renders rich text / markdown).</td></tr>
+      <tr><td><code>TurtleLabs CMS.dc.html</code></td><td>Admin studio to edit works, journal, reviews, logos, featured set, and upload media. <b>Demo only - in-memory.</b></td></tr>
+      <tr><td><code>tl-content.js</code></td><td><b>The single content source.</b> All works, journal articles, services, reviews, logos and the featured list live here as plain data.</td></tr>
+      <tr><td><code>support.js</code></td><td>Runtime that renders the pages. Do not edit.</td></tr>
+      <tr><td><code>assets/</code></td><td>Images, logos, video, the workbook PDF.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="box"><b>Key idea:</b> the four <code>.dc.html</code> pages all read from <code>tl-content.js</code>. Change content there once and it updates everywhere. This is the file your future backend will feed.</div>
+
+  <hr class="rule">
+
+  <h2 style="font-size:22px;margin:0 0 4px 0;">2. Run it locally (any machine)</h2>
+  <p class="lead">Because the pages load a shared script and images, opening the HTML by double-click will not work. Serve the folder over a tiny local web server instead. Pick whichever you have.</p>
+
+  <h4 style="margin:18px 0 6px 0;">Option A - Python (already on most Macs/Linux)</h4>
+  <pre><code>cd path/to/project
+python3 -m http.server 8000</code></pre>
+  <p style="font-size:13px;color:#4a4644;margin:6px 0 0 0;">Then open <code>http://localhost:8000/Turtle%20Labs%20Landing.dc.html</code></p>
+
+  <h4 style="margin:18px 0 6px 0;">Option B - Node (if you have Node.js)</h4>
+  <pre><code>cd path/to/project
+npx serve .          # or:  npx http-server -p 8000</code></pre>
+
+  <h4 style="margin:18px 0 6px 0;">Option C - VS Code</h4>
+  <p style="font-size:13px;color:#4a4644;margin:0;">Install the <b>Live Server</b> extension, right-click any <code>.dc.html</code> file, choose <b>Open with Live Server</b>.</p>
+
+  <div class="box warn"><b>Filenames have spaces</b> (e.g. <code>Turtle Labs Landing.dc.html</code>). In a URL a space becomes <code>%20</code>. Before real hosting, rename files to hyphenated slugs (<code>index.html</code>, <code>works.html</code>, <code>journal.html</code>) and update the links between pages.</p>
+
+  <hr class="rule">
+
+  <h2 style="font-size:22px;margin:0 0 4px 0;">3. Architecture at a glance</h2>
+  <pre><code>Browser (the .dc.html pages)
+        |
+        |  reads content from
+        v
+   tl-content.js   &lt;--- TODAY: hand-edited file
+        |
+        |  TARGET: replace this static file with a live API call
+        v
+   Backend API  ---&gt;  Database (works, journal, reviews, logos, leads)
+        |
+        +--&gt;  File / media storage (images, video, PDFs)
+        +--&gt;  Email service (workbook, playbook, booking confirmations)
+        +--&gt;  Auth (real CMS login)</code></pre>
+  <p class="lead">The whole backend job is: stand up a database + API, then swap the one <code>import('./tl-content.js')</code> call for a <code>fetch()</code> to that API, and make the CMS write to it instead of memory.</p>
+
+  <hr class="rule">
+
+  <h2 style="font-size:22px;margin:0 0 4px 0;">4. Connecting a backend &amp; database</h2>
+  <p class="lead">Recommended stack for a solo project: <b>Supabase</b> (hosted Postgres database + file storage + auth + auto-generated API, generous free tier). Firebase is an equal alternative. Steps are the same in spirit.</p>
+
+  <div class="step"><div class="n">1</div><div class="b"><b>Create the project.</b> Sign up at supabase.com, create a project, note the Project URL and the public (anon) API key.</div></div>
+  <div class="step"><div class="n">2</div><div class="b"><b>Create tables</b> that mirror <code>tl-content.js</code>: <code>works</code>, <code>journal</code>, <code>reviews</code>, <code>logos</code>, plus <code>featured</code> (ordered work ids) and <code>leads</code> (captured emails). Match the field names already used in <code>tl-content.js</code> so the front-end needs minimal changes.</div></div>
+  <div class="step"><div class="n">3</div><div class="b"><b>Enable Storage</b> for media (images, video, PDFs). Store the public URL of each upload in the matching row (e.g. a work's <code>media</code> array).</div></div>
+  <div class="step"><div class="n">4</div><div class="b"><b>Point the site at it.</b> In each page's <code>componentDidMount</code>, replace the <code>import('./tl-content.js')</code> block with a fetch of the same shape:</div></div>
+  <pre><code>// BEFORE (static file)
+import('./tl-content.js').then(m =&gt; { this._shared = m.TL_CONTENT; ... });
+
+// AFTER (live API) - shape stays identical
+const res = await fetch('https://YOUR-PROJECT.supabase.co/rest/v1/site_content', {
+  headers: { apikey: PUBLIC_KEY, Authorization: 'Bearer ' + PUBLIC_KEY }
+});
+this._shared = await res.json();   // same keys: works, journal, services, featured...</code></pre>
+  <div class="step"><div class="n">5</div><div class="b"><b>Make the CMS write.</b> In <code>TurtleLabs CMS.dc.html</code>, the save / delete / featured / upload handlers currently update React state only (search for the <code>(demo)</code> toast strings). Replace those with Supabase <code>insert</code> / <code>update</code> / <code>delete</code> / <code>storage.upload</code> calls.</div></div>
+  <div class="step"><div class="n">6</div><div class="b"><b>Replace the demo login.</b> The CMS sign-in accepts anything. Swap it for Supabase Auth (email + password) and protect the write endpoints with row-level security so only signed-in admins can edit.</div></div>
+
+  <div class="box ok"><b>Why this is the light path:</b> Supabase gives you the database, the API, file storage and auth without writing a server. The only code is the fetch/insert swaps above - roughly 1-3 days for a developer, and the front-end design is untouched.</div>
+
+  <h4 style="margin:20px 0 6px 0;">4b. Email sending (workbook, playbook, booking)</h4>
+  <p style="font-size:13px;color:#4a4644;margin:0 0 8px 0;">A static page <b>cannot</b> send email itself - today the buttons download the PDF and show a "sent" confirmation only. To actually deliver mail, wire the capture forms to one of:</p>
+  <ul class="tight" style="font-size:13px;color:#4a4644;">
+    <li><b>EmailJS</b> - no backend, sends from the browser via a template. Fastest.</li>
+    <li><b>A Supabase Edge Function</b> + <b>Resend</b> or <b>SendGrid</b> - stores the lead and emails the PDF as an attachment. More robust.</li>
+    <li>Your existing CRM / mailing tool's form endpoint.</li>
+  </ul>
+  <p style="font-size:13px;color:#4a4644;margin:8px 0 0 0;">The capture handlers to wire live in <code>Turtle Labs Landing.dc.html</code>: <code>submitWorkbook</code>, <code>submitPlaybook</code>, and the booking submit. They already collect the email - just POST it to your chosen service.</p>
+
+  <h4 style="margin:20px 0 6px 0;">4c. Booking</h4>
+  <p style="font-size:13px;color:#4a4644;margin:0;">Booking hands off to Calendly (<code>calendly.com/turtlelabsdesign/30min</code>). The on-page calendar prefills the date and email; the visitor picks the time on Calendly. Confirm the Calendly URL is final. No backend needed for this.</p>
+
+  <hr class="rule">
+
+  <h2 style="font-size:22px;margin:0 0 4px 0;">5. Known items to resolve before launch</h2>
+  <table class="t">
+    <thead><tr><th>Item</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>Filenames contain spaces</td><td>Rename to slugs (<code>index.html</code>, <code>works.html</code>, <code>journal.html</code>, <code>admin.html</code>); update inter-page links.</td></tr>
+      <tr><td>Escape key does not close the Workbook popup</td><td>Add <code>workbookOpen</code> to the Escape handler (✕ and backdrop already close it).</td></tr>
+      <tr><td>Modals can stack</td><td>Enforce one modal open at a time (close others before opening a new one).</td></tr>
+      <tr><td>Browser back/forward between case studies</td><td>Case-study nav uses <code>replaceState</code>; add a <code>hashchange</code> listener if back-button cycling is wanted.</td></tr>
+      <tr><td>Placeholder external links</td><td>Confirm footer Privacy / Terms / "Main Site" URLs and the Calendly link are final.</td></tr>
+      <tr><td>Legal</td><td>Add real Privacy Policy, Terms, and (if EU traffic) a cookie/consent notice.</td></tr>
+      <tr><td>SEO &amp; sharing</td><td>Add per-page <code>&lt;title&gt;</code>, meta description, and Open Graph image tags.</td></tr>
+      <tr><td>Analytics</td><td>Add Google Analytics / Plausible before launch to measure the funnels.</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="rule">
+
+  <h2 style="font-size:22px;margin:0 0 4px 0;">6. Hosting (with a developer)</h2>
+  <p class="lead">This is a static front-end, so hosting is cheap and simple. Push the folder to any static host - all have free tiers and auto-HTTPS:</p>
+  <ul class="tight" style="font-size:13.5px;">
+    <li><b>Netlify</b> or <b>Vercel</b> - drag-and-drop the folder or connect a Git repo; deploys in seconds, custom domain in minutes.</li>
+    <li><b>Cloudflare Pages</b> or <b>GitHub Pages</b> - equally free and fast.</li>
+  </ul>
+  <p style="font-size:13px;color:#4a4644;">The Supabase backend (Section 4) is hosted by Supabase separately; the site just calls its URL. Point your domain's DNS at the static host and you are live.</p>
+
+  <hr class="rule">
+
+  <h2 style="font-size:22px;margin:0 0 4px 0;">7. Go live <span style="color:#c8261a;">without a developer or coding</span></h2>
+  <p class="lead">You can launch a real, editable site yourself. The trade-off: you manage content in a hosted dashboard instead of this custom CMS screen. Two honest routes:</p>
+
+  <h4 style="margin:16px 0 6px 0;">Route 1 - Publish the design as-is, edit content by asking (fastest)</h4>
+  <div class="step"><div class="n">1</div><div class="b"><b>Deploy the folder</b> to Netlify: create a free account, drag the project folder onto the Netlify dashboard. You get a live URL immediately.</div></div>
+  <div class="step"><div class="n">2</div><div class="b"><b>Connect your domain</b> in Netlify (Domain settings - it walks you through the DNS records). HTTPS is automatic.</div></div>
+  <div class="step"><div class="n">3</div><div class="b"><b>To change content</b>, edit <code>tl-content.js</code> (it is plain, labelled data) and re-drag the folder, or ask us to update and redeploy. <span class="pill free">no code</span></div></div>
+  <p style="font-size:12.5px;color:#8a8582;margin:2px 0 0 42px;">Limitation: forms show the "sent" confirmation and download the PDF, but do not email until wired (Route 2 or a developer).</p>
+
+  <h4 style="margin:18px 0 6px 0;">Route 2 - Managed CMS dashboard (fully self-serve, recommended)</h4>
+  <div class="step"><div class="n">1</div><div class="b"><b>Sign up for a no-code CMS</b> - <b>Sanity</b>, <b>Storyblok</b>, or <b>Webflow CMS</b>. They provide a database, media uploads (image/video/PDF with their own compression + CDN), and a login, all through a web dashboard.</div></div>
+  <div class="step"><div class="n">2</div><div class="b"><b>Recreate the content types</b> in their dashboard to match this site: Work, Journal Article, Review, Logo (fields listed in Section 4, step 2). Their setup is form-based.</div></div>
+  <div class="step"><div class="n">3</div><div class="b"><b>Add email + booking</b> with no-code tools: <b>EmailJS</b> or the CMS's form feature for the workbook/playbook, and your <b>Calendly</b> link for booking.</div></div>
+  <div class="step"><div class="n">4</div><div class="b"><b>The one code touch</b> is connecting the site to the CMS's API (Section 4, step 4). Their docs walk you through it; if you get stuck, this is the single task worth a few hours of a freelancer.</div></div>
+  <div class="box"><b>Why a managed CMS matters for speed:</b> Sanity/Storyblok/Webflow auto-serve optimized images from a fast CDN - the biggest real-world page-speed win, on top of the in-browser compression already built into the demo CMS.</div>
+
+  <hr class="rule">
+
+  <h2 style="font-size:22px;margin:0 0 4px 0;">8. Suggested launch checklist</h2>
+  <ul class="tight" style="font-size:13.5px;">
+    <li>Rename files to slugs; verify every menu, footer, and button link.</li>
+    <li>Finalize the 6 featured works and their order (CMS Featured screen or the <code>featured</code> line in <code>tl-content.js</code>).</li>
+    <li>Replace demo/placeholder figures in case studies with real numbers.</li>
+    <li>Wire the workbook, playbook, and booking forms to a real email service.</li>
+    <li>Stand up the database + real CMS login (or move to a managed CMS).</li>
+    <li>Add legal pages, SEO/OG tags, and analytics.</li>
+    <li>Test on mobile, tablet, and desktop; test light and dark themes.</li>
+    <li>Deploy to a static host, connect the domain, confirm HTTPS.</li>
+    <li>Do a full click-through of every flow on the live URL before announcing.</li>
+  </ul>
+
+  <hr class="rule">
+  <p style="font-size:12px;color:#a8a3a0;text-align:center;margin:8px 0 0 0;">Prepared for the Turtle Labs website project - info@turtlelabs.co.in - Kochi - Nagpur - Bengaluru - New Delhi</p>
+
+</doc-page>
+</x-dc>
+</body>
+</html>

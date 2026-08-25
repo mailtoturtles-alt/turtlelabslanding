@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap');
+:root {
+  --bg:#0B0B0C; --bg2:#141416; --card:#18181B; --panel:#101012; --text:#F6F3EC; --muted:#A1A1AA; --faint:#71717A;
+  --line:rgba(246,243,236,0.12); --line2:rgba(246,243,236,0.07);
+  --green:#34C759; --green-ink:#04170B; --greent:#4ADE80; --blue:#60A5FA; --amber:#FFB35C; --red:#FF6B6B;
+}
+*, *::before, *::after { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.55; }
+input, textarea, select { font-family:'Inter',sans-serif; }
+button:focus-visible, a:focus-visible, input:focus, textarea:focus, select:focus { outline:2px solid var(--green); outline-offset:1px; }
+::-webkit-scrollbar { width:10px; height:10px; } ::-webkit-scrollbar-thumb { background:var(--line); border-radius:99px; }
+@keyframes tlfade { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+@keyframes tlslide { from { transform:translateX(30px); opacity:0; } to { transform:none; opacity:1; } }
+</style>
+</helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#0B0B0C"></rect><rect x="60" y="70" width="90" height="160" fill="#34C759"></rect><text x="245" y="165" font-family="Outfit, sans-serif" font-size="40" font-weight="900" fill="#F6F3EC" text-anchor="middle">CMS</text></svg></template>
+
+<!-- ================= LOGIN ================= -->
+<sc-if value="{{ loginView }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:100vh; display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));">
+    <div style="background:linear-gradient(160deg, #0d1f14, #0B0B0C 70%); padding:56px 48px; display:flex; flex-direction:column; justify-content:space-between; min-height:100vh;">
+      <div style="display:flex; align-items:center; gap:12px; color:var(--text); font-family:'Outfit',sans-serif; font-weight:800; font-size:22px; letter-spacing:-0.03em;">
+        <span style="display:inline-block; width:34px; height:34px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
+        Turtle Labs
+      </div>
+      <div>
+        <div style="display:inline-flex; padding:6px 14px; border-radius:999px; border:1px solid rgba(52,199,89,0.4); color:var(--greent); font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:22px;">Content Studio</div>
+        <h1 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(32px, 4vw, 46px); letter-spacing:-0.03em; line-height:1.08; margin:0 0 16px 0;">Run the whole site from one place.</h1>
+        <p style="color:var(--muted); font-size:17px; max-width:420px; margin:0;">Edit works, journal articles, reviews and client logos. Changes flow to every page from a single content source.</p>
+      </div>
+      <div style="color:var(--faint); font-size:13px;">Demo environment · no real credentials required</div>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:center; padding:48px 32px; min-height:100vh;">
+      <form onSubmit="{{ doLogin }}" style="width:100%; max-width:380px; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:40px 34px;">
+        <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:26px; margin:0 0 6px 0;">Sign in</h2>
+        <p style="color:var(--muted); font-size:14px; margin:0 0 26px 0;">Welcome back. Use any email to explore the demo.</p>
+        <label style="display:block; font-size:13px; color:var(--muted); margin-bottom:7px;">Email</label>
+        <input name="email" type="email" value="admin@turtlelabs.co.in" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:18px;">
+        <label style="display:block; font-size:13px; color:var(--muted); margin-bottom:7px;">Password</label>
+        <input name="password" type="password" value="demo1234" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:24px;">
+        <button type="submit" style="width:100%; background:var(--green); color:var(--green-ink); border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="background:#4ADE80">Sign in to Studio →</button>
+        <div style="text-align:center; margin-top:18px;"><a href="Turtle Labs Landing.dc.html" style="color:var(--muted); font-size:13px;" style-hover="color:var(--text)">← Back to website</a></div>
+      </form>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ================= APP SHELL ================= -->
+<sc-if value="{{ appView }}" hint-placeholder-val="{{ false }}">
+  <div style="display:grid; grid-template-columns:248px 1fr; min-height:100vh;">
+    <!-- Sidebar -->
+    <aside style="background:var(--panel); border-right:1px solid var(--line); padding:24px 16px; display:flex; flex-direction:column; gap:6px; position:sticky; top:0; height:100vh;">
+      <div style="display:flex; align-items:center; gap:11px; padding:6px 10px 20px 10px; color:var(--text); font-family:'Outfit',sans-serif; font-weight:800; font-size:19px; letter-spacing:-0.03em;">
+        <span style="display:inline-block; width:30px; height:30px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
+        Studio
+      </div>
+      <sc-for list="{{ navItems }}" as="ni" hint-placeholder-count="5">
+        <button onClick="{{ ni.pick }}" style="display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:11px 14px; border-radius:12px; background:{{ ni.bg }}; color:{{ ni.fg }}; border:none; font-size:14.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:var(--bg2)"><span style="font-size:16px; width:20px; text-align:center;">{{ ni.icon }}</span>{{ ni.label }}<span style="margin-left:auto; font-size:12px; color:var(--faint);">{{ ni.count }}</span></button>
+      </sc-for>
+      <div style="margin-top:auto; display:flex; flex-direction:column; gap:6px;">
+        <a href="Turtle Labs Landing.dc.html" target="_blank" style="display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:12px; color:var(--muted); font-size:14px; font-weight:600;" style-hover="background:var(--bg2); color:var(--text)"><span style="width:20px; text-align:center;">↗</span>View website</a>
+        <button onClick="{{ logout }}" style="display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:12px; background:none; border:none; color:var(--muted); font-size:14px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; text-align:left;" style-hover="background:var(--bg2); color:var(--text)"><span style="width:20px; text-align:center;">⏻</span>Log out</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main style="padding:0; min-width:0; position:relative;">
+      <div style="position:sticky; top:0; z-index:5; background:rgba(11,11,12,0.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:20px 34px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+        <div>
+          <div style="color:var(--faint); font-size:12px; letter-spacing:0.08em; text-transform:uppercase;">Content Studio</div>
+          <h1 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:24px; margin:2px 0 0 0; letter-spacing:-0.02em;">{{ pageTitle }}</h1>
+        </div>
+        <sc-if value="{{ showAddBtn }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ addNew }}" style="display:inline-flex; align-items:center; gap:8px; background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:12px 22px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80"><span style="font-size:16px;">＋</span>{{ addLabel }}</button>
+        </sc-if>
+      </div>
+
+      <div style="padding:30px 34px 80px 34px;">
+
+        <!-- DASHBOARD -->
+        <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:18px; margin-bottom:32px;">
+            <sc-for list="{{ dashStats }}" as="d" hint-placeholder-count="4">
+              <div style="background:var(--card); border:1px solid var(--line); border-radius:20px; padding:26px 24px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;"><span style="font-size:20px;">{{ d.icon }}</span><button onClick="{{ d.go }}" style="background:none; border:none; color:var(--greent); font-size:12.5px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;">Manage →</button></div>
+                <div style="font-family:'Outfit',sans-serif; font-weight:800; font-size:40px; line-height:1; color:{{ d.color }};">{{ d.value }}</div>
+                <div style="color:var(--muted); font-size:14px; margin-top:6px;">{{ d.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:18px;">
+            <div style="background:var(--card); border:1px solid var(--line); border-radius:20px; padding:26px 24px;">
+              <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:17px; margin:0 0 16px 0;">Recent activity</h3>
+              <div style="display:flex; flex-direction:column; gap:14px;">
+                <sc-for list="{{ activity }}" as="a" hint-placeholder-count="4">
+                  <div style="display:flex; gap:12px; align-items:flex-start;"><span style="width:8px; height:8px; border-radius:50%; background:{{ a.dot }}; margin-top:6px; flex-shrink:0;"></span><div><div style="font-size:14px; color:var(--text);">{{ a.text }}</div><div style="font-size:12px; color:var(--faint);">{{ a.time }}</div></div></div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background:linear-gradient(160deg, rgba(52,199,89,0.1), var(--card)); border:1px solid var(--line); border-radius:20px; padding:26px 24px; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:17px; margin:0 0 8px 0;">One source of truth</h3>
+                <p style="color:var(--muted); font-size:14px; margin:0;">Everything you edit here lives in a single shared content file. The homepage, Works page and Journal all read from it - edit once, update everywhere.</p>
+              </div>
+              <div style="margin-top:18px; padding:12px 14px; background:var(--bg); border:1px solid var(--line); border-radius:12px; color:var(--faint); font-size:12.5px; font-family:monospace;">tl-content.js</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- LIST TABLE (works / journal / reviews / logos) -->
+        <sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+          <div style="background:var(--card); border:1px solid var(--line); border-radius:20px; overflow:hidden;">
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+              <div style="display:flex; align-items:center; gap:18px; padding:16px 22px; border-bottom:1px solid var(--line2);" style-hover="background:var(--bg2)">
+                <div style="width:64px; height:44px; border-radius:10px; background:{{ r.thumbBg }}; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden;">{{ r.thumbEl }}</div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-family:'Outfit',sans-serif; font-weight:700; font-size:15.5px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ r.title }}</div>
+                  <div style="color:var(--muted); font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ r.sub }}</div>
+                </div>
+                <sc-if value="{{ r.hasBadge }}" hint-placeholder-val="{{ false }}">
+                  <span style="background:{{ r.badgeBg }}; color:{{ r.badgeFg }}; border-radius:999px; padding:5px 13px; font-size:12px; font-weight:700; white-space:nowrap;">{{ r.badge }}</span>
+                </sc-if>
+                <button onClick="{{ r.edit }}" style="background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">Edit</button>
+                <button onClick="{{ r.del }}" aria-label="Delete" style="background:none; border:1px solid var(--line); border-radius:10px; width:36px; height:36px; color:var(--muted); cursor:pointer; font-size:15px; font-family:'Inter',sans-serif;" style-hover="border-color:var(--red); color:var(--red)">🗑</button>
+              </div>
+            </sc-for>
+            <sc-if value="{{ emptyList }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:50px; text-align:center; color:var(--muted); font-size:15px;">Nothing here yet. Use the button above to add one.</div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- FEATURED (homepage top 6) -->
+        <sc-if value="{{ isFeatured }}" hint-placeholder-val="{{ false }}">
+          <p style="color:var(--muted); font-size:14.5px; margin:0 0 22px 0; max-width:720px;">Pick up to 6 works to feature on the homepage and set their order. The homepage grid shows these in the exact order below, using the arrows to reorder.</p>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:22px; align-items:start;">
+
+            <!-- Featured, in order -->
+            <div style="background:var(--card); border:1px solid var(--line); border-radius:20px; overflow:hidden;">
+              <div style="padding:16px 22px; border-bottom:1px solid var(--line2); display:flex; align-items:center; justify-content:space-between;">
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:16px; margin:0;">On the homepage</h3>
+                <span style="font-size:12.5px; font-weight:700; color:var(--greent);">{{ featCount }} / 6</span>
+              </div>
+              <sc-for list="{{ featuredList }}" as="fw" hint-placeholder-count="6">
+                <div style="display:flex; align-items:center; gap:14px; padding:14px 22px; border-bottom:1px solid var(--line2);" style-hover="background:var(--bg2)">
+                  <span style="width:24px; text-align:center; font-family:'Outfit',sans-serif; font-weight:800; font-size:15px; color:var(--greent);">{{ fw.pos }}</span>
+                  <div style="width:56px; height:40px; border-radius:9px; background:{{ fw.thumbBg }}; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden;">{{ fw.thumbEl }}</div>
+                  <div style="flex:1; min-width:0;">
+                    <div style="font-family:'Outfit',sans-serif; font-weight:700; font-size:14.5px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ fw.title }}</div>
+                    <div style="color:var(--muted); font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ fw.sub }}</div>
+                  </div>
+                  <div style="display:flex; gap:5px; flex-shrink:0;">
+                    <button onClick="{{ fw.up }}" disabled="{{ fw.isFirst }}" aria-label="Move up" style="width:32px; height:32px; border-radius:9px; background:var(--bg); border:1px solid var(--line); color:var(--muted); cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text); color:var(--text)">↑</button>
+                    <button onClick="{{ fw.down }}" disabled="{{ fw.isLast }}" aria-label="Move down" style="width:32px; height:32px; border-radius:9px; background:var(--bg); border:1px solid var(--line); color:var(--muted); cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text); color:var(--text)">↓</button>
+                    <button onClick="{{ fw.remove }}" aria-label="Remove" style="width:32px; height:32px; border-radius:9px; background:none; border:1px solid var(--line); color:var(--muted); cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--red); color:var(--red)">✕</button>
+                  </div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ featEmpty }}" hint-placeholder-val="{{ true }}">
+                <div style="padding:44px; text-align:center; color:var(--muted); font-size:14px;">No featured works yet. Add some from the right.</div>
+              </sc-if>
+            </div>
+
+            <!-- Available to add -->
+            <div style="background:var(--card); border:1px solid var(--line); border-radius:20px; overflow:hidden;">
+              <div style="padding:16px 22px; border-bottom:1px solid var(--line2);">
+                <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:16px; margin:0;">Available works</h3>
+              </div>
+              <sc-if value="{{ featFull }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:14px 22px; background:rgba(52,199,89,0.08); border-bottom:1px solid var(--line2); color:var(--greent); font-size:13px; font-weight:600;">You've reached 6 featured works. Remove one to add another.</div>
+              </sc-if>
+              <sc-for list="{{ availableWorks }}" as="aw" hint-placeholder-count="4">
+                <div style="display:flex; align-items:center; gap:14px; padding:14px 22px; border-bottom:1px solid var(--line2);" style-hover="background:var(--bg2)">
+                  <div style="width:56px; height:40px; border-radius:9px; background:{{ aw.thumbBg }}; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden;">{{ aw.thumbEl }}</div>
+                  <div style="flex:1; min-width:0;">
+                    <div style="font-family:'Outfit',sans-serif; font-weight:700; font-size:14.5px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ aw.title }}</div>
+                    <div style="color:var(--muted); font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ aw.sub }}</div>
+                  </div>
+                  <button onClick="{{ aw.add }}" disabled="{{ featFull }}" style="flex-shrink:0; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--greent); color:var(--greent)">+ Feature</button>
+                </div>
+              </sc-for>
+              <sc-if value="{{ availEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:44px; text-align:center; color:var(--muted); font-size:14px;">All works are featured.</div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+      </div>
+
+      <!-- EDIT DRAWER -->
+      <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+        <div onMouseDown="{{ backdropDown }}" onClick="{{ closeDrawerBackdrop }}" style="position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:50; animation:tlfade .2s ease;">
+          <div onClick="{{ stop }}" style="position:absolute; top:0; right:0; bottom:0; width:min(520px, 100%); background:var(--panel); border-left:1px solid var(--line); overflow-y:auto; animation:tlslide .25s ease;">
+            <div style="position:sticky; top:0; background:var(--panel); border-bottom:1px solid var(--line); padding:20px 28px; display:flex; align-items:center; justify-content:space-between; z-index:2;">
+              <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:19px; margin:0;">{{ drawerTitle }}</h3>
+              <button onClick="{{ closeDrawer }}" aria-label="Close" style="background:none; border:1px solid var(--line); border-radius:50%; width:34px; height:34px; color:var(--muted); font-size:16px; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text); color:var(--text)">✕</button>
+            </div>
+            <div style="padding:26px 28px 100px 28px; display:flex; flex-direction:column; gap:20px;">
+              <sc-for list="{{ fields }}" as="f" hint-placeholder-count="4">
+                <div>
+                  <label style="display:block; font-size:13px; color:var(--muted); margin-bottom:8px; font-weight:600;">{{ f.label }}</label>
+                  <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}">
+                    <input value="{{ f.value }}" onChange="{{ f.set }}" placeholder="{{ f.ph }}" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:12px 15px; color:var(--text); font-size:14.5px;">
+                  </sc-if>
+                  <sc-if value="{{ f.isArea }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
+                      <sc-for list="{{ f.fmtBtns }}" as="fb" hint-placeholder-count="6">
+                        <button type="button" onClick="{{ fb.apply }}" title="{{ fb.title }}" style="min-width:34px; height:32px; padding:0 10px; border-radius:8px; background:var(--bg); border:1px solid var(--line); color:var(--text); font-size:13px; font-weight:{{ fb.weight }}; font-style:{{ fb.italic }}; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--greent); color:var(--greent)">{{ fb.label }}</button>
+                      </sc-for>
+                    </div>
+                    <textarea id="{{ f.fmtId }}" value="{{ f.value }}" onChange="{{ f.set }}" rows="{{ f.rows }}" placeholder="{{ f.ph }}" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:12px 15px; color:var(--text); font-size:14.5px; resize:vertical; line-height:1.6;"></textarea>
+                  </sc-if>
+                  <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                    <select value="{{ f.value }}" onChange="{{ f.set }}" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 15px; color:var(--text); font-size:14.5px;">
+                      <sc-for list="{{ f.options }}" as="op" hint-placeholder-count="4">
+                        <option value="{{ op }}">{{ op }}</option>
+                      </sc-for>
+                    </select>
+                  </sc-if>
+                  <sc-if value="{{ f.isMedia }}" hint-placeholder-val="{{ false }}">
+                    <div onDrop="{{ f.onDrop }}" onDragOver="{{ f.onDragOver }}" style="border:1.5px dashed var(--line); border-radius:14px; background:var(--bg); overflow:hidden;" style-hover="border-color:var(--greent)">
+                      <input type="file" id="{{ f.inputId }}" accept="{{ f.accept }}" onChange="{{ f.onPick }}" style="display:none;">
+                      <sc-if value="{{ f.hasMedia }}" hint-placeholder-val="{{ false }}">
+                        <div style="height:190px; background:#000; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                          <sc-if value="{{ f.isImage }}" hint-placeholder-val="{{ false }}">
+                            <img src="{{ f.mediaThumb }}" alt="" style="max-width:100%; max-height:100%; object-fit:contain;">
+                          </sc-if>
+                          <sc-if value="{{ f.isVideo }}" hint-placeholder-val="{{ false }}">
+                            <video src="{{ f.mediaUrl }}" controls style="max-width:100%; max-height:100%;"></video>
+                          </sc-if>
+                          <sc-if value="{{ f.isDoc }}" hint-placeholder-val="{{ false }}">
+                            <div style="text-align:center; color:var(--muted);"><div style="font-size:38px;">📄</div><div style="font-size:12px; margin-top:6px;">Preview not available</div></div>
+                          </sc-if>
+                        </div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 14px; border-top:1px solid var(--line);">
+                          <div style="min-width:0;">
+                            <div style="font-size:13px; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ f.mediaName }}</div>
+                            <div style="font-size:11px; color:var(--faint);">{{ f.sizeInfo }}</div>
+                          </div>
+                          <div style="display:flex; gap:8px; flex-shrink:0;">
+                            <label for="{{ f.inputId }}" style="background:var(--bg2); color:var(--text); border:1px solid var(--line); border-radius:9px; padding:7px 13px; font-size:12.5px; font-weight:600; cursor:pointer;" style-hover="border-color:var(--text)">Replace</label>
+                            <button onClick="{{ f.clearMedia }}" style="background:none; color:var(--muted); border:1px solid var(--line); border-radius:9px; padding:7px 13px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--red); color:var(--red)">Remove</button>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ f.noMedia }}" hint-placeholder-val="{{ true }}">
+                        <label for="{{ f.inputId }}" style="display:block; padding:40px 20px; text-align:center; cursor:pointer;">
+                          <div style="font-size:30px; color:var(--greent); line-height:1;">⬆</div>
+                          <div style="font-size:14px; color:var(--text); margin-top:10px; font-weight:600;">Drag &amp; drop, or click to browse</div>
+                          <div style="font-size:12px; color:var(--faint); margin-top:4px;">Images, video, GIF, PDF, and more</div>
+                        </label>
+                      </sc-if>
+                      <sc-if value="{{ f.busy }}" hint-placeholder-val="{{ false }}"><div style="padding:8px 14px; font-size:12px; color:var(--greent);">Compressing…</div></sc-if>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ f.isGallery }}" hint-placeholder-val="{{ false }}">
+                    <div onDrop="{{ f.onDrop }}" onDragOver="{{ f.onDragOver }}" style="border:1.5px dashed var(--line); border-radius:14px; background:var(--bg); padding:14px;" style-hover="border-color:var(--greent)">
+                      <input type="file" id="{{ f.inputId }}" accept="{{ f.accept }}" multiple="multiple" onChange="{{ f.onPick }}" style="display:none;">
+                      <sc-if value="{{ f.hasItems }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:12px;">
+                          <sc-for list="{{ f.items }}" as="m" hint-placeholder-count="3">
+                            <div style="position:relative; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#000;">
+                              <div style="height:84px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                                <sc-if value="{{ m.isImage }}" hint-placeholder-val="{{ true }}"><img src="{{ m.thumb }}" alt="" style="width:100%; height:100%; object-fit:cover;"></sc-if>
+                                <sc-if value="{{ m.isVideo }}" hint-placeholder-val="{{ false }}"><video src="{{ m.thumb }}" muted style="width:100%; height:100%; object-fit:cover;"></video></sc-if>
+                                <sc-if value="{{ m.isDoc }}" hint-placeholder-val="{{ false }}"><span style="font-size:26px;">📄</span></sc-if>
+                              </div>
+                              <button onClick="{{ m.remove }}" aria-label="Remove" style="position:absolute; top:5px; right:5px; width:22px; height:22px; border-radius:50%; background:rgba(0,0,0,0.7); color:#fff; border:none; cursor:pointer; font-size:11px; line-height:1; font-family:'Inter',sans-serif;">✕</button>
+                              <div style="padding:5px 7px; background:var(--card); border-top:1px solid var(--line); font-size:10px; color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ m.sizeInfo }}</div>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                      <label for="{{ f.inputId }}" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:14px; border:1px dashed var(--line2); border-radius:10px; cursor:pointer; color:var(--text); font-size:13.5px; font-weight:600;" style-hover="border-color:var(--greent); color:var(--greent)"><span style="font-size:17px;">⬆</span> Add media — drag &amp; drop or select multiple</label>
+                      <sc-if value="{{ f.busy }}" hint-placeholder-val="{{ false }}"><div style="margin-top:8px; font-size:12px; color:var(--greent);">Compressing…</div></sc-if>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ f.hint }}" hint-placeholder-val="{{ false }}">
+                    <div style="color:var(--faint); font-size:12px; margin-top:6px;">{{ f.hint }}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <div style="position:sticky; bottom:0; background:var(--panel); border-top:1px solid var(--line); padding:16px 28px; display:flex; gap:12px; justify-content:flex-end;">
+              <button onClick="{{ closeDrawer }}" style="background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:12px; padding:12px 22px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;">Cancel</button>
+              <button onClick="{{ saveDrawer }}" style="background:var(--green); color:var(--green-ink); border:none; border-radius:12px; padding:12px 26px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- TOAST -->
+      <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed; bottom:26px; left:50%; transform:translateX(-50%); z-index:80; background:var(--card); border:1px solid rgba(52,199,89,0.5); border-radius:999px; padding:13px 24px; display:flex; align-items:center; gap:10px; box-shadow:0 14px 40px rgba(0,0,0,0.45); animation:tlfade .25s ease;">
+          <span style="color:var(--greent); font-size:16px;">✓</span><span style="font-size:14px; color:var(--text); font-weight:600;">{{ toastMsg }}</span>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    authed:false, screen:'dashboard',
+    works:[], reviews:[], logos:[], journal:[], featured:[],
+    cats:[], inds:[],
+    drawer:null, // { section, index (null=new), draft }
+    toast:''
+  };
+
+  componentDidMount() {
+    import('./tl-content.js').then(m => {
+      const C = (m && m.TL_CONTENT) || {};
+      this.setState({
+        works:(C.works||[]).map(x=>({...x})),
+        reviews:(C.reviews||[]).map(x=>({...x})),
+        logos:(C.logos||[]).map(x=>({...x})),
+        journal:(C.journal||[]).map(x=>({...x})),
+        featured:(C.featured||[]).slice(),
+        cats:C.journalCategories||[], inds:C.journalIndustries||[]
+      });
+    }).catch(()=>{});
+  }
+
+  toast(msg){ this.setState({ toast:msg }); clearTimeout(this._t); this._t=setTimeout(()=>this.setState({toast:''}),2200); }
+
+  // ---- media pipeline (compression) ----
+  readAsData(file){ return new Promise(res=>{ const r=new FileReader(); r.onload=()=>res({url:r.result,name:file.name,mime:file.type||'application/octet-stream'}); r.readAsDataURL(file); }); }
+  loadImg(src){ return new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; }); }
+  fmtKB(kb){ return kb>=1024?(kb/1024).toFixed(1)+' MB':kb+' KB'; }
+  async processMedia(file){
+    const type=file.type||'';
+    const origKB=Math.round(file.size/1024);
+    // GIF / video / PDF / non-image: keep as-is (client compression unreliable)
+    if(!type.startsWith('image/') || type==='image/gif'){
+      const d=await this.readAsData(file);
+      d.sizeInfo=this.fmtKB(origKB);
+      return d;
+    }
+    // raster image: resize + re-encode to WebP, plus a small thumb for quick view
+    const d=await this.readAsData(file);
+    const img=await this.loadImg(d.url);
+    const draw=(max,q)=>{ let w=img.width,h=img.height; const sc=Math.min(1,max/Math.max(w,h)); w=Math.round(w*sc); h=Math.round(h*sc); const c=document.createElement('canvas'); c.width=w; c.height=h; const ctx=c.getContext('2d'); ctx.imageSmoothingQuality='high'; ctx.drawImage(img,0,0,w,h); return c.toDataURL('image/webp',q); };
+    const url=draw(1600,0.82);
+    const thumb=draw(480,0.7);
+    const outKB=Math.round((url.length*0.75)/1024);
+    return { url, thumb, name:file.name.replace(/\.[^.]+$/,'.webp'), mime:'image/webp', w:img.width, h:img.height, sizeInfo:this.fmtKB(origKB)+' → '+this.fmtKB(outKB) };
+  }
+  pickCoverMedia(key,file){ if(!file) return; this.setState({busy:true}); this.processMedia(file).then(m=>this.setState({busy:false},()=>this.setField(key,m))).catch(()=>this.setState({busy:false})); }
+  async addGalleryFiles(key,fileList){
+    const files=Array.from(fileList||[]); if(!files.length) return;
+    this.setState({busy:true});
+    const out=[];
+    for(const f of files){ try{ out.push(await this.processMedia(f)); }catch(e){} }
+    this.setState(s=>{ const d=s.drawer; if(!d) return {busy:false}; const cur=(d.draft[key]||[]).slice(); return {busy:false, drawer:{...d, draft:{...d.draft,[key]:cur.concat(out)}}}; });
+  }
+  removeGalleryItem(key,idx){ this.setState(s=>{ const d=s.drawer; if(!d) return {}; const cur=(d.draft[key]||[]).slice(); cur.splice(idx,1); return {drawer:{...d, draft:{...d.draft,[key]:cur}}}; }); }
+
+  mediaThumbEl(m){
+    if(!m||!m.url) return null;
+    const mime=m.mime||'';
+    if(mime.startsWith('video/')) return React.createElement('video',{src:m.url,muted:true,playsInline:true,style:{width:'100%',height:'100%',objectFit:'cover'}});
+    if(mime.startsWith('image/')) return React.createElement('img',{src:m.thumb||m.url,alt:'',style:{width:'100%',height:'100%',objectFit:'cover'}});
+    return React.createElement('span',{style:{fontSize:'18px'}},'📄');
+  }
+
+  // ---- case-study block editor ----
+  setBlockField(bi,key,val){ this.setState(s=>{ const d={...s.drawer}; const blocks=d.draft.blocks.slice(); blocks[bi]={...blocks[bi],[key]:val}; d.draft={...d.draft,blocks}; return {drawer:d}; }); }
+  moveBlock(bi,dir){ this.setState(s=>{ const d={...s.drawer}; const blocks=d.draft.blocks.slice(); const ni=bi+dir; if(ni<0||ni>=blocks.length) return null; const t=blocks[bi]; blocks[bi]=blocks[ni]; blocks[ni]=t; d.draft={...d.draft,blocks}; return {drawer:d}; }); }
+  delBlock(bi){ this.setState(s=>{ const d={...s.drawer}; const blocks=d.draft.blocks.slice(); blocks.splice(bi,1); d.draft={...d.draft,blocks}; return {drawer:d}; }); }
+  addBlock(type){ const base={type}; if(type==='gallery') base.items=[]; this.setState(s=>{ const d={...s.drawer}; const blocks=(d.draft.blocks||[]).concat([base]); d.draft={...d.draft,blocks}; return {drawer:d}; }); }
+  pickBlockMedia(bi,file){ if(!file) return; this.setState({busy:true}); this.processMedia(file).then(m=>{ this.setState({busy:false}); this.setBlockField(bi,'media',m); }).catch(()=>this.setState({busy:false})); }
+  addGalleryImage(bi,file){ if(!file) return; this.setState({busy:true}); this.processMedia(file).then(m=>{ this.setState(s=>{ const d={...s.drawer}; const blocks=d.draft.blocks.slice(); const blk={...blocks[bi]}; blk.items=(blk.items||[]).concat([m]); blocks[bi]=blk; d.draft={...d.draft,blocks}; return {drawer:d,busy:false}; }); }).catch(()=>this.setState({busy:false})); }
+  delGalleryImage(bi,gi){ this.setState(s=>{ const d={...s.drawer}; const blocks=d.draft.blocks.slice(); const blk={...blocks[bi]}; blk.items=(blk.items||[]).slice(); blk.items.splice(gi,1); blocks[bi]=blk; d.draft={...d.draft,blocks}; return {drawer:d}; }); }
+
+  fieldDefs(section){
+    if(section==='works') return [
+      {key:'title',label:'Project title',type:'text'},
+      {key:'cat',label:'Category',type:'select',options:['identity','digital','video','packaging']},
+      {key:'tag',label:'Display tag',type:'text',ph:'e.g. Brand Identity'},
+      {key:'loc',label:'Location',type:'text',ph:'City, Country'},
+      {key:'weeks',label:'Timeline',type:'text',ph:'e.g. 6 weeks'},
+      {key:'desc',label:'Short description',type:'area',rows:4},
+      {key:'media',label:'Thumbnail',type:'media',accept:'image/*,video/*,application/pdf',hint:'The single cover image shown on cards and listings. Drag & drop one file — images are auto-compressed to WebP.'},
+      {key:'gallery',label:'Images',type:'gallery',accept:'image/*,video/*,application/pdf',hint:'The full set of images/media shown on the work’s page. Drag & drop or select multiple at once — images are auto-compressed to WebP.'}
+    ];
+    if(section==='journal') return [
+      {key:'title',label:'Article title',type:'text'},
+      {key:'category',label:'Category',type:'select',options:this.state.cats},
+      {key:'industry',label:'Industry',type:'select',options:this.state.inds},
+      {key:'date',label:'Date',type:'text',ph:'e.g. Jul 14, 2026'},
+      {key:'readTime',label:'Read time',type:'text',ph:'e.g. 6 min read'},
+      {key:'excerpt',label:'Excerpt',type:'area',rows:3},
+      {key:'bodyText',label:'Body (one paragraph per blank line)',type:'area',rows:9},
+      {key:'media',label:'Cover media',type:'media',accept:'image/*,video/*,application/pdf',hint:'Drag & drop an image, video, GIF or PDF — or click to browse. Demo only: stored in-memory this session.'}
+    ];
+    if(section==='reviews') return [
+      {key:'name',label:'Client name',type:'text'},
+      {key:'loc',label:'Location / context',type:'text'},
+      {key:'initials',label:'Initials',type:'text',ph:'e.g. DT'},
+      {key:'quote',label:'Quote',type:'area',rows:5}
+    ];
+    if(section==='logos') return [
+      {key:'name',label:'Client name',type:'text'},
+      {key:'src',label:'Logo file path',type:'text',ph:'assets/logos/c-name.png',hint:'Upload the file to assets/logos, then reference it here.'}
+    ];
+    return [];
+  }
+
+  blankDraft(section){
+    if(section==='works') return {title:'',cat:'identity',tag:'Brand Identity',loc:'',weeks:'',desc:'',accent:'#4ADE80',tagBg:'rgba(0,168,107,0.15)',grad:'linear-gradient(135deg,#06180E,#0C2A16)',initials:'',outcomes:[],gallery:[]};
+    if(section==='journal') return {title:'',category:(this.state.cats[0]||''),industry:(this.state.inds[0]||''),date:'',readTime:'5 min read',excerpt:'',bodyText:'',tag:(this.state.cats[0]||'Note'),tagBg:'rgba(0,163,224,0.15)',tagFg:'var(--cyan)',grad:'linear-gradient(135deg, rgba(0,102,178,0.3), rgba(0,0,0,0) 65%), var(--card)',author:'Turtle Labs',id:'j-'+Date.now()};
+    if(section==='reviews') return {name:'',loc:'',initials:'',quote:'',avBg:'rgba(0,168,107,0.12)',avBorder:'var(--greent)',avFg:'var(--greent)'};
+    if(section==='logos') return {name:'',src:'assets/logos/'};
+    return {};
+  }
+
+  openDrawer(section,index){
+    let draft;
+    if(index===null){ draft=this.blankDraft(section); }
+    else {
+      const src=this.state[section][index];
+      draft={...src};
+      if(section==='journal') draft.bodyText=(src.body||[]).join('\n\n');
+    }
+    this.setState({ drawer:{ section, index, draft } });
+  }
+  setField(key,val){ this.setState(s=>({ drawer:{...s.drawer, draft:{...s.drawer.draft, [key]:val}} })); }
+  save(){
+    const d=this.state.drawer; if(!d) return;
+    const section=d.section; const draft={...d.draft};
+    if(section==='journal'){ draft.body=(draft.bodyText||'').split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean); if(draft.category) draft.tag=draft.category; delete draft.bodyText; }
+    if(section==='works' && !draft.initials){ draft.initials=(draft.title||'').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase(); }
+    this.setState(s=>{
+      const arr=s[section].slice();
+      if(d.index===null) arr.push(draft); else arr[d.index]=draft;
+      return { [section]:arr, drawer:null };
+    });
+    this.toast(d.index===null?'Item added (demo)':'Changes saved (demo)');
+  }
+  del(section,index){
+    this.setState(s=>{ const arr=s[section].slice(); arr.splice(index,1); return {[section]:arr}; });
+    this.toast('Deleted (demo)');
+  }
+
+  // ---- rich-text (markdown) toolbar for textarea fields ----
+  applyFmt(key, before, after, placeholder, lineStart){
+    const ta = document.getElementById('tlarea-'+key);
+    if(!ta) return;
+    const val = ta.value;
+    let start = ta.selectionStart, end = ta.selectionEnd;
+    if(lineStart){
+      // prefix each selected line (or the current line) with `before`
+      let ls = val.lastIndexOf('\n', start-1) + 1;
+      const sel = val.slice(ls, end) || placeholder;
+      const prefixed = sel.split('\n').map(l => before + l).join('\n');
+      const next = val.slice(0, ls) + prefixed + val.slice(end);
+      this.setField(key, next);
+      ta.value = next; ta.focus();
+      ta.selectionStart = ls; ta.selectionEnd = ls + prefixed.length;
+    } else {
+      const sel = val.slice(start, end) || placeholder;
+      const next = val.slice(0, start) + before + sel + after + val.slice(end);
+      this.setField(key, next);
+      ta.value = next; ta.focus();
+      ta.selectionStart = start + before.length;
+      ta.selectionEnd = start + before.length + sel.length;
+    }
+  }
+
+  // ---- featured works (homepage top 6) ----
+  featAdd(id){ this.setState(s=>{ if(s.featured.includes(id)||s.featured.length>=6) return null; return {featured:s.featured.concat([id])}; }, ()=>this.toast('Added to homepage (demo)')); }
+  featRemove(id){ this.setState(s=>({featured:s.featured.filter(x=>x!==id)}), ()=>this.toast('Removed from homepage (demo)')); }
+  featMove(id,dir){ this.setState(s=>{ const a=s.featured.slice(); const i=a.indexOf(id); const j=i+dir; if(i<0||j<0||j>=a.length) return null; const t=a[i]; a[i]=a[j]; a[j]=t; return {featured:a}; }); }
+
+  renderVals(){
+    const s=this.state;
+    const scr=s.screen;
+    const titles={dashboard:'Dashboard',works:'Works',featured:'Featured on homepage',journal:'Journal',reviews:'Reviews',logos:'Client logos'};
+    const addLabels={works:'Add work',journal:'New article',reviews:'Add review',logos:'Add logo'};
+
+    const navItems=[
+      ['dashboard','Dashboard','▤',''],
+      ['works','Works','◱',s.works.length],
+      ['featured','Featured','★',s.featured.length+'/6'],
+      ['journal','Journal','✎',s.journal.length],
+      ['reviews','Reviews','★',s.reviews.length],
+      ['logos','Client logos','⬡',s.logos.length]
+    ].map(n=>({ label:n[1], icon:n[2], count:n[3], bg: scr===n[0]?'rgba(52,199,89,0.14)':'transparent', fg: scr===n[0]?'var(--greent)':'var(--muted)', pick:()=>this.setState({screen:n[0]}) }));
+
+    // rows per section
+    let rows=[];
+    if(scr==='works') rows=s.works.map((w,i)=>({
+      title:w.title, sub:`${w.tag||w.cat} · ${w.loc||''}`,
+      thumbBg:w.grad||'var(--bg)',
+      thumbEl: (w.media||(w.gallery&&w.gallery[0]))?this.mediaThumbEl(w.media||w.gallery[0]):(w.thumb?React.createElement('img',{src:w.thumb,alt:'',style:{width:'100%',height:'100%',objectFit:'cover'}}):React.createElement('span',{style:{fontFamily:'Outfit,sans-serif',fontWeight:800,fontSize:'13px',color:w.accent||'#fff'}},w.initials||'')),
+      hasBadge:true, badge:w.cat, badgeBg:'var(--bg)', badgeFg:'var(--muted)',
+      edit:()=>this.openDrawer('works',i), del:()=>this.del('works',i)
+    }));
+    if(scr==='journal') rows=s.journal.map((j,i)=>({
+      title:j.title, sub:`${j.date||''} · ${j.industry||''}`,
+      thumbBg:j.grad||'var(--bg)', thumbEl:j.media?this.mediaThumbEl(j.media):null,
+      hasBadge:true, badge:j.category, badgeBg:j.tagBg||'var(--bg)', badgeFg:j.tagFg||'var(--muted)',
+      edit:()=>this.openDrawer('journal',i), del:()=>this.del('journal',i)
+    }));
+    if(scr==='reviews') rows=s.reviews.map((r,i)=>({
+      title:r.name, sub:(r.quote||'').replace(/^"|"$/g,'').slice(0,70)+'…',
+      thumbBg:r.avBg||'var(--bg)', thumbEl:React.createElement('span',{style:{fontFamily:'Outfit,sans-serif',fontWeight:700,fontSize:'13px',color:r.avFg||'#fff'}},r.initials||''),
+      hasBadge:false,
+      edit:()=>this.openDrawer('reviews',i), del:()=>this.del('reviews',i)
+    }));
+    if(scr==='logos') rows=s.logos.map((l,i)=>({
+      title:l.name, sub:l.src,
+      thumbBg:'#fff', thumbEl:React.createElement('img',{src:l.src,alt:'',style:{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}),
+      hasBadge:false,
+      edit:()=>this.openDrawer('logos',i), del:()=>this.del('logos',i)
+    }));
+
+    // featured (homepage top 6)
+    const workById=(id)=>s.works.find(w=>w.id===id);
+    const featMini=(w)=> w?((w.media||(w.gallery&&w.gallery[0]))?this.mediaThumbEl(w.media||w.gallery[0]):(w.thumb?React.createElement('img',{src:w.thumb,alt:'',style:{width:'100%',height:'100%',objectFit:'cover'}}):React.createElement('span',{style:{fontFamily:'Outfit,sans-serif',fontWeight:800,fontSize:'12px',color:w.accent||'#fff'}},w.initials||''))):null;
+    const featuredList=s.featured.map((id,i)=>{ const w=workById(id); return {
+      id, pos:i+1, title:w?w.title:'(missing work)', sub:w?`${w.tag||w.cat} · ${w.loc||''}`:'This work no longer exists',
+      thumbBg:w?(w.grad||'var(--bg)'):'var(--bg)', thumbEl:featMini(w),
+      isFirst:i===0, isLast:i===s.featured.length-1,
+      up:()=>this.featMove(id,-1), down:()=>this.featMove(id,1), remove:()=>this.featRemove(id)
+    }; });
+    const availableWorks=s.works.filter(w=>!s.featured.includes(w.id)).map(w=>({
+      id:w.id, title:w.title, sub:`${w.tag||w.cat} · ${w.loc||''}`,
+      thumbBg:w.grad||'var(--bg)', thumbEl:featMini(w),
+      add:()=>this.featAdd(w.id)
+    }));
+    const featFull=s.featured.length>=6;
+
+    // dashboard
+    const dashStats=[
+      {icon:'◱',value:s.works.length,label:'Portfolio works',color:'var(--greent)',go:()=>this.setState({screen:'works'})},
+      {icon:'✎',value:s.journal.length,label:'Journal articles',color:'var(--blue)',go:()=>this.setState({screen:'journal'})},
+      {icon:'★',value:s.reviews.length,label:'Client reviews',color:'var(--amber)',go:()=>this.setState({screen:'reviews'})},
+      {icon:'⬡',value:s.logos.length,label:'Client logos',color:'var(--red)',go:()=>this.setState({screen:'logos'})}
+    ];
+    const activity=[
+      {dot:'var(--greent)',text:'Content loaded from tl-content.js',time:'Just now'},
+      {dot:'var(--blue)',text:'Works, Journal & Reviews synced across all pages',time:'Just now'},
+      {dot:'var(--amber)',text:'Demo mode - edits are in-memory this session',time:'Session'},
+      {dot:'var(--red)',text:'Connect a backend to persist changes',time:'Next step'}
+    ];
+
+    // drawer fields
+    const d=s.drawer;
+    let fields=[];
+    if(d){
+      fields=this.fieldDefs(d.section).map(f=>{
+        if(f.type==='gallery'){
+          const arr=d.draft[f.key]||[];
+          const items=arr.map((m,idx)=>{ const mime=m.mime||''; return {
+            thumb:m.thumb||m.url, name:m.name||'', sizeInfo:m.sizeInfo||'',
+            isImage:mime.startsWith('image/'), isVideo:mime.startsWith('video/'), isDoc:!(mime.startsWith('image/')||mime.startsWith('video/')),
+            remove:(e)=>{ e.preventDefault(); e.stopPropagation(); this.removeGalleryItem(f.key,idx); }
+          }; });
+          return {
+            label:f.label, hint:f.hint||'',
+            isText:false, isArea:false, isSelect:false, isMedia:false, isGallery:true,
+            inputId:'tlgal-'+f.key, accept:f.accept||'', busy:!!s.busy,
+            items, hasItems:arr.length>0,
+            onDrop:(e)=>{ e.preventDefault(); this.addGalleryFiles(f.key, e.dataTransfer&&e.dataTransfer.files); },
+            onDragOver:(e)=>e.preventDefault(),
+            onPick:(e)=>{ this.addGalleryFiles(f.key, e.target.files); e.target.value=''; }
+          };
+        }
+        if(f.type==='media'){
+          const m=d.draft[f.key]||null;
+          const mime=m?(m.mime||''):'';
+          const isImage=mime.startsWith('image/');
+          const isVideo=mime.startsWith('video/');
+          return {
+            label:f.label, hint:f.hint||'',
+            isText:false, isArea:false, isSelect:false, isMedia:true, isGallery:false,
+            inputId:'tlmedia-'+f.key,
+            accept:f.accept||'', busy:!!s.busy,
+            hasMedia:!!m, noMedia:!m,
+            mediaUrl:m?m.url:'', mediaThumb:m?(m.thumb||m.url):'', mediaName:m?m.name:'', sizeInfo:m?(m.sizeInfo||''):'',
+            isImage, isVideo, isDoc:!!m&&!isImage&&!isVideo,
+            onDrop:(e)=>{ e.preventDefault(); const file=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; this.pickCoverMedia(f.key,file); },
+            onDragOver:(e)=>e.preventDefault(),
+            onPick:(e)=>{ const file=e.target.files&&e.target.files[0]; this.pickCoverMedia(f.key,file); e.target.value=''; },
+            clearMedia:(e)=>{ e.preventDefault(); e.stopPropagation(); this.setField(f.key,null); }
+          };
+        }
+        return {
+          label:f.label, value:d.draft[f.key]??'', ph:f.ph||'', hint:f.hint||'',
+          rows:f.rows||3,
+          isText:f.type==='text', isArea:f.type==='area', isSelect:f.type==='select', isMedia:false, isGallery:false,
+          options:f.options||[],
+          fmtId:'tlarea-'+f.key,
+          fmtBtns: f.type==='area' ? [
+            {label:'B', title:'Bold', weight:'800', italic:'normal', apply:()=>this.applyFmt(f.key,'**','**','bold text')},
+            {label:'I', title:'Italic', weight:'400', italic:'italic', apply:()=>this.applyFmt(f.key,'*','*','italic text')},
+            {label:'H', title:'Heading', weight:'800', italic:'normal', apply:()=>this.applyFmt(f.key,'## ','','Heading',true)},
+            {label:'• List', title:'Bullet list', weight:'600', italic:'normal', apply:()=>this.applyFmt(f.key,'- ','','List item',true)},
+            {label:'“ ”', title:'Quote', weight:'600', italic:'normal', apply:()=>this.applyFmt(f.key,'> ','','Quote',true)},
+            {label:'Link', title:'Link', weight:'600', italic:'normal', apply:()=>this.applyFmt(f.key,'[','](https://)','link text')}
+          ] : [],
+          set:(e)=>this.setField(f.key, e.target.value)
+        };
+      });
+    }
+
+    return {
+      loginView:!s.authed, appView:s.authed,
+      doLogin:(e)=>{ e.preventDefault(); this.setState({authed:true,screen:'dashboard'}); },
+      logout:()=>this.setState({authed:false, drawer:null}),
+      navItems, pageTitle:titles[scr]||'Dashboard',
+      isDashboard:scr==='dashboard', isList:scr!=='dashboard'&&scr!=='featured', isFeatured:scr==='featured',
+      showAddBtn:scr!=='dashboard'&&scr!=='featured', addLabel:addLabels[scr]||'Add', addNew:()=>this.openDrawer(scr,null),
+      featuredList, availableWorks, featFull, featEmpty:s.featured.length===0, availEmpty:availableWorks.length===0, featCount:s.featured.length,
+      rows, emptyList:scr!=='dashboard'&&rows.length===0,
+      dashStats, activity,
+      drawerOpen:!!d, drawerTitle: d?((d.index===null?'New ':'Edit ')+({works:'work',journal:'article',reviews:'review',logos:'logo'}[d.section])):'',
+      fields,
+      closeDrawer:()=>this.setState({drawer:null}),
+      backdropDown:(e)=>{ this._downOnBackdrop = (e.target===e.currentTarget); },
+      closeDrawerBackdrop:(e)=>{ if(e.target===e.currentTarget && this._downOnBackdrop) this.setState({drawer:null}); this._downOnBackdrop=false; },
+      stop:(e)=>e.stopPropagation(),
+      saveDrawer:()=>this.save(),
+      toastOpen:!!s.toast, toastMsg:s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
