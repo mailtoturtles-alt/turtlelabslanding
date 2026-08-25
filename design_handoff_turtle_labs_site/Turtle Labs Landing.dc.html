@@ -1243,7 +1243,7 @@ class Component extends DCLogic {
         popupMediaEl = React.createElement('video', {
           key: vurl, controls: true, muted: true, autoPlay: true, playsInline: true,
           preload: 'auto', poster: cw.thumb || '', controlsList: 'nodownload',
-          style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' }
+          style: { width: '100%', height: 'auto', maxHeight: '100%', objectFit: 'contain', display: 'block', background: '#000' }
         }, React.createElement('source', { src: vurl, type: 'video/mp4' }));
       } else {
         popupMediaEl = React.createElement('div', {
