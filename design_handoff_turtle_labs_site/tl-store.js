@@ -190,10 +190,16 @@ function publicUser(acct) {
 /** Returns { ok:true, user } or { ok:false, error }. */
 export function login(email, password) {
   const e = String(email || '').trim().toLowerCase();
-  const p = String(password || '');
-  if (!e || !p) return { ok: false, error: 'Enter your email and password.' };
+  // Trim the password too: autofill and copy-paste routinely add a stray
+  // space, and a silent mismatch is impossible for the user to diagnose.
+  const p = String(password || '').trim();
+  if (!e) return { ok: false, error: 'Enter your Studio email.' };
+  if (!p) return { ok: false, error: 'Enter your password.' };
   const acct = TL_ACCOUNTS.find(a => a.email.toLowerCase() === e);
-  if (!acct || acct.password !== p) return { ok: false, error: 'That email and password do not match a Studio account.' };
+  // Say which half failed — one shared message makes a typo indistinguishable
+  // from a field the form never read.
+  if (!acct) return { ok: false, error: 'No Studio account for ' + e + '.' };
+  if (acct.password !== p) return { ok: false, error: 'Wrong password for ' + e + '.' };
   const user = publicUser(acct);
   const session = { user, expiresAt: Date.now() + SESSION_HOURS * 3600 * 1000 };
   try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch (err) {}

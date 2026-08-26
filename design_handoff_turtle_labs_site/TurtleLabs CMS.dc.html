@@ -56,9 +56,9 @@ button:focus-visible, a:focus-visible, input:focus, textarea:focus, select:focus
           <div style="background:rgba(255,107,107,0.12); border:1px solid rgba(255,107,107,0.4); color:var(--red); border-radius:12px; padding:11px 14px; font-size:13px; margin-bottom:18px;">{{ loginErr }}</div>
         </sc-if>
         <label style="display:block; font-size:13px; color:var(--muted); margin-bottom:7px;">Email</label>
-        <input name="email" type="email" autocomplete="username" placeholder="you@turtlelabs.co.in" value="admin@turtlelabs.co.in" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:18px;">
+        <input id="tl-login-email" name="email" type="email" autocomplete="username" placeholder="you@turtlelabs.co.in" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:18px;">
         <label style="display:block; font-size:13px; color:var(--muted); margin-bottom:7px;">Password</label>
-        <input name="password" type="password" autocomplete="current-password" placeholder="Studio password" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:24px;">
+        <input id="tl-login-password" name="password" type="password" autocomplete="current-password" placeholder="Studio password" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:24px;">
         <button type="submit" style="width:100%; background:var(--green); color:var(--green-ink); border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="background:#4ADE80">Sign in to Studio →</button>
         <div style="text-align:center; margin-top:18px;"><a href="Turtle Labs Landing.dc.html" style="color:var(--muted); font-size:13px;" style-hover="color:var(--text)">← Back to website</a></div>
       </form>
@@ -732,8 +732,9 @@ class Component extends DCLogic {
       doLogin:(e)=>{
         e.preventDefault();
         if(!this._store) return this.setState({loginErr:'Studio is still loading — try again in a moment.'});
-        const f=e.target;
-        const res=this._store.login(f.email&&f.email.value, f.password&&f.password.value);
+        const em=document.getElementById('tl-login-email');
+        const pw=document.getElementById('tl-login-password');
+        const res=this._store.login(em&&em.value, pw&&pw.value);
         if(res.ok) this.setState({user:res.user, loginErr:'', screen:'dashboard'});
         else this.setState({loginErr:res.error});
       },
