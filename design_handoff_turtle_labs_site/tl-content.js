@@ -10,15 +10,15 @@ export const TL_CONTENT = {
   // ---- WORKS / PORTFOLIO -------------------------------------------------
   // cat drives the Works-page tabs. Keep the first 6 as the homepage set.
   works: [
-    { id:'w-95', cat:'video', tag:'Video & Motion', title:'Real Estate - Teaser Ad - 95', initials:'DT', accent:'#FF8A5C', tagBg:'rgba(255,69,0,0.15)', grad:'linear-gradient(135deg,#1F0A05,#33150A)', weeks:'6 weeks', loc:'Dubai, UAE', video:'assets/video/95canal-heights.mp4', thumb:'assets/video/95canal-heights-thumb.png', desc:'A high-impact brand trailer positioning tough industrial equipment for Gulf enterprise buyers - scripted, shot and scored to cut through a spec-sheet market.', outcomes:['2.1M organic views in the launch quarter','+38% lift in inbound enterprise enquiries','Adopted as the opener at 3 Gulf trade expos'] },
-    { id:'w-wysax', cat:'identity', tag:'Brand Identity', title:'WYSAX Systems Design', initials:'WY', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#06180E,#0C2A16)', thumb:'assets/works/wysax-thumb.png', thumbFit:'contain', thumbBg:'#ffffff', weeks:'5 weeks', loc:'Toronto, Canada', video:'', desc:'Complete brand architecture for a B2B enterprise software company entering the North American market - logo system, typography hierarchy, colour grammar and pitch templates.', outcomes:['New brand launched across 12 touchpoints in 6 weeks','Series A pitch deck redesign led to a $2M close','NPS score up 31 points post-rebrand'] },
-    { id:'w-ush', cat:'identity', tag:'Brand Identity', title:'USH Naturals Branding', initials:'OW', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#081A10,#10301C)', thumb:'assets/video/ush-naturals.png', weeks:'4 weeks', loc:'Kochi, India', video:'', desc:"A complete brand identity for a natural foods company - logo system, leaf-mark, typography and packaging-ready guidelines built around the promise of delivering nature's goodness.", outcomes:['Cohesive identity rolled out across pack and web','+52% repeat orders on the D2C store','Stocked by 2 national retail chains'] },
-    { id:'w-smw', cat:'identity', tag:'Brand Identity', title:'The SMW Group - Fintech Branding', initials:'SMW', accent:'#EC3013', tagBg:'rgba(236,48,19,0.15)', grad:'linear-gradient(135deg,#000000,#0B0B0C)', weeks:'8 weeks', loc:'London, UK', video:'', thumb:'assets/works/smw-logo-black.jpg', thumbFit:'cover', thumbBg:'#000000',
+    { id:'w-95', cat:'video', tag:'Video & Motion', title:'Real Estate - Teaser Ad - 95', initials:'DT', accent:'#FF8A5C', tagBg:'rgba(255,69,0,0.15)', grad:'linear-gradient(135deg,#1F0A05,#33150A)', weeks:'6 weeks', loc:'Dubai, UAE', video:'assets/video/95canal-heights.mp4', thumb:'assets/video/95canal-heights-thumb.webp', desc:'A high-impact brand trailer positioning tough industrial equipment for Gulf enterprise buyers - scripted, shot and scored to cut through a spec-sheet market.', outcomes:['2.1M organic views in the launch quarter','+38% lift in inbound enterprise enquiries','Adopted as the opener at 3 Gulf trade expos'] },
+    { id:'w-wysax', cat:'identity', tag:'Brand Identity', title:'WYSAX Systems Design', initials:'WY', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#06180E,#0C2A16)', thumb:'assets/works/wysax-thumb.webp', thumbFit:'contain', thumbBg:'#ffffff', weeks:'5 weeks', loc:'Toronto, Canada', video:'', desc:'Complete brand architecture for a B2B enterprise software company entering the North American market - logo system, typography hierarchy, colour grammar and pitch templates.', outcomes:['New brand launched across 12 touchpoints in 6 weeks','Series A pitch deck redesign led to a $2M close','NPS score up 31 points post-rebrand'] },
+    { id:'w-ush', cat:'identity', tag:'Brand Identity', title:'USH Naturals Branding', initials:'OW', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#081A10,#10301C)', thumb:'assets/video/ush-naturals.webp', weeks:'4 weeks', loc:'Kochi, India', video:'', desc:"A complete brand identity for a natural foods company - logo system, leaf-mark, typography and packaging-ready guidelines built around the promise of delivering nature's goodness.", outcomes:['Cohesive identity rolled out across pack and web','+52% repeat orders on the D2C store','Stocked by 2 national retail chains'] },
+    { id:'w-smw', cat:'identity', tag:'Brand Identity', title:'The SMW Group - Fintech Branding', initials:'SMW', accent:'#EC3013', tagBg:'rgba(236,48,19,0.15)', grad:'linear-gradient(135deg,#000000,#0B0B0C)', weeks:'8 weeks', loc:'London, UK', video:'', thumb:'assets/works/smw-logo-black.webp', thumbFit:'cover', thumbBg:'#000000',
       desc:'A distinctive, credible and contemporary identity for a fintech business operating in the competitive UK financial-services landscape - balancing financial credibility with a modern, technology-led character that communicates trust, clarity and forward thinking.',
       media:[
-        { kind:'image', src:'assets/works/smw-system-design.png', bg:'#f3f2f2', caption:'System design & mockup - brand identity, site architecture and merchant portal screens' },
-        { kind:'image', src:'assets/works/smw-email-signature.jpg', bg:'#ffffff', caption:'Email signature template' },
-        { kind:'image', src:'assets/works/smw-business-cards.jpg', bg:'#f3f2f2', caption:'Business cards - front and back' }
+        { kind:'image', src:'assets/works/smw-system-design.webp', bg:'#f3f2f2', caption:'System design & mockup - brand identity, site architecture and merchant portal screens' },
+        { kind:'image', src:'assets/works/smw-email-signature.webp', bg:'#ffffff', caption:'Email signature template' },
+        { kind:'image', src:'assets/works/smw-business-cards.webp', bg:'#f3f2f2', caption:'Business cards - front and back' }
       ],
       stats:[
         { value:'01', label:'Complete brand identity system' },
@@ -40,8 +40,8 @@ export const TL_CONTENT = {
       ],
       outcomes:['Complete, scalable identity system across digital and print','Consistent brand grammar on cards, email and letterhead','A credible, contemporary presence built for a UK fintech audience'] },
     { id:'w-malabar', cat:'packaging', tag:'Packaging Design', title:'Malabar Reserve Specialty Pack', initials:'MR', accent:'#FFB35C', tagBg:'rgba(255,140,0,0.15)', grad:'linear-gradient(135deg,#1F1405,#33230A)', weeks:'8 weeks', loc:'Singapore', video:'', desc:'Zero-plastic compostable pouch packaging with an embedded QR origin-tracing story for a specialty coffee exporter.', outcomes:['100% compostable pack, zero plastic','30% of buyers scanned the QR origin story','+19% shelf pickup in retail trials'] },
-    { id:'w-ritz', cat:'packaging', tag:'Event Collateral', title:'The Ritz London - Spring \u201926 Collateral', initials:'RZ', accent:'#60A5FA', tagBg:'rgba(0,102,178,0.15)', grad:'linear-gradient(135deg,#0A1428,#132247)', weeks:'4 weeks', loc:'London, UK', video:'', thumb:'assets/video/ritz-logo-thumb.png', thumbFit:'contain', thumbBg:'#ffffff', image:'assets/video/ritz-leaflet.png', media:[{ kind:'image', src:'assets/video/ritz-leaflet.png', caption:'Spring \u201926 events leaflet — full spread' },{ kind:'image', src:'assets/video/ritz-logo-thumb.png', fit:'contain', bg:'#ffffff', caption:'Heritage wordmark used across the collateral' }], desc:'A seasonal event leaflet for The Ritz London - a full spread announcing the Spring \u201926 programme, from the Bollinger La Grande Ann\u00e9e launch to the Caviar & Champagne Experience, set in the hotel\u2019s house typographic style.', outcomes:['Two-page leaflet spanning the full Spring \u201926 events calendar','Typeset in the hotel\u2019s heritage brand style','Print-ready collateral for in-house and guest distribution'] },
-    { id:'w-iucn', cat:'video', tag:'Event Film', title:'IUCN - Leaders Forum Highlights', initials:'MT', accent:'#67E8F9', tagBg:'rgba(0,163,224,0.15)', grad:'linear-gradient(135deg,#051318,#0A2630)', thumb:'assets/video/iucn-leaders-forum-thumb.png', weeks:'3 weeks', loc:'Geneva, Switzerland', video:'assets/video/iucn-leaders-forum.mp4', desc:'Event coverage of the IUCN Leaders Forum - headlined by Ban Ki-moon - cut into an impactful highlights film that asks the hard questions and inspires action.', outcomes:['Distilled a full-day forum into a sharp highlights film','Framed around questions that provoke and inspire action','Amplified the Forum\'s message to a global audience'] },
+    { id:'w-ritz', cat:'packaging', tag:'Event Collateral', title:'The Ritz London - Spring \u201926 Collateral', initials:'RZ', accent:'#60A5FA', tagBg:'rgba(0,102,178,0.15)', grad:'linear-gradient(135deg,#0A1428,#132247)', weeks:'4 weeks', loc:'London, UK', video:'', thumb:'assets/video/ritz-logo-thumb.webp', thumbFit:'contain', thumbBg:'#ffffff', image:'assets/video/ritz-leaflet.webp', media:[{ kind:'image', src:'assets/video/ritz-leaflet.webp', caption:'Spring \u201926 events leaflet — full spread' },{ kind:'image', src:'assets/video/ritz-logo-thumb.webp', fit:'contain', bg:'#ffffff', caption:'Heritage wordmark used across the collateral' }], desc:'A seasonal event leaflet for The Ritz London - a full spread announcing the Spring \u201926 programme, from the Bollinger La Grande Ann\u00e9e launch to the Caviar & Champagne Experience, set in the hotel\u2019s house typographic style.', outcomes:['Two-page leaflet spanning the full Spring \u201926 events calendar','Typeset in the hotel\u2019s heritage brand style','Print-ready collateral for in-house and guest distribution'] },
+    { id:'w-iucn', cat:'video', tag:'Event Film', title:'IUCN - Leaders Forum Highlights', initials:'MT', accent:'#67E8F9', tagBg:'rgba(0,163,224,0.15)', grad:'linear-gradient(135deg,#051318,#0A2630)', thumb:'assets/video/iucn-leaders-forum-thumb.webp', weeks:'3 weeks', loc:'Geneva, Switzerland', video:'assets/video/iucn-leaders-forum.mp4', desc:'Event coverage of the IUCN Leaders Forum - headlined by Ban Ki-moon - cut into an impactful highlights film that asks the hard questions and inspires action.', outcomes:['Distilled a full-day forum into a sharp highlights film','Framed around questions that provoke and inspire action','Amplified the Forum\'s message to a global audience'] },
     { id:'w-amberr', cat:'identity', tag:'Brand Identity', title:'Amberr Skincare Identity', initials:'AM', accent:'#FFB35C', tagBg:'rgba(255,140,0,0.15)', grad:'linear-gradient(135deg,#1F1508,#332512)', weeks:'5 weeks', loc:'Bengaluru, India', video:'', desc:'A warm, botanical identity system for a clean-beauty skincare line - wordmark, amber colour grammar and a modular label system that scales across a growing SKU range. [Placeholder project - swap for a real case study.]', outcomes:['Modular label system across 14 SKUs','Consistent shelf presence in premium retail','Brand kit handed off for in-house rollout'] },
     { id:'w-safal', cat:'digital', tag:'Web Development', title:'Safal Agri Commerce Platform', initials:'SF', accent:'#60A5FA', tagBg:'rgba(0,102,178,0.15)', grad:'linear-gradient(135deg,#08140A,#102A16)', weeks:'7 weeks', loc:'Nagpur, India', video:'', desc:'A lightweight B2B commerce platform connecting farmer collectives to bulk buyers - built for low-bandwidth rural connections with an offline-first catalogue. [Placeholder project - swap for a real case study.]', outcomes:['Offline-first catalogue for low-bandwidth users','Onboarded 40+ farmer collectives at launch','Order flow completed in under 3 taps'] }
   ],
@@ -53,41 +53,41 @@ export const TL_CONTENT = {
   // ---- CLIENT LOGOS ------------------------------------------------------
   // half:true = wordmark-heavy logo that renders at reduced height.
   logos: [
-    { src:'assets/logos/c-3eh.png', name:'3EH' },
-    { src:'assets/logos/c-tata-trusts.png', name:'Tata Trusts' },
-    { src:'assets/logos/c-amberr.png', name:'Amberr', half:true },
-    { src:'assets/logos/c-baidyanath.png', name:'Baidyanath' },
-    { src:'assets/logos/c-cini.png', name:'CINI' },
-    { src:'assets/logos/c-kavya-k.png', name:"Kavya K", half:true },
-    { src:'assets/logos/c-fyp.png', name:'Find Your Passion' },
-    { src:'assets/logos/c-fx.png', name:'FX' },
-    { src:'assets/logos/c-haldirams.png', name:"Haldiram's" },
-    { src:'assets/logos/c-ss1.png', name:'SS1' },
-    { src:'assets/logos/c-indian-railway.png', name:'Indian Railways' },
-    { src:'assets/logos/c-iucn.png', name:'IUCN' },
-    { src:'assets/logos/c-kadambi-group.png', name:'Kadambi Group' },
-    { src:'assets/logos/c-kadambi-hr.png', name:'Kadambi HR' },
-    { src:'assets/logos/c-kadambi-seva.png', name:'Kadambi Seva' },
-    { src:'assets/logos/c-dhara.png', name:'Dhara', half:true },
-    { src:'assets/logos/c-cibic.png', name:'CIBIC' },
-    { src:'assets/logos/c-berry.png', name:'Berry' },
-    { src:'assets/logos/c-lafifa.png', name:'Lafifa' },
-    { src:'assets/logos/c-ss4.png', name:'SS4' },
-    { src:'assets/logos/c-natural-intelligence.png', name:'Natural Intelligence' },
-    { src:'assets/logos/c-nature-monk.png', name:'Nature Monk' },
-    { src:'assets/logos/c-idias.png', name:'IDIAS' },
-    { src:'assets/logos/c-sol101.png', name:'Sol101' },
-    { src:'assets/logos/c-sadhu.png', name:'Sadhu' },
-    { src:'assets/logos/c-safal.png', name:'Safal', half:true },
-    { src:'assets/logos/c-ada.png', name:'ADA' },
-    { src:'assets/logos/c-ss5.png', name:'SS5' },
-    { src:'assets/logos/c-ss6.png', name:'SS6' },
-    { src:'assets/logos/c-ss7.png', name:'SS7' },
-    { src:'assets/logos/c-ss8.png', name:'SS8' },
-    { src:'assets/logos/c-ss9.png', name:'SS9' },
-    { src:'assets/logos/c-ritz.png', name:'The Ritz London' },
-    { src:'assets/logos/c-ush.png', name:'USH Naturals', half:true },
-    { src:'assets/logos/c-zs-gemstone.png', name:'ZS Gemstone' }
+    { src:'assets/logos/c-3eh.webp', name:'3EH' },
+    { src:'assets/logos/c-tata-trusts.webp', name:'Tata Trusts' },
+    { src:'assets/logos/c-amberr.webp', name:'Amberr', half:true },
+    { src:'assets/logos/c-baidyanath.webp', name:'Baidyanath' },
+    { src:'assets/logos/c-cini.webp', name:'CINI' },
+    { src:'assets/logos/c-kavya-k.webp', name:"Kavya K", half:true },
+    { src:'assets/logos/c-fyp.webp', name:'Find Your Passion' },
+    { src:'assets/logos/c-fx.webp', name:'FX' },
+    { src:'assets/logos/c-haldirams.webp', name:"Haldiram's" },
+    { src:'assets/logos/c-ss1.webp', name:'SS1' },
+    { src:'assets/logos/c-indian-railway.webp', name:'Indian Railways' },
+    { src:'assets/logos/c-iucn.webp', name:'IUCN' },
+    { src:'assets/logos/c-kadambi-group.webp', name:'Kadambi Group' },
+    { src:'assets/logos/c-kadambi-hr.webp', name:'Kadambi HR' },
+    { src:'assets/logos/c-kadambi-seva.webp', name:'Kadambi Seva' },
+    { src:'assets/logos/c-dhara.webp', name:'Dhara', half:true },
+    { src:'assets/logos/c-cibic.webp', name:'CIBIC' },
+    { src:'assets/logos/c-berry.webp', name:'Berry' },
+    { src:'assets/logos/c-lafifa.webp', name:'Lafifa' },
+    { src:'assets/logos/c-ss4.webp', name:'SS4' },
+    { src:'assets/logos/c-natural-intelligence.webp', name:'Natural Intelligence' },
+    { src:'assets/logos/c-nature-monk.webp', name:'Nature Monk' },
+    { src:'assets/logos/c-idias.webp', name:'IDIAS' },
+    { src:'assets/logos/c-sol101.webp', name:'Sol101' },
+    { src:'assets/logos/c-sadhu.webp', name:'Sadhu' },
+    { src:'assets/logos/c-safal.webp', name:'Safal', half:true },
+    { src:'assets/logos/c-ada.webp', name:'ADA' },
+    { src:'assets/logos/c-ss5.webp', name:'SS5' },
+    { src:'assets/logos/c-ss6.webp', name:'SS6' },
+    { src:'assets/logos/c-ss7.webp', name:'SS7' },
+    { src:'assets/logos/c-ss8.webp', name:'SS8' },
+    { src:'assets/logos/c-ss9.webp', name:'SS9' },
+    { src:'assets/logos/c-ritz.webp', name:'The Ritz London' },
+    { src:'assets/logos/c-ush.webp', name:'USH Naturals', half:true },
+    { src:'assets/logos/c-zs-gemstone.webp', name:'ZS Gemstone' }
   ],
 
   // ---- REVIEWS / TESTIMONIALS -------------------------------------------
@@ -133,7 +133,7 @@ export const TL_CONTENT = {
   journalCategories: ['Branding','Strategy','Web & Tech','Sustainability','Process'],
   journalIndustries: ['Wellness','Retail','Transit','SaaS','Food & Bev','Nonprofit'],
   journal: [
-    { id:'j-logo', category:'Strategy', industry:'Retail', tag:'Positioning', tagBg:'rgba(255,69,0,0.15)', tagFg:'var(--orange)', grad:"url('assets/journal/logo-thumb.png') center/cover no-repeat, var(--card)", date:'Aug 25, 2026', readTime:'9 min read', author:'Aditya, Founder', title:"Why your logo isn't the problem", excerpt:'When growth stalls, the first instinct is to redesign the logo. The data says the logo buys you a few seconds - and something else entirely decides whether the customer stays.', body:[
+    { id:'j-logo', category:'Strategy', industry:'Retail', tag:'Positioning', tagBg:'rgba(255,69,0,0.15)', tagFg:'var(--orange)', grad:"url('assets/journal/logo-thumb.webp') center/cover no-repeat, var(--card)", date:'Aug 25, 2026', readTime:'9 min read', author:'Aditya, Founder', title:"Why your logo isn't the problem", excerpt:'When growth stalls, the first instinct is to redesign the logo. The data says the logo buys you a few seconds - and something else entirely decides whether the customer stays.', body:[
       'Every founder has had this moment. Growth stalls, a big client goes quiet, a review reads harsher than it should, and the first instinct is to open Canva and start looking at fonts. Somewhere along the way, "our brand isn\u2019t working" got translated into "our logo isn\u2019t working," and a genuine business problem turned into a design brief.',
       'Here is the uncomfortable part. The data says the logo is rarely where the actual damage happens. It says something more specific: your visual identity buys you the first few seconds, and then something else entirely decides whether the customer stays.',
       'The part that\u2019s true: visuals do open the door. This is not an argument against design. The research on first impressions is clear and worth taking seriously.',
@@ -156,7 +156,7 @@ export const TL_CONTENT = {
       'If you want to find out whether it\u2019s actually your identity or something underneath it, that diagnosis is exactly what the Brand Strategy Workbook is built to walk you through. Download it free at turtlelabs.co.in, start with the foundation chapters before you touch the identity ones, and if you want a second, trained set of eyes on where your specific gap actually is, book a 30-minute call.',
       'Sources: US Small Business Administration website credibility research; Cutting Edge PR visual trust research; Web Tonic e-commerce branding research (ZipDo logo recognition data); PwC 2025 Customer Experience Survey; Forrester customer experience benchmarks; HubSpot customer complaint research; Ruby Newell-Legner customer service research; American Express global customer service barometer; Salesforce State of the Connected Customer research.'
     ] },
-    { id:'j-position', category:'Strategy', industry:'Retail', tag:'Positioning', tagBg:'rgba(255,69,0,0.15)', tagFg:'var(--orange)', grad:"url('assets/journal/position-thumb.png') center/cover no-repeat, var(--card)", date:'Aug 24, 2026', readTime:'8 min read', author:'Aditya, Founder', title:'"Sustainable" is not a position, it is a word', excerpt:'Say "sustainable" ten times and it stops meaning anything - which is roughly what the market has done to it. If your strategy stops at the label, you do not have a position. You have an adjective.', body:[
+    { id:'j-position', category:'Strategy', industry:'Retail', tag:'Positioning', tagBg:'rgba(255,69,0,0.15)', tagFg:'var(--orange)', grad:"url('assets/journal/position-thumb.webp') center/cover no-repeat, var(--card)", date:'Aug 24, 2026', readTime:'8 min read', author:'Aditya, Founder', title:'"Sustainable" is not a position, it is a word', excerpt:'Say "sustainable" ten times and it stops meaning anything - which is roughly what the market has done to it. If your strategy stops at the label, you do not have a position. You have an adjective.', body:[
       'Say the word "sustainable" out loud ten times and it stops meaning anything. That is not a joke, it is roughly what has happened to the word in the market. It sits on shampoo bottles, insurance ads, real estate brochures, and airline seatback cards. It has been used so often, by so many people, for so many different things, that it has become wallpaper. Customers see it and their brain does not react. Worse, for a growing number of them, it triggers suspicion instead of trust.',
       'If your brand strategy stops at the label "we are sustainable," you do not have a position. You have an adjective. And adjectives do not win markets anymore.',
       'The trust collapse, in numbers. This is not a vibe. It is measurable, and the numbers have moved fast.',
@@ -179,7 +179,7 @@ export const TL_CONTENT = {
       'If you want help turning a vague sustainability claim into a position that survives scrutiny, that is exactly the kind of positioning work we do at Turtle Labs. Download the free Brand Strategy Workbook to start mapping your own positioning, or if you already know your current claim will not survive the test above, book a 30-minute call and let\u2019s fix it properly.',
       'Sources: Sustainable Jungle Consumer Report (2025 to 2026); KPMG UK Greenwashing Survey; NielsenIQ Global Consumer Research; Zippia Greenwashing Statistics (2026); European Commission coordinated review of environmental claims; industry reviews of fashion sector sustainability claims.'
     ] },
-    { id:'j-workbook', category:'Strategy', industry:'SaaS', tag:'Strategy', tagBg:'rgba(0,102,178,0.15)', tagFg:'var(--blue)', grad:"url('assets/journal/workbook-thumb.jpg') center/cover no-repeat, var(--card)", date:'Aug 20, 2026', readTime:'7 min read', author:'Aditya, Founder', title:'Why we built a workbook instead of another free PDF', excerpt:'Most free brand guides are built to generate leads, not clarity. So we built something you would actually finish - six chapters, five worksheets and ten ready-to-run AI prompts, all free.', body:[
+    { id:'j-workbook', category:'Strategy', industry:'SaaS', tag:'Strategy', tagBg:'rgba(0,102,178,0.15)', tagFg:'var(--blue)', grad:"url('assets/journal/workbook-thumb.webp') center/cover no-repeat, var(--card)", date:'Aug 20, 2026', readTime:'7 min read', author:'Aditya, Founder', title:'Why we built a workbook instead of another free PDF', excerpt:'Most free brand guides are built to generate leads, not clarity. So we built something you would actually finish - six chapters, five worksheets and ten ready-to-run AI prompts, all free.', body:[
       'There are roughly 40 million "Ultimate Brand Guide" PDFs sitting unread in downloads folders right now. Okay, we made that number up. But you know the feeling - you trade your email for a lead magnet, open it once, skim the cover page, and never touch it again. Ninety seconds of relevance, then it is dead weight in a folder called "Marketing Stuff (2023)."',
       'We did not want to make one more of those.',
       'The problem with free PDFs. Most "free brand strategy guides" are built to generate leads, not clarity. They are 12 slides of inspiration porn - nice quotes, a few frameworks, a CTA at the end. You read them. You feel briefly smart. Nothing changes.',

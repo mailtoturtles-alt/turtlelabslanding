@@ -57,7 +57,7 @@ input:focus, textarea:focus, select:focus, button:focus-visible { outline:2px so
   <header data-screen-label="Header" style="position:fixed; top:0; left:0; right:0; z-index:100; background:var(--header-bg); backdrop-filter:blur(16px); border-bottom:1px solid var(--line);">
     <div style="max-width:1240px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
       <a href="#hero" style="display:flex; align-items:center; gap:11px; color:var(--text); font-family:'Outfit',sans-serif; font-weight:800; font-size:22px; letter-spacing:-0.03em; white-space:nowrap;">
-        <span style="display:inline-block; flex-shrink:0; width:36px; height:36px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
+        <span style="display:inline-block; flex-shrink:0; width:36px; height:36px; background-image:url('assets/logo.webp'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
         <span>Turtle Labs</span>
       </a>
       <nav data-desktop-nav="1" style="display:flex; align-items:center; gap:26px;">
@@ -501,7 +501,7 @@ input:focus, textarea:focus, select:focus, button:focus-visible { outline:2px so
         <p style="color:var(--muted); font-size:clamp(16px,2vw,19px); max-width:560px; margin:0 0 24px 0;">A guided, fill-in-the-blanks workbook that helps you build a sharper brand strategy in minutes: foundation, audience, positioning, voice and a 90-day plan.</p>
         <button onClick="{{ openWorkbook }}" style="display:inline-flex; align-items:center; gap:11px; background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:17px 32px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; white-space:nowrap;" style-hover="background:#4ADE80; transform:translateY(-2px)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 11 5 5 5-5"></path><path d="M4 21h16"></path></svg> Download free workbook</button>
       </div>
-      <button onClick="{{ openWorkbook }}" aria-label="Preview the workbook" style="flex:0 0 clamp(280px,38%,440px); border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#f3f2f2; cursor:pointer; padding:0; line-height:0; box-shadow:0 18px 50px rgba(0,0,0,0.28);" style-hover="transform:translateY(-3px)"><img src="assets/workbook-cover.png" alt="Brand Strategy Workbook cover" style="width:100%; height:auto; display:block;"></button>
+      <button onClick="{{ openWorkbook }}" aria-label="Preview the workbook" style="flex:0 0 clamp(280px,38%,440px); border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#f3f2f2; cursor:pointer; padding:0; line-height:0; box-shadow:0 18px 50px rgba(0,0,0,0.28);" style-hover="transform:translateY(-3px)"><img src="assets/workbook-cover.webp" alt="Brand Strategy Workbook cover" style="width:100%; height:auto; display:block;"></button>
     </div>
   </section>
 
@@ -529,7 +529,7 @@ input:focus, textarea:focus, select:focus, button:focus-visible { outline:2px so
         <div style="color:var(--muted); font-size:14px;">Kochi (HQ) · Nagpur · Bengaluru · New Delhi</div>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; padding-top:22px; flex-wrap:wrap; gap:16px; color:var(--faint); font-size:13px;">
-        <span style="display:flex; align-items:center; gap:10px;"><a href="https://turtlelabs.co.in/" target="_blank" aria-label="Turtle Labs" style="display:inline-block; width:22px; height:22px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></a> © 2026 Turtle Labs Creative Agency</span>
+        <span style="display:flex; align-items:center; gap:10px;"><a href="https://turtlelabs.co.in/" target="_blank" aria-label="Turtle Labs" style="display:inline-block; width:22px; height:22px; background-image:url('assets/logo.webp'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></a> © 2026 Turtle Labs Creative Agency</span>
         <span style="display:inline-flex; align-items:center; gap:8px;"><span style="width:7px; height:7px; border-radius:50%; background:var(--green); display:inline-block;"></span>{{ footerCarbon }}</span>
         <div style="display:flex; gap:22px;">
           <a href="https://turtlelabs.co.in/privacy-policy/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Privacy</a>
@@ -562,7 +562,7 @@ input:focus, textarea:focus, select:focus, button:focus-visible { outline:2px so
         <div style="padding:38px 34px 34px 34px;">
           <div style="display:inline-flex; align-items:center; gap:8px; padding:6px 15px; border-radius:999px; border:1px solid rgba(52,199,89,0.45); color:var(--greent); font-size:11.5px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:18px;"><span style="width:6px; height:6px; border-radius:50%; background:var(--green);"></span>Free download · PDF</div>
           <sc-if value="{{ workbookNotSent }}" hint-placeholder-val="{{ true }}">
-            <div style="border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#f3f2f2; line-height:0; margin-bottom:18px;"><img src="assets/workbook-cover.png" alt="Brand Strategy Workbook cover" style="width:100%; height:auto; display:block;"></div>
+            <div style="border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#f3f2f2; line-height:0; margin-bottom:18px;"><img src="assets/workbook-cover.webp" alt="Brand Strategy Workbook cover" style="width:100%; height:auto; display:block;"></div>
             <h3 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:26px; color:var(--text); margin:0 0 10px 0; letter-spacing:-0.02em;">Brand Strategy Workbook</h3>
             <p style="color:var(--muted); font-size:15px; line-height:1.6; margin:0 0 24px 0;">A guided workbook that helps you build a sharper brand strategy in minutes. Drop your email and it's yours.</p>
             <form onSubmit="{{ submitWorkbook }}" style="display:flex; flex-direction:column; gap:12px;">
@@ -845,7 +845,7 @@ class Component extends DCLogic {
     theme: 'dark', navOpen: false,
     quizStage: 'intro', qIndex: 0, tmActive: 0, answers: Array(10).fill(null), totalScore: 0, weakCats: [], pathModalOpen: false, quizMode: 'detailed', retakeConfirmOpen: false,
     quizEmailSent: false, playbookSent: false,
-    filter: 'all', workIdx: -1, blobUrls: {}, lbIdx: -1,
+    filter: 'all', workIdx: -1, lbIdx: -1,
     videoSrc: '', videoTitle: '',
     expandedService: -1,
     proposalOpen: false, proposalSent: false, proposalService: '',
@@ -873,13 +873,13 @@ class Component extends DCLogic {
   ];
 
   WORKS = [
-    { cat:'video', tag:'Video & Motion', title:'Real Estate - Teaser Ad - 95', initials:'DT', accent:'#FF8A5C', tagBg:'rgba(255,69,0,0.15)', grad:'linear-gradient(135deg,#1F0A05,#33150A)', weeks:'6 weeks', loc:'Dubai, UAE', video:'assets/video/95canal-heights.mp4', thumb:'assets/video/95canal-heights-thumb.png', desc:'A high-impact brand trailer positioning tough industrial equipment for Gulf enterprise buyers - scripted, shot and scored to cut through a spec-sheet market.', outcomes:['2.1M organic views in the launch quarter','+38% lift in inbound enterprise enquiries','Adopted as the opener at 3 Gulf trade expos'] },
-    { cat:'identity', tag:'Brand Identity', title:'WYSAX Systems Design', initials:'WY', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#06180E,#0C2A16)', thumb:'assets/video/wysax-system-design.png', weeks:'5 weeks', loc:'Toronto, Canada', video:'', desc:'Complete brand architecture for a B2B enterprise software company entering the North American market - logo system, typography hierarchy, colour grammar and pitch templates.', outcomes:['New brand launched across 12 touchpoints in 6 weeks','Series A pitch deck redesign led to a $2M close','NPS score up 31 points post-rebrand'] },
-    { cat:'identity', tag:'Brand Identity', title:'USH Naturals Branding', initials:'OW', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#081A10,#10301C)', thumb:'assets/video/ush-naturals.png', weeks:'4 weeks', loc:'Kochi, India', video:'', desc:'A complete brand identity for a natural foods company - logo system, leaf-mark, typography and packaging-ready guidelines built around the promise of delivering nature\'s goodness.', outcomes:['Cohesive identity rolled out across pack and web','+52% repeat orders on the D2C store','Stocked by 2 national retail chains'] },
+    { cat:'video', tag:'Video & Motion', title:'Real Estate - Teaser Ad - 95', initials:'DT', accent:'#FF8A5C', tagBg:'rgba(255,69,0,0.15)', grad:'linear-gradient(135deg,#1F0A05,#33150A)', weeks:'6 weeks', loc:'Dubai, UAE', video:'assets/video/95canal-heights.mp4', thumb:'assets/video/95canal-heights-thumb.webp', desc:'A high-impact brand trailer positioning tough industrial equipment for Gulf enterprise buyers - scripted, shot and scored to cut through a spec-sheet market.', outcomes:['2.1M organic views in the launch quarter','+38% lift in inbound enterprise enquiries','Adopted as the opener at 3 Gulf trade expos'] },
+    { cat:'identity', tag:'Brand Identity', title:'WYSAX Systems Design', initials:'WY', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#06180E,#0C2A16)', thumb:'assets/video/wysax-system-design.webp', weeks:'5 weeks', loc:'Toronto, Canada', video:'', desc:'Complete brand architecture for a B2B enterprise software company entering the North American market - logo system, typography hierarchy, colour grammar and pitch templates.', outcomes:['New brand launched across 12 touchpoints in 6 weeks','Series A pitch deck redesign led to a $2M close','NPS score up 31 points post-rebrand'] },
+    { cat:'identity', tag:'Brand Identity', title:'USH Naturals Branding', initials:'OW', accent:'#4ADE80', tagBg:'rgba(0,168,107,0.15)', grad:'linear-gradient(135deg,#081A10,#10301C)', thumb:'assets/video/ush-naturals.webp', weeks:'4 weeks', loc:'Kochi, India', video:'', desc:'A complete brand identity for a natural foods company - logo system, leaf-mark, typography and packaging-ready guidelines built around the promise of delivering nature\'s goodness.', outcomes:['Cohesive identity rolled out across pack and web','+52% repeat orders on the D2C store','Stocked by 2 national retail chains'] },
     { cat:'digital', tag:'Web Development', title:'LSP Sustainable Tech Portal', initials:'LS', accent:'#60A5FA', tagBg:'rgba(0,102,178,0.15)', grad:'linear-gradient(135deg,#050D1A,#0A1B33)', weeks:'6 weeks', loc:'London, UK', video:'', desc:'An ultra-light web platform with live carbon emission analytics - engineered for sub-second loads on any connection, anywhere.', outcomes:['0.4s median page load worldwide','85% lighter payload than the previous site','+42% demo bookings within 60 days'] },
     { cat:'packaging', tag:'Packaging Design', title:'Malabar Reserve Specialty Pack', initials:'MR', accent:'#FFB35C', tagBg:'rgba(255,140,0,0.15)', grad:'linear-gradient(135deg,#1F1405,#33230A)', weeks:'8 weeks', loc:'Singapore', video:'', desc:'Zero-plastic compostable pouch packaging with an embedded QR origin-tracing story for a specialty coffee exporter.', outcomes:['100% compostable pack, zero plastic','30% of buyers scanned the QR origin story','+19% shelf pickup in retail trials'] },
-    { cat:'packaging', tag:'Event Collateral', title:'The Ritz London - Spring ’26 Collateral', initials:'RZ', accent:'#60A5FA', tagBg:'rgba(0,102,178,0.15)', grad:'linear-gradient(135deg,#0A1428,#132247)', weeks:'4 weeks', loc:'London, UK', video:'', thumb:'assets/video/ritz-logo-thumb.png', thumbFit:'contain', thumbBg:'#ffffff', image:'assets/video/ritz-leaflet.png', desc:'A seasonal event leaflet for The Ritz London - a full spread announcing the Spring ’26 programme, from the Bollinger La Grande Année launch to the Caviar & Champagne Experience, set in the hotel’s house typographic style.', outcomes:['Two-page leaflet spanning the full Spring ’26 events calendar','Typeset in the hotel’s heritage brand style','Print-ready collateral for in-house and guest distribution'] },
-    { cat:'video', tag:'Event Film', title:'IUCN - Leaders Forum Highlights', initials:'MT', accent:'#67E8F9', tagBg:'rgba(0,163,224,0.15)', grad:'linear-gradient(135deg,#051318,#0A2630)', thumb:'assets/video/iucn-leaders-forum-thumb.png', weeks:'3 weeks', loc:'Geneva, Switzerland', video:'assets/video/iucn-leaders-forum.mp4', desc:'Event coverage of the IUCN Leaders Forum - headlined by Ban Ki-moon - cut into an impactful highlights film that asks the hard questions and inspires action.', outcomes:['Distilled a full-day forum into a sharp highlights film','Framed around questions that provoke and inspire action','Amplified the Forum\'s message to a global audience'] }
+    { cat:'packaging', tag:'Event Collateral', title:'The Ritz London - Spring ’26 Collateral', initials:'RZ', accent:'#60A5FA', tagBg:'rgba(0,102,178,0.15)', grad:'linear-gradient(135deg,#0A1428,#132247)', weeks:'4 weeks', loc:'London, UK', video:'', thumb:'assets/video/ritz-logo-thumb.webp', thumbFit:'contain', thumbBg:'#ffffff', image:'assets/video/ritz-leaflet.webp', desc:'A seasonal event leaflet for The Ritz London - a full spread announcing the Spring ’26 programme, from the Bollinger La Grande Année launch to the Caviar & Champagne Experience, set in the hotel’s house typographic style.', outcomes:['Two-page leaflet spanning the full Spring ’26 events calendar','Typeset in the hotel’s heritage brand style','Print-ready collateral for in-house and guest distribution'] },
+    { cat:'video', tag:'Event Film', title:'IUCN - Leaders Forum Highlights', initials:'MT', accent:'#67E8F9', tagBg:'rgba(0,163,224,0.15)', grad:'linear-gradient(135deg,#051318,#0A2630)', thumb:'assets/video/iucn-leaders-forum-thumb.webp', weeks:'3 weeks', loc:'Geneva, Switzerland', video:'assets/video/iucn-leaders-forum.mp4', desc:'Event coverage of the IUCN Leaders Forum - headlined by Ban Ki-moon - cut into an impactful highlights film that asks the hard questions and inspires action.', outcomes:['Distilled a full-day forum into a sharp highlights film','Framed around questions that provoke and inspire action','Amplified the Forum\'s message to a global audience'] }
   ];
 
   SERVICES = [
@@ -1028,7 +1028,6 @@ class Component extends DCLogic {
       } else if (e.key === 'Escape') this.setState({ proposalOpen: false, welcomeOpen: false, videoSrc: '', cardModalOpen: false });
     };
     window.addEventListener('keydown', this._onKey);
-    this._blobPending = {};
     this.ensureVideo();
   }
 
@@ -1036,21 +1035,10 @@ class Component extends DCLogic {
     if (!prevState || prevState.workIdx !== this.state.workIdx) this.ensureVideo();
   }
 
-  ensureVideo(idx) {
-    const i = (idx === undefined) ? this.state.workIdx : idx;
-    const w = i >= 0 ? this.WORKS[i] : null;
-    const src = w && w.video;
-    this.ensureVideoSrc(src);
-  }
-  ensureVideoSrc(src) {
-    if (!src || (this.state.blobUrls && this.state.blobUrls[src]) || this._blobPending[src]) return;
-    this._blobPending[src] = true;
-    fetch(src).then(r => r.blob()).then(b => {
-      const url = URL.createObjectURL(b);
-      this._blobPending[src] = false;
-      this.setState(s => ({ blobUrls: { ...s.blobUrls, [src]: url } }));
-    }).catch(() => { this._blobPending[src] = false; });
-  }
+  // Videos stream straight from their URL. Fetching them into a blob first
+  // forced a full download before the first frame and killed range requests,
+  // so a 14MB film blocked playback until every byte had arrived.
+  ensureVideo() {}
   componentWillUnmount() {
     if (this._offContent) this._offContent();
     clearInterval(this._ticker);
@@ -1172,11 +1160,11 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const _sharedC = this._shared || {};
-    const _fallbackLogos = ['assets/logos/c-3eh.png','assets/logos/c-tata-trusts.png','assets/logos/c-amberr.png','assets/logos/c-baidyanath.png','assets/logos/c-cini.png','assets/logos/c-kavya-k.png','assets/logos/c-fyp.png','assets/logos/c-fx.png','assets/logos/c-haldirams.png','assets/logos/c-ss1.png','assets/logos/c-indian-railway.png','assets/logos/c-iucn.png','assets/logos/c-kadambi-group.png','assets/logos/c-kadambi-hr.png','assets/logos/c-kadambi-seva.png','assets/logos/c-dhara.png','assets/logos/c-cibic.png','assets/logos/c-berry.png','assets/logos/c-lafifa.png','assets/logos/c-ss4.png','assets/logos/c-natural-intelligence.png','assets/logos/c-nature-monk.png','assets/logos/c-idias.png','assets/logos/c-sol101.png','assets/logos/c-sadhu.png','assets/logos/c-safal.png','assets/logos/c-ada.png','assets/logos/c-ss5.png','assets/logos/c-ss6.png','assets/logos/c-ss7.png','assets/logos/c-ss8.png','assets/logos/c-ss9.png','assets/logos/c-ritz.png','assets/logos/c-ush.png','assets/logos/c-zs-gemstone.png'];
+    const _fallbackLogos = ['assets/logos/c-3eh.webp','assets/logos/c-tata-trusts.webp','assets/logos/c-amberr.webp','assets/logos/c-baidyanath.webp','assets/logos/c-cini.webp','assets/logos/c-kavya-k.webp','assets/logos/c-fyp.webp','assets/logos/c-fx.webp','assets/logos/c-haldirams.webp','assets/logos/c-ss1.webp','assets/logos/c-indian-railway.webp','assets/logos/c-iucn.webp','assets/logos/c-kadambi-group.webp','assets/logos/c-kadambi-hr.webp','assets/logos/c-kadambi-seva.webp','assets/logos/c-dhara.webp','assets/logos/c-cibic.webp','assets/logos/c-berry.webp','assets/logos/c-lafifa.webp','assets/logos/c-ss4.webp','assets/logos/c-natural-intelligence.webp','assets/logos/c-nature-monk.webp','assets/logos/c-idias.webp','assets/logos/c-sol101.webp','assets/logos/c-sadhu.webp','assets/logos/c-safal.webp','assets/logos/c-ada.webp','assets/logos/c-ss5.webp','assets/logos/c-ss6.webp','assets/logos/c-ss7.webp','assets/logos/c-ss8.webp','assets/logos/c-ss9.webp','assets/logos/c-ritz.webp','assets/logos/c-ush.webp','assets/logos/c-zs-gemstone.webp'];
     const clientLogos = _sharedC.logos ? _sharedC.logos.map(function(l){ return (l.media && l.media.url) || l.src; }).filter(Boolean) : _fallbackLogos;
     const logosReady = true;
     const clientLogoMarquee = React.createElement('div', { style: { display: 'flex', gap: '16px', width: 'max-content', animation: 'tlmarquee 80s linear infinite', alignItems: 'center', gap: '40px' } },
-      clientLogos.concat(clientLogos).map((src, i) => { const half = ['c-dhara.png','c-amberr.png','c-kavya-k.png','c-safal.png','c-ush.png'].some(h => src.indexOf(h) !== -1); return React.createElement('img', { key: i, src, alt: i < clientLogos.length ? 'Client logo' : '', style: { height: half ? '28px' : '56px', width: 'auto', flexShrink: 0, filter: 'var(--logo-filter)', opacity: 0.72 } }); })
+      clientLogos.concat(clientLogos).map((src, i) => { const half = ['c-dhara.webp','c-amberr.webp','c-kavya-k.webp','c-safal.webp','c-ush.webp'].some(h => src.indexOf(h) !== -1); return React.createElement('img', { key: i, src, alt: i < clientLogos.length ? 'Client logo' : '', style: { height: half ? '28px' : '56px', width: 'auto', flexShrink: 0, filter: 'var(--logo-filter)', opacity: 0.72 } }); })
     );
     this.sliderContainerRef = this.sliderContainerRef || React.createRef();
     this.sliderAfterRef = this.sliderAfterRef || React.createRef();
@@ -1238,7 +1226,7 @@ class Component extends DCLogic {
 
     const cw = s.workIdx >= 0 ? this.WORKS[s.workIdx] : this.WORKS[0];
     const lbList = this.WORKS.map((w, i) => {
-      if (w.video) return { kind: 'video', src: (s.blobUrls && s.blobUrls[w.video]) || w.video, raw: w.video, poster: w.thumb, title: w.title, wi: i };
+      if (w.video) return { kind: 'video', src: w.video, raw: w.video, poster: w.thumb, title: w.title, wi: i };
       if (w.image) return { kind: 'image', src: w.image, title: w.title, wi: i };
       if (w.thumb) return { kind: 'image', src: w.thumb, title: w.title, wi: i };
       return null;
@@ -1247,29 +1235,19 @@ class Component extends DCLogic {
     const openLb = () => { const li = lbList.findIndex(m => m.wi === (s.workIdx >= 0 ? s.workIdx : 0)); this.setState({ lbIdx: li >= 0 ? li : 0 }); };
     const lbIdx = (s.lbIdx >= 0 && s.lbIdx < lbList.length) ? s.lbIdx : -1;
     const lbCur = lbIdx >= 0 ? lbList[lbIdx] : null;
-    if (lbCur && lbCur.kind === 'video' && lbCur.raw && !(s.blobUrls && s.blobUrls[lbCur.raw])) this.ensureVideoSrc(lbCur.raw);
     let lbEl = null;
     if (lbCur) {
-      if (lbCur.kind === 'video') lbEl = React.createElement('video', { key: 'lbv' + lbIdx, src: lbCur.src, poster: lbCur.poster || '', controls: true, autoPlay: true, muted: true, playsInline: true, controlsList: 'nodownload', style: { width: 'auto', height: 'auto', maxWidth: '92vw', maxHeight: '86vh', display: 'block', background: '#000', borderRadius: '8px' } });
+      if (lbCur.kind === 'video') lbEl = React.createElement('video', { key: 'lbv' + lbIdx, src: lbCur.src, poster: lbCur.poster || '', controls: true, autoPlay: true, muted: true, playsInline: true, preload: 'metadata', controlsList: 'nodownload', style: { width: 'auto', height: 'auto', maxWidth: '92vw', maxHeight: '86vh', display: 'block', background: '#000', borderRadius: '8px' } });
       else lbEl = React.createElement('img', { key: 'lbi' + lbIdx, src: lbCur.src, alt: lbCur.title || '', style: { width: 'auto', height: 'auto', maxWidth: '92vw', maxHeight: '86vh', objectFit: 'contain', display: 'block', borderRadius: '8px' } });
     }
     let popupMediaEl = null;
     if (cw.video) {
-      const vurl = s.blobUrls && s.blobUrls[cw.video];
-      if (vurl) {
-        popupMediaEl = React.createElement('video', {
-          key: vurl, controls: true, muted: true, autoPlay: true, playsInline: true,
-          preload: 'auto', poster: cw.thumb || '', controlsList: 'nodownload',
-          style: { width: '100%', height: 'auto', maxHeight: '100%', objectFit: 'contain', display: 'block', background: '#000' }
-        }, React.createElement('source', { src: vurl, type: 'video/mp4' }));
-      } else {
-        popupMediaEl = React.createElement('div', {
-          key: 'loading' + cw.video,
-          style: { position: 'absolute', inset: 0, backgroundImage: cw.thumb ? `url(${cw.thumb})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }
-        }, React.createElement('div', {
-          style: { padding: '10px 16px', borderRadius: '999px', background: 'rgba(0,0,0,0.6)', color: '#fff', fontSize: '13px', fontFamily: 'Inter,sans-serif' }
-        }, 'Loading video…'));
-      }
+      // preload="none" + poster: zero bytes until the visitor presses play.
+      popupMediaEl = React.createElement('video', {
+        key: cw.video, controls: true, muted: true, playsInline: true,
+        preload: 'none', poster: cw.thumb || '', controlsList: 'nodownload',
+        style: { width: '100%', height: 'auto', maxHeight: '100%', objectFit: 'contain', display: 'block', background: '#000' }
+      }, React.createElement('source', { src: cw.video, type: 'video/mp4' }));
     } else if (cw.image) {
       popupMediaEl = React.createElement('img', {
         key: cw.image, src: cw.image, alt: cw.title, onClick: openLb, title: 'Click to expand',

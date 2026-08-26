@@ -31,7 +31,7 @@ button:focus-visible, a:focus-visible, input:focus, textarea:focus, select:focus
   <div style="min-height:100vh; display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));">
     <div style="background:linear-gradient(160deg, #0d1f14, #0B0B0C 70%); padding:56px 48px; display:flex; flex-direction:column; justify-content:space-between; min-height:100vh;">
       <div style="display:flex; align-items:center; gap:12px; color:var(--text); font-family:'Outfit',sans-serif; font-weight:800; font-size:22px; letter-spacing:-0.03em;">
-        <span style="display:inline-block; width:34px; height:34px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
+        <span style="display:inline-block; width:34px; height:34px; background-image:url('assets/logo.webp'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
         Turtle Labs
       </div>
       <div>
@@ -72,7 +72,7 @@ button:focus-visible, a:focus-visible, input:focus, textarea:focus, select:focus
     <!-- Sidebar -->
     <aside style="background:var(--panel); border-right:1px solid var(--line); padding:24px 16px; display:flex; flex-direction:column; gap:6px; position:sticky; top:0; height:100vh;">
       <div style="display:flex; align-items:center; gap:11px; padding:6px 10px 20px 10px; color:var(--text); font-family:'Outfit',sans-serif; font-weight:800; font-size:19px; letter-spacing:-0.03em;">
-        <span style="display:inline-block; width:30px; height:30px; background-image:url('assets/logo.png'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
+        <span style="display:inline-block; width:30px; height:30px; background-image:url('assets/logo.webp'); background-size:auto 100%; background-position:left center; background-repeat:no-repeat;"></span>
         Studio
       </div>
       <sc-for list="{{ navItems }}" as="ni" hint-placeholder-count="5">
@@ -514,7 +514,7 @@ class Component extends DCLogic {
     if(section==='logos') return [
       {key:'name',label:'Client name',type:'text'},
       {key:'media',label:'Logo image',type:'media',accept:'image/*',hint:'Drag & drop a logo here, or click to browse. Takes precedence over the file path below.'},
-      {key:'src',label:'Logo file path',type:'text',ph:'assets/logos/c-name.png',hint:'Alternative to uploading: drop the file into assets/logos and reference it here. Keeps the payload light for logos that ship with the build.'}
+      {key:'src',label:'Logo file path',type:'text',ph:'assets/logos/c-name.webp',hint:'Alternative to uploading: drop the file into assets/logos and reference it here. Keeps the payload light for logos that ship with the build.'}
     ];
     return [];
   }
