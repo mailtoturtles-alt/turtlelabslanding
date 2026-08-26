@@ -191,7 +191,7 @@ input:focus, textarea:focus, select:focus, button:focus-visible { outline:2px so
         </div>
         <div style="margin-top:28px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
           <button onClick="{{ openCardModal }}" style="background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:999px; padding:14px 26px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="border-color:var(--text)">Generate Shareable Result Card</button>
-          <a href="https://calendly.com/turtlelabsdesign/30min" target="_blank" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:14px 26px; font-size:15px; font-weight:700; display:inline-flex; align-items:center;" style-hover="background:#4ADE80">Book Free Strategy Call</a>
+          <a href="{{ calendlyUrl }}" target="_blank" rel="noopener" style="background:var(--green); color:var(--green-ink); border-radius:999px; padding:14px 26px; font-size:15px; font-weight:700; display:inline-flex; align-items:center;" style-hover="background:#4ADE80">Book Free Strategy Call</a>
         </div>
         <div style="margin-top:16px; text-align:center;">
           <button onClick="{{ askRetake }}" style="background:none; border:none; color:var(--muted); font-size:14px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; text-decoration:underline; text-underline-offset:3px;" style-hover="color:var(--text)">Retake the assessment</button>
@@ -349,7 +349,12 @@ input:focus, textarea:focus, select:focus, button:focus-visible { outline:2px so
             <p style="font-style:italic; color:var(--muted); font-size:15.5px; margin:8px 0 0 0;">{{ tm.quote }}</p>
           </div>
           <div style="display:flex; align-items:center; gap:14px; border-top:1px solid var(--line); padding-top:18px;">
-            <span style="width:44px; height:44px; border-radius:50%; background:{{ tm.avBg }}; border:1px solid {{ tm.avBorder }}; color:{{ tm.avFg }}; display:inline-flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-weight:700; font-size:14px;">{{ tm.initials }}</span>
+            <span style="width:44px; height:44px; flex-shrink:0; border-radius:50%; overflow:hidden; background:{{ tm.avatarBg }}; border:1px solid {{ tm.avBorder }}; color:{{ tm.avFg }}; display:inline-flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-weight:700; font-size:14px;">
+              <sc-if value="{{ tm.hasLogo }}" hint-placeholder-val="{{ false }}">
+                <img src="{{ tm.logoSrc }}" alt="{{ tm.name }}" style="width:100%; height:100%; object-fit:contain; padding:5px;">
+              </sc-if>
+              <sc-if value="{{ tm.noLogo }}" hint-placeholder-val="{{ true }}">{{ tm.initials }}</sc-if>
+            </span>
             <span style="display:flex; flex-direction:column;"><strong style="color:var(--text); font-size:15px;">{{ tm.name }}</strong><span style="font-size:13px; color:var(--muted);">{{ tm.loc }}</span></span>
           </div>
         </div>
@@ -530,6 +535,7 @@ input:focus, textarea:focus, select:focus, button:focus-visible { outline:2px so
           <a href="https://turtlelabs.co.in/privacy-policy/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Privacy</a>
           <a href="https://turtlelabs.co.in/terms-and-conditions/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Terms</a>
           <a href="https://drive.google.com/file/d/1HnRfvnvEWze1m-0Gzq0IAfMPVtYZiYlC/view?usp=sharing" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Carbon Transparency</a>
+          <a href="TurtleLabs CMS.dc.html" style="color:var(--faint);" style-hover="color:var(--greent)">Studio&nbsp;↗</a>
         </div>
       </div>
     </div>
@@ -933,13 +939,18 @@ class Component extends DCLogic {
   ];
 
   componentDidMount() {
-    // Single shared content source - overrides the inline fallbacks below.
-    import('./tl-content.js').then(m => {
-      const C = m && m.TL_CONTENT; if (!C) return;
-      this._shared = C;
-      if (C.works) this.WORKS = C.works;
-      if (C.services) this.SERVICES = C.services;
-      this.forceUpdate();
+    // Shared content source - CMS edits layered over the shipped defaults.
+    import('./tl-store.js').then(m => {
+      const apply = (C) => {
+        if (!C) return;
+        this._shared = C;
+        if (C.works) this.WORKS = C.works;
+        if (C.services) this.SERVICES = C.services;
+        this.forceUpdate();
+      };
+      apply(m.loadContent());
+      // Re-render when the Studio publishes, in this tab or another.
+      this._offContent = m.onContentChange(apply);
     }).catch(() => {});
     const saved = localStorage.getItem('tl-theme') || 'dark';
     this.applyTheme(saved);
@@ -1041,6 +1052,7 @@ class Component extends DCLogic {
     }).catch(() => { this._blobPending[src] = false; });
   }
   componentWillUnmount() {
+    if (this._offContent) this._offContent();
     clearInterval(this._ticker);
     clearTimeout(this._leadTimer);
     window.removeEventListener('scroll', this._onScroll);
@@ -1143,8 +1155,13 @@ class Component extends DCLogic {
     this.setState({ cardDataUrl: canvas.toDataURL('image/png') });
   }
 
+  // Every booking entry point routes through here, so the link is set once
+  // (or overridden via the `calendlyUrl` prop) rather than pasted per button.
+  calendlyBase() {
+    return this.props.calendlyUrl ?? 'https://calendly.com/turtlelabsdesign/30min';
+  }
   openCalendly(email, dateISO) {
-    const base = this.props.calendlyUrl ?? 'https://calendly.com/turtlelabsdesign/30min';
+    const base = this.calendlyBase();
     const params = [];
     if (dateISO) { params.push('month=' + dateISO.slice(0, 7)); params.push('date=' + dateISO); }
     if (email) params.push('email=' + encodeURIComponent(email));
@@ -1156,7 +1173,7 @@ class Component extends DCLogic {
     const s = this.state;
     const _sharedC = this._shared || {};
     const _fallbackLogos = ['assets/logos/c-3eh.png','assets/logos/c-tata-trusts.png','assets/logos/c-amberr.png','assets/logos/c-baidyanath.png','assets/logos/c-cini.png','assets/logos/c-kavya-k.png','assets/logos/c-fyp.png','assets/logos/c-fx.png','assets/logos/c-haldirams.png','assets/logos/c-ss1.png','assets/logos/c-indian-railway.png','assets/logos/c-iucn.png','assets/logos/c-kadambi-group.png','assets/logos/c-kadambi-hr.png','assets/logos/c-kadambi-seva.png','assets/logos/c-dhara.png','assets/logos/c-cibic.png','assets/logos/c-berry.png','assets/logos/c-lafifa.png','assets/logos/c-ss4.png','assets/logos/c-natural-intelligence.png','assets/logos/c-nature-monk.png','assets/logos/c-idias.png','assets/logos/c-sol101.png','assets/logos/c-sadhu.png','assets/logos/c-safal.png','assets/logos/c-ada.png','assets/logos/c-ss5.png','assets/logos/c-ss6.png','assets/logos/c-ss7.png','assets/logos/c-ss8.png','assets/logos/c-ss9.png','assets/logos/c-ritz.png','assets/logos/c-ush.png','assets/logos/c-zs-gemstone.png'];
-    const clientLogos = _sharedC.logos ? _sharedC.logos.map(function(l){ return l.src; }) : _fallbackLogos;
+    const clientLogos = _sharedC.logos ? _sharedC.logos.map(function(l){ return (l.media && l.media.url) || l.src; }).filter(Boolean) : _fallbackLogos;
     const logosReady = true;
     const clientLogoMarquee = React.createElement('div', { style: { display: 'flex', gap: '16px', width: 'max-content', animation: 'tlmarquee 80s linear infinite', alignItems: 'center', gap: '40px' } },
       clientLogos.concat(clientLogos).map((src, i) => { const half = ['c-dhara.png','c-amberr.png','c-kavya-k.png','c-safal.png','c-ush.png'].some(h => src.indexOf(h) !== -1); return React.createElement('img', { key: i, src, alt: i < clientLogos.length ? 'Client logo' : '', style: { height: half ? '28px' : '56px', width: 'auto', flexShrink: 0, filter: 'var(--logo-filter)', opacity: 0.72 } }); })
@@ -1327,6 +1344,14 @@ class Component extends DCLogic {
       { quote:'"Turtle Labs handled our branding, product catalogue and event collaterals end to end. The catalogue finally does our range justice, and the identity carried cleanly across every touchpoint. Reliable, sharp, and easy to work with."', name:'ABS Trading', loc:'Dubai, UAE · Branding & Catalogue', initials:'AB', avBg:'rgba(0,102,178,0.12)', avBorder:'var(--blue)', avFg:'var(--blue)' },
       { quote:'"For our Leaders Forum in Jeju, Turtle Labs cut a single event film that carried multiple languages in one piece and captured the very best moments of the days. Exactly the coverage the moment deserved."', name:'IUCN', loc:'Jeju · Leaders Forum Coverage', initials:'IU', avBg:'rgba(0,168,107,0.12)', avBorder:'var(--greent)', avFg:'var(--greent)' }
     ];
+    // A review can carry an uploaded client logo; initials are the fallback.
+    const testimonialCards = testimonials.map(t => {
+      const logo = (t.media && t.media.url) || t.logo || '';
+      return Object.assign({}, t, {
+        hasLogo: !!logo, noLogo: !logo, logoSrc: logo,
+        avatarBg: logo ? '#FFFFFF' : (t.avBg || 'var(--card)')
+      });
+    });
     const tmScrollTo = (i) => { const c = this.tmScrollRef.current; if (!c) return; const card = c.children[i]; if (card) c.scrollTo({ left: card.offsetLeft - c.offsetLeft, behavior: 'smooth' }); this.setState({ tmActive: i }); };
     const tmDots = testimonials.map((_, i) => ({ go: () => tmScrollTo(i), dotW: i === s.tmActive ? '26px' : '9px', dotBg: i === s.tmActive ? 'var(--text)' : 'var(--line)' }));
     const journal = (_sharedC.journal && _sharedC.journal.slice(0,3)) || [
@@ -1397,8 +1422,8 @@ class Component extends DCLogic {
       pathModalOpen: s.pathModalOpen,
       closePathModal: () => this.setState({ pathModalOpen: false }),
       closePathBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ pathModalOpen: false }); },
-      beginDetailed: () => this.setState({ pathModalOpen: false, quizStage: 'quiz', quizMode: 'detailed', qIndex: 0 }),
-      beginQuick: () => this.setState({ pathModalOpen: false, quizStage: 'quiz', quizMode: 'quick', qIndex: 0 }),
+      beginDetailed: () => this.setState({ pathModalOpen: false, quizStage: 'quiz', quizMode: 'detailed', qIndex: 0 }, () => this.scrollToId('score-quiz')),
+      beginQuick: () => this.setState({ pathModalOpen: false, quizStage: 'quiz', quizMode: 'quick', qIndex: 0 }, () => this.scrollToId('score-quiz')),
       retakeConfirmOpen: s.retakeConfirmOpen,
       askRetake: () => this.setState({ retakeConfirmOpen: true }),
       closeRetake: () => this.setState({ retakeConfirmOpen: false }),
@@ -1421,7 +1446,7 @@ class Component extends DCLogic {
       closeCardModal: () => this.setState({ cardModalOpen: false }),
       closeCardBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ cardModalOpen: false }); },
       // problems etc
-      problems, steps, testimonials, sectors, stats, journal,
+      problems, steps, testimonials: testimonialCards, sectors, stats, journal,
       tmScrollRef: this.tmScrollRef, tmDots,
       tmOnScroll: () => { const c = this.tmScrollRef.current; if (!c) return; let best = 0, bd = Infinity; for (let i = 0; i < c.children.length; i++) { const d = Math.abs(c.children[i].offsetLeft - c.offsetLeft - c.scrollLeft); if (d < bd) { bd = d; best = i; } } if (best !== s.tmActive) this.setState({ tmActive: best }); },
       tmPrev: () => tmScrollTo(Math.max(0, s.tmActive - 1)),
@@ -1473,7 +1498,7 @@ class Component extends DCLogic {
       // booking
       calDays, calMonthLabel, booked: s.booked, bookedSummary: selDateLabel,
       slotsTzLabel: `Times in your timezone (${userTz})`,
-      calendlyUrl: this.props.calendlyUrl ?? 'https://calendly.com/turtlelabsdesign/30min',
+      calendlyUrl: this.calendlyBase(),
       // booking states: ask email only if we don't already have a lead email on file
       bookShowCta: !s.booked && !s.bookAskEmail,
       bookShowEmail: !s.booked && s.bookAskEmail,
@@ -1492,7 +1517,7 @@ class Component extends DCLogic {
       welcomeOpen: s.welcomeOpen,
       closeWelcome: () => this.setState({ welcomeOpen: false }),
       closeWelcomeBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ welcomeOpen: false }); },
-      welcomeAudit: () => this.setState({ welcomeOpen: false, pathModalOpen: true }),
+      welcomeAudit: () => { this.setState({ welcomeOpen: false }); this.scrollToId('score-quiz'); setTimeout(() => this.setState({ pathModalOpen: true }), 420); },
       welcomeWorkbook: () => this.setState({ welcomeOpen: false, workbookOpen: true, workbookSent: false }),
       welcomeBook: () => { this.setState({ welcomeOpen: false }); setTimeout(() => this.scrollToId('book-call'), 120); },
       welcomeWorks: () => { this.setState({ welcomeOpen: false }); setTimeout(() => this.scrollToId('work-samples'), 120); },
@@ -1516,7 +1541,7 @@ class Component extends DCLogic {
       chatSubOpen: !!activeSub, chatSubLabel: activeSub ? activeSub.label : '', chatSubDetail: activeSub ? activeSub.detail : '',
       workbookOpen: s.workbookOpen, workbookSent: s.workbookSent, workbookNotSent: !s.workbookSent,
       workbookEmail: s.leadEmail || 'your inbox',
-      calLink: 'https://calendly.com/turtlelabs/intro-call',
+      calLink: this.calendlyBase(),
       openWorkbook: () => this.setState({ workbookOpen: true }),
       closeWorkbook: () => this.setState({ workbookOpen: false }),
       closeWorkbookBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ workbookOpen: false }); },

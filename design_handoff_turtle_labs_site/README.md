@@ -21,7 +21,7 @@ python3 -m http.server 8000
 **High-fidelity (hifi).** Final colors, typography, spacing, copy, animations and interactions. Recreate the UI pixel-accurately. All content is data-driven from a single file (`tl-content.js`) — treat that file's shape as the content schema.
 
 ## Content Architecture (read this first)
-All four pages read content from **one file: `tl-content.js`**, which exports `TL_CONTENT` with these keys:
+All four pages read content through **`tl-store.js`**, which layers CMS edits over the shipped defaults in **`tl-content.js`**. `tl-content.js` exports `TL_CONTENT` with these keys:
 - `works[]` — portfolio items (see schema below)
 - `featured[]` — ordered array of work `id`s shown on the homepage (max 6)
 - `journal[]` — blog articles
@@ -86,8 +86,24 @@ Single scrolling page, fixed blurred header, sections in order:
 - **List view:** category filter tabs (Industry tabs exist in data but are hidden), view toggle (thumbnail/list/text), article cards, pagination (6/page).
 - **Article view:** back button, hero, tag/meta, title, body rendered from markdown (see schema).
 
-### 4. Admin CMS — `TurtleLabs CMS.dc.html` (demo, in-memory)
-Sidebar: Dashboard, Works, Featured, Journal, Reviews, Client logos. Edit drawers with text fields, a **markdown formatting toolbar** on textareas (B/I/H/list/quote/link), single-file **Thumbnail** dropzone + multi-file **Images** gallery dropzone (drag-drop, in-browser image compression to WebP). Featured screen: pick/reorder up to 6 homepage works. Demo login accepts anything; all writes are in-memory only.
+### 4. Admin CMS — `TurtleLabs CMS.dc.html` (connected, browser-persisted)
+Sidebar: Dashboard, Works, Featured, Journal, Reviews, Client logos. Edit drawers with text fields, a **markdown formatting toolbar** on textareas (B/I/H/list/quote/link), single-file **Thumbnail** dropzone + multi-file **Images** gallery dropzone (drag-drop, in-browser image compression to WebP). Featured screen: pick/reorder up to 6 homepage works.
+
+**Access.** The Studio has its own login, separate from the public pages — accounts are defined in `tl-store.js`:
+
+| Account | Password | Role | Rights |
+|---|---|---|---|
+| `admin@turtlelabs.co.in` | `TurtleCMS@2026` | Administrator | Everything: edit, delete, homepage line-up, reset |
+| `editor@turtlelabs.co.in` | `TurtleEdit@2026` | Editor | Add and edit only — no delete, no Featured screen |
+
+Sessions last 12 hours and survive a refresh. **This is a client-side gate for a static build** — the accounts are readable in source, so it keeps the Studio out of casual reach but is not a security boundary. Move the check server-side before go-live.
+
+**Draft → Publish.** Edits are staged, not live. Every save, delete and Featured change writes to a **draft** (`tl-cms-draft-v1`) held in the browser — it survives a refresh, but the public pages do not see it. The header shows how many sections are pending and offers two actions:
+
+- **Publish to website** — pushes the draft through `tl-store.js` to `tl-cms-content-v1` and immediately re-renders Home, Works and Journal, including tabs already open.
+- **Discard** — throws the draft away and snaps the Studio back to whatever is live.
+
+When nothing is pending the header shows the last publish time instead. "Reset to defaults" (admins only) clears both the draft and the published overrides, dropping every page back to `tl-content.js`.
 
 ## Design Tokens
 Defined as CSS variables in each page's `<helmet><style>` (dark theme default, light theme via toggle). Core values:
@@ -108,14 +124,14 @@ Defined as CSS variables in each page's `<helmet><style>` (dark theme default, l
 - **Animations:** section reveal on scroll (`data-reveal`, CSS `animation-timeline: view()`), modal fade/rise keyframes.
 
 ## State Management
-Per-page React class state (see each file's logic class). Key state: theme, navOpen, filter, workIdx (open modal), caseId (case study), page (pagination), lbIdx/lbItems (lightbox), welcomeOpen/workbookOpen/proposalOpen/pathModalOpen, quiz state (stage/index/answers/score), booking (selDateISO/booked), lead email. Content is loaded once via `import('./tl-content.js')` in `componentDidMount`.
+Per-page React class state (see each file's logic class). Key state: theme, navOpen, filter, workIdx (open modal), caseId (case study), page (pagination), lbIdx/lbItems (lightbox), welcomeOpen/workbookOpen/proposalOpen/pathModalOpen, quiz state (stage/index/answers/score), booking (selDateISO/booked), lead email. Content is loaded via `import('./tl-store.js')` → `loadContent()` in `componentDidMount`, and each page subscribes with `onContentChange()` so a CMS publish updates it live (same tab via a custom event, other tabs via the `storage` event).
 
 ## Known items to resolve (also in Developer Handoff.dc.html §5)
 - Filenames contain spaces → rename to slugs (`index.html`, `works.html`, `journal.html`, `admin.html`) and update inter-page links.
 - Escape does not close the Workbook popup (✕/backdrop do) — add `workbookOpen` to the Escape handler.
 - Modals can stack — enforce one-at-a-time.
 - Forms show "sent" but do not actually email — wire to EmailJS or a backend + Resend/SendGrid.
-- CMS is in-memory — needs a database + real auth (Supabase recommended).
+- CMS persists to `localStorage` (~5MB per origin, single browser, single user) and auth is client-side. For production, replace the `readOverrides`/`writeOverrides`/`login` functions in `tl-store.js` with API calls — the rest of the app needs no changes. Supabase recommended.
 - Add legal pages, per-page SEO/OG tags, and analytics before launch.
 
 ## Assets
@@ -127,6 +143,7 @@ Per-page React class state (see each file's logic class). Key state: theme, navO
 - `Journal.dc.html` — journal list + article view
 - `TurtleLabs CMS.dc.html` — demo admin CMS
 - `tl-content.js` — **all site content (the schema to model your DB on)**
+- `tl-store.js` — content store + Studio accounts; the seam between the CMS and the pages
 - `support.js` — the render runtime (reference only; do not port)
 - `Developer Handoff.dc.html` — full backend / hosting / go-live plan (open in a browser)
 - `doc-page.js` — supports the handoff doc's print layout

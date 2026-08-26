@@ -242,6 +242,7 @@ button:focus-visible, a:focus-visible { outline:2px solid var(--green); outline-
         <div style="display:flex; gap:22px;">
           <a href="https://turtlelabs.co.in/privacy-policy/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Privacy</a>
           <a href="https://turtlelabs.co.in/terms-and-conditions/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Terms</a>
+          <a href="TurtleLabs CMS.dc.html" style="color:var(--faint);" style-hover="color:var(--greent)">Studio&nbsp;↗</a>
         </div>
       </div>
     </div>
@@ -254,15 +255,19 @@ class Component extends DCLogic {
   state = { theme:'dark', navOpen:false, cat:'All', ind:'All', view:'thumb', articleId:null, page:1 };
 
   componentDidMount() {
-    import('./tl-content.js').then(m => {
-      this._C = (m && m.TL_CONTENT) || {};
+    import('./tl-store.js').then(m => {
+      this._C = m.loadContent() || {};
       const hash = (location.hash || '').replace('#','');
-      if (hash && (this._C.journal || []).some(j => j.id === hash)) this.setState({ articleId: hash });
+      if (hash && (this._C.journal || []).some(x => x.id === hash)) this.setState({ articleId: hash });
       else this.forceUpdate();
+      // Re-render when the Studio publishes, in this tab or another.
+      this._offContent = m.onContentChange((C) => { this._C = C || {}; this.forceUpdate(); });
     }).catch(() => { this._C = {}; });
     const saved = localStorage.getItem('tl-theme') || 'dark';
     this.applyTheme(saved);
   }
+
+  componentWillUnmount() { if (this._offContent) this._offContent(); }
 
   applyTheme(t) {
     if (t === 'light') document.documentElement.setAttribute('data-theme','light');

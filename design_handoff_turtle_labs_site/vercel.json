@@ -1,0 +1,24 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/", "destination": "/Turtle%20Labs%20Landing.dc.html" },
+    { "source": "/home", "destination": "/Turtle%20Labs%20Landing.dc.html" },
+    { "source": "/works", "destination": "/Works.dc.html" },
+    { "source": "/journal", "destination": "/Journal.dc.html" },
+    { "source": "/studio", "destination": "/TurtleLabs%20CMS.dc.html" },
+    { "source": "/cms", "destination": "/TurtleLabs%20CMS.dc.html" },
+    { "source": "/handoff", "destination": "/Developer%20Handoff.dc.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)\\.dc\\.html",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
+    {
+      "source": "/(tl-content|tl-store|support|doc-page)\\.js",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    }
+  ]
+}

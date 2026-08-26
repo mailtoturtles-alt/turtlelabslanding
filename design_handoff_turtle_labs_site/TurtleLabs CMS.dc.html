@@ -39,16 +39,26 @@ button:focus-visible, a:focus-visible, input:focus, textarea:focus, select:focus
         <h1 style="font-family:'Outfit',sans-serif; font-weight:900; font-size:clamp(32px, 4vw, 46px); letter-spacing:-0.03em; line-height:1.08; margin:0 0 16px 0;">Run the whole site from one place.</h1>
         <p style="color:var(--muted); font-size:17px; max-width:420px; margin:0;">Edit works, journal articles, reviews and client logos. Changes flow to every page from a single content source.</p>
       </div>
-      <div style="color:var(--faint); font-size:13px;">Demo environment · no real credentials required</div>
+      <div style="border:1px solid var(--line); border-radius:16px; padding:16px 18px; background:rgba(255,255,255,0.02);">
+        <div style="color:var(--faint); font-size:11.5px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:12px;">Studio accounts</div>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+          <div><span style="color:var(--greent); font-weight:700;">Administrator</span><div style="color:var(--muted); margin-top:2px;">admin@turtlelabs.co.in · TurtleCMS@2026</div></div>
+          <div><span style="color:var(--blue); font-weight:700;">Editor</span><div style="color:var(--muted); margin-top:2px;">editor@turtlelabs.co.in · TurtleEdit@2026</div></div>
+        </div>
+        <div style="color:var(--faint); font-size:12px; margin-top:14px; line-height:1.5;">Editors can add and edit content. Only administrators can delete items, set the homepage line-up, or reset the site.</div>
+      </div>
     </div>
     <div style="display:flex; align-items:center; justify-content:center; padding:48px 32px; min-height:100vh;">
       <form onSubmit="{{ doLogin }}" style="width:100%; max-width:380px; background:var(--card); border:1px solid var(--line); border-radius:24px; padding:40px 34px;">
         <h2 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:26px; margin:0 0 6px 0;">Sign in</h2>
-        <p style="color:var(--muted); font-size:14px; margin:0 0 26px 0;">Welcome back. Use any email to explore the demo.</p>
+        <p style="color:var(--muted); font-size:14px; margin:0 0 26px 0;">The Studio is separate from the public site. Sign in with a Studio account.</p>
+        <sc-if value="{{ hasLoginErr }}" hint-placeholder-val="{{ false }}">
+          <div style="background:rgba(255,107,107,0.12); border:1px solid rgba(255,107,107,0.4); color:var(--red); border-radius:12px; padding:11px 14px; font-size:13px; margin-bottom:18px;">{{ loginErr }}</div>
+        </sc-if>
         <label style="display:block; font-size:13px; color:var(--muted); margin-bottom:7px;">Email</label>
-        <input name="email" type="email" value="admin@turtlelabs.co.in" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:18px;">
+        <input name="email" type="email" autocomplete="username" placeholder="you@turtlelabs.co.in" value="admin@turtlelabs.co.in" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:18px;">
         <label style="display:block; font-size:13px; color:var(--muted); margin-bottom:7px;">Password</label>
-        <input name="password" type="password" value="demo1234" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:24px;">
+        <input name="password" type="password" autocomplete="current-password" placeholder="Studio password" style="width:100%; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:13px 16px; color:var(--text); font-size:14.5px; margin-bottom:24px;">
         <button type="submit" style="width:100%; background:var(--green); color:var(--green-ink); border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:700; cursor:pointer;" style-hover="background:#4ADE80">Sign in to Studio →</button>
         <div style="text-align:center; margin-top:18px;"><a href="Turtle Labs Landing.dc.html" style="color:var(--muted); font-size:13px;" style-hover="color:var(--text)">← Back to website</a></div>
       </form>
@@ -69,7 +79,17 @@ button:focus-visible, a:focus-visible, input:focus, textarea:focus, select:focus
         <button onClick="{{ ni.pick }}" style="display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:11px 14px; border-radius:12px; background:{{ ni.bg }}; color:{{ ni.fg }}; border:none; font-size:14.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:var(--bg2)"><span style="font-size:16px; width:20px; text-align:center;">{{ ni.icon }}</span>{{ ni.label }}<span style="margin-left:auto; font-size:12px; color:var(--faint);">{{ ni.count }}</span></button>
       </sc-for>
       <div style="margin-top:auto; display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; align-items:center; gap:8px; padding:10px 14px; margin-bottom:2px; border-radius:12px; background:var(--bg2); font-size:12px; color:var(--muted); line-height:1.4;">
+          <span style="width:7px; height:7px; border-radius:50%; background:{{ liveDot }}; flex:none;"></span>{{ liveState }}
+        </div>
         <a href="Turtle Labs Landing.dc.html" target="_blank" style="display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:12px; color:var(--muted); font-size:14px; font-weight:600;" style-hover="background:var(--bg2); color:var(--text)"><span style="width:20px; text-align:center;">↗</span>View website</a>
+        <sc-if value="{{ canReset }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ revertSite }}" style="display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:12px; background:none; border:none; color:var(--muted); font-size:14px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; text-align:left;" style-hover="background:var(--bg2); color:var(--text)"><span style="width:20px; text-align:center;">⟲</span>Reset to defaults</button>
+        </sc-if>
+        <div style="display:flex; align-items:center; gap:10px; padding:11px 14px; border-top:1px solid var(--line); margin-top:6px;">
+          <span style="width:30px; height:30px; flex:none; border-radius:50%; background:rgba(52,199,89,0.14); color:var(--greent); display:flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-weight:800; font-size:12px;">{{ userInitials }}</span>
+          <span style="min-width:0;"><span style="display:block; color:var(--text); font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ userName }}</span><span style="display:block; color:var(--faint); font-size:11.5px;">{{ roleLabel }}</span></span>
+        </div>
         <button onClick="{{ logout }}" style="display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:12px; background:none; border:none; color:var(--muted); font-size:14px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; text-align:left;" style-hover="background:var(--bg2); color:var(--text)"><span style="width:20px; text-align:center;">⏻</span>Log out</button>
       </div>
     </aside>
@@ -81,9 +101,23 @@ button:focus-visible, a:focus-visible, input:focus, textarea:focus, select:focus
           <div style="color:var(--faint); font-size:12px; letter-spacing:0.08em; text-transform:uppercase;">Content Studio</div>
           <h1 style="font-family:'Outfit',sans-serif; font-weight:800; font-size:24px; margin:2px 0 0 0; letter-spacing:-0.02em;">{{ pageTitle }}</h1>
         </div>
-        <sc-if value="{{ showAddBtn }}" hint-placeholder-val="{{ false }}">
-          <button onClick="{{ addNew }}" style="display:inline-flex; align-items:center; gap:8px; background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:12px 22px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80"><span style="font-size:16px;">＋</span>{{ addLabel }}</button>
-        </sc-if>
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <sc-if value="{{ hasPending }}" hint-placeholder-val="{{ true }}">
+            <span style="display:inline-flex; align-items:center; gap:8px; color:var(--amber); font-size:13px; font-weight:600;"><span style="width:7px; height:7px; border-radius:50%; background:var(--amber);"></span>{{ pendingLabel }}</span>
+            <button onClick="{{ discardDraft }}" style="background:none; border:1px solid var(--line); border-radius:999px; padding:11px 18px; color:var(--muted); font-size:13.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="color:var(--text); border-color:var(--text)">Discard</button>
+            <button onClick="{{ publishSite }}" style="display:inline-flex; align-items:center; gap:8px; background:var(--green); color:var(--green-ink); border:none; border-radius:999px; padding:12px 24px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#4ADE80"><span style="font-size:15px;">↑</span>Publish to website</button>
+          </sc-if>
+          <sc-if value="{{ noPending }}" hint-placeholder-val="{{ false }}">
+            <span style="display:inline-flex; align-items:center; gap:8px; color:var(--faint); font-size:13px;"><span style="width:7px; height:7px; border-radius:50%; background:var(--greent);"></span>{{ publishedLabel }}</span>
+          </sc-if>
+          <!-- Primary while nothing is pending; drops to secondary once Publish owns the green. -->
+          <sc-if value="{{ addPrimary }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ addNew }}" style="display:inline-flex; align-items:center; gap:8px; background:var(--green); color:var(--green-ink); border:1px solid var(--green); border-radius:999px; padding:12px 22px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:#1FA34A; border-color:#1FA34A; color:#FFFFFF"><span style="font-size:16px;">＋</span>{{ addLabel }}</button>
+          </sc-if>
+          <sc-if value="{{ addSecondary }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ addNew }}" style="display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text); border:1px solid var(--line); border-radius:999px; padding:12px 22px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif;" style-hover="background:rgba(52,199,89,0.14); border-color:var(--greent); color:#FFFFFF"><span style="font-size:16px;">＋</span>{{ addLabel }}</button>
+          </sc-if>
+        </div>
       </div>
 
       <div style="padding:30px 34px 80px 34px;">
@@ -314,25 +348,88 @@ button:focus-visible, a:focus-visible, input:focus, textarea:focus, select:focus
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = {
-    authed:false, screen:'dashboard',
+    user:null, loginErr:'', screen:'dashboard',
     works:[], reviews:[], logos:[], journal:[], featured:[],
     cats:[], inds:[],
     drawer:null, // { section, index (null=new), draft }
-    toast:''
+    toast:'', pending:[], savedAt:null, live:false
   };
 
   componentDidMount() {
-    import('./tl-content.js').then(m => {
-      const C = (m && m.TL_CONTENT) || {};
+    import('./tl-store.js').then(m => {
+      this._store = m;
+      const C = m.loadContent() || {};
+      const draft = m.loadDraft();          // unpublished work in progress
+      const src = Object.assign({}, C, draft || {});
       this.setState({
-        works:(C.works||[]).map(x=>({...x})),
-        reviews:(C.reviews||[]).map(x=>({...x})),
-        logos:(C.logos||[]).map(x=>({...x})),
-        journal:(C.journal||[]).map(x=>({...x})),
-        featured:(C.featured||[]).slice(),
-        cats:C.journalCategories||[], inds:C.journalIndustries||[]
+        user: m.currentUser(),
+        works:(src.works||[]).map(x=>({...x})),
+        reviews:(src.reviews||[]).map(x=>({...x})),
+        logos:(src.logos||[]).map(x=>({...x})),
+        journal:(src.journal||[]).map(x=>({...x})),
+        featured:(src.featured||[]).slice(),
+        cats:C.journalCategories||[], inds:C.journalIndustries||[],
+        live: m.isPublished(), savedAt: m.publishedAt(),
+        pending: draft ? m.pendingSections(draft) : []
       });
     }).catch(()=>{});
+  }
+
+  rights(){ return (this._store && this._store.rightsFor(this.state.user)) || {edit:true,delete:false,featured:false,reset:false}; }
+
+  working(){ const s=this.state; return { works:s.works, featured:s.featured, journal:s.journal, reviews:s.reviews, logos:s.logos }; }
+
+  // Hold an edit as a draft. Saved to this browser, but NOT on the site yet.
+  stage(msg){
+    if(!this._store) return;
+    const set=this.working();
+    const res=this._store.saveDraft(set);
+    if(!res.ok) return this.toast(res.error);
+    this.setState({ pending:this._store.pendingSections(set) });
+    this.toast(msg||'Saved as draft — hit Publish to push it live');
+  }
+
+  // Push the draft to the public pages.
+  publish(){
+    if(!this._store) return;
+    const res=this._store.publishContent(this.working());
+    if(!res.ok) return this.toast(res.error);
+    this._store.clearDraft();
+    this.setState({ pending:[], live:true, savedAt:res.savedAt });
+    this.toast('Published — Home, Works & Journal are updated');
+  }
+
+  // Throw the draft away and go back to what the site is serving.
+  discard(){
+    if(!this._store) return;
+    this._store.clearDraft();
+    const C=this._store.loadContent()||{};
+    this.setState({
+      works:(C.works||[]).map(x=>({...x})),
+      reviews:(C.reviews||[]).map(x=>({...x})),
+      logos:(C.logos||[]).map(x=>({...x})),
+      journal:(C.journal||[]).map(x=>({...x})),
+      featured:(C.featured||[]).slice(),
+      pending:[], drawer:null
+    });
+    this.toast('Draft discarded — back to what is live');
+  }
+
+  revert(){
+    if(!this._store) return;
+    if(!this.rights().reset) return this.toast('Editors cannot reset the site — ask an administrator.');
+    this._store.resetContent();
+    this._store.clearDraft();
+    const C=this._store.baseContent()||{};
+    this.setState({
+      works:(C.works||[]).map(x=>({...x})),
+      reviews:(C.reviews||[]).map(x=>({...x})),
+      logos:(C.logos||[]).map(x=>({...x})),
+      journal:(C.journal||[]).map(x=>({...x})),
+      featured:(C.featured||[]).slice(),
+      pending:[], live:false, savedAt:null
+    });
+    this.toast('Reverted to the shipped content');
   }
 
   toast(msg){ this.setState({ toast:msg }); clearTimeout(this._t); this._t=setTimeout(()=>this.setState({toast:''}),2200); }
@@ -410,12 +507,14 @@ class Component extends DCLogic {
     if(section==='reviews') return [
       {key:'name',label:'Client name',type:'text'},
       {key:'loc',label:'Location / context',type:'text'},
-      {key:'initials',label:'Initials',type:'text',ph:'e.g. DT'},
-      {key:'quote',label:'Quote',type:'area',rows:5}
+      {key:'initials',label:'Initials',type:'text',ph:'e.g. DT',hint:'The fallback shown in the avatar circle when there is no logo.'},
+      {key:'quote',label:'Quote',type:'area',rows:5},
+      {key:'media',label:'Client logo',type:'media',accept:'image/*',hint:'Drag & drop a logo here, or click to browse. Shown in the avatar circle in place of the initials — upload again to replace it.'}
     ];
     if(section==='logos') return [
       {key:'name',label:'Client name',type:'text'},
-      {key:'src',label:'Logo file path',type:'text',ph:'assets/logos/c-name.png',hint:'Upload the file to assets/logos, then reference it here.'}
+      {key:'media',label:'Logo image',type:'media',accept:'image/*',hint:'Drag & drop a logo here, or click to browse. Takes precedence over the file path below.'},
+      {key:'src',label:'Logo file path',type:'text',ph:'assets/logos/c-name.png',hint:'Alternative to uploading: drop the file into assets/logos and reference it here. Keeps the payload light for logos that ship with the build.'}
     ];
     return [];
   }
@@ -423,8 +522,8 @@ class Component extends DCLogic {
   blankDraft(section){
     if(section==='works') return {title:'',cat:'identity',tag:'Brand Identity',loc:'',weeks:'',desc:'',accent:'#4ADE80',tagBg:'rgba(0,168,107,0.15)',grad:'linear-gradient(135deg,#06180E,#0C2A16)',initials:'',outcomes:[],gallery:[]};
     if(section==='journal') return {title:'',category:(this.state.cats[0]||''),industry:(this.state.inds[0]||''),date:'',readTime:'5 min read',excerpt:'',bodyText:'',tag:(this.state.cats[0]||'Note'),tagBg:'rgba(0,163,224,0.15)',tagFg:'var(--cyan)',grad:'linear-gradient(135deg, rgba(0,102,178,0.3), rgba(0,0,0,0) 65%), var(--card)',author:'Turtle Labs',id:'j-'+Date.now()};
-    if(section==='reviews') return {name:'',loc:'',initials:'',quote:'',avBg:'rgba(0,168,107,0.12)',avBorder:'var(--greent)',avFg:'var(--greent)'};
-    if(section==='logos') return {name:'',src:'assets/logos/'};
+    if(section==='reviews') return {name:'',loc:'',initials:'',quote:'',media:null,avBg:'rgba(0,168,107,0.12)',avBorder:'var(--greent)',avFg:'var(--greent)'};
+    if(section==='logos') return {name:'',media:null,src:'assets/logos/'};
     return {};
   }
 
@@ -448,12 +547,11 @@ class Component extends DCLogic {
       const arr=s[section].slice();
       if(d.index===null) arr.push(draft); else arr[d.index]=draft;
       return { [section]:arr, drawer:null };
-    });
-    this.toast(d.index===null?'Item added (demo)':'Changes saved (demo)');
+    }, ()=>this.stage(d.index===null?'Item added to the draft — hit Publish to push it live':'Changes saved to the draft — hit Publish to push them live'));
   }
   del(section,index){
-    this.setState(s=>{ const arr=s[section].slice(); arr.splice(index,1); return {[section]:arr}; });
-    this.toast('Deleted (demo)');
+    if(!this.rights().delete) return this.toast('Editors cannot delete items — ask an administrator.');
+    this.setState(s=>{ const arr=s[section].slice(); arr.splice(index,1); return {[section]:arr}; }, ()=>this.stage('Deleted in the draft — hit Publish to push it live'));
   }
 
   // ---- rich-text (markdown) toolbar for textarea fields ----
@@ -482,9 +580,12 @@ class Component extends DCLogic {
   }
 
   // ---- featured works (homepage top 6) ----
-  featAdd(id){ this.setState(s=>{ if(s.featured.includes(id)||s.featured.length>=6) return null; return {featured:s.featured.concat([id])}; }, ()=>this.toast('Added to homepage (demo)')); }
-  featRemove(id){ this.setState(s=>({featured:s.featured.filter(x=>x!==id)}), ()=>this.toast('Removed from homepage (demo)')); }
-  featMove(id,dir){ this.setState(s=>{ const a=s.featured.slice(); const i=a.indexOf(id); const j=i+dir; if(i<0||j<0||j>=a.length) return null; const t=a[i]; a[i]=a[j]; a[j]=t; return {featured:a}; }); }
+  featAdd(id){ if(!this.rights().featured) return this.toast('Editors cannot change the homepage line-up.');
+    this.setState(s=>{ if(s.featured.includes(id)||s.featured.length>=6) return null; return {featured:s.featured.concat([id])}; }, ()=>this.stage('Added to the homepage draft')); }
+  featRemove(id){ if(!this.rights().featured) return this.toast('Editors cannot change the homepage line-up.');
+    this.setState(s=>({featured:s.featured.filter(x=>x!==id)}), ()=>this.stage('Removed from the homepage draft')); }
+  featMove(id,dir){ if(!this.rights().featured) return this.toast('Editors cannot change the homepage line-up.');
+    this.setState(s=>{ const a=s.featured.slice(); const i=a.indexOf(id); const j=i+dir; if(i<0||j<0||j>=a.length) return null; const t=a[i]; a[i]=a[j]; a[j]=t; return {featured:a}; }, ()=>this.stage('Homepage order updated in the draft')); }
 
   renderVals(){
     const s=this.state;
@@ -499,7 +600,7 @@ class Component extends DCLogic {
       ['journal','Journal','✎',s.journal.length],
       ['reviews','Reviews','★',s.reviews.length],
       ['logos','Client logos','⬡',s.logos.length]
-    ].map(n=>({ label:n[1], icon:n[2], count:n[3], bg: scr===n[0]?'rgba(52,199,89,0.14)':'transparent', fg: scr===n[0]?'var(--greent)':'var(--muted)', pick:()=>this.setState({screen:n[0]}) }));
+    ].filter(n=>n[0]!=='featured'||this.rights().featured).map(n=>({ label:n[1], icon:n[2], count:n[3], bg: scr===n[0]?'rgba(52,199,89,0.14)':'transparent', fg: scr===n[0]?'var(--greent)':'var(--muted)', pick:()=>this.setState({screen:n[0]}) }));
 
     // rows per section
     let rows=[];
@@ -518,13 +619,16 @@ class Component extends DCLogic {
     }));
     if(scr==='reviews') rows=s.reviews.map((r,i)=>({
       title:r.name, sub:(r.quote||'').replace(/^"|"$/g,'').slice(0,70)+'…',
-      thumbBg:r.avBg||'var(--bg)', thumbEl:React.createElement('span',{style:{fontFamily:'Outfit,sans-serif',fontWeight:700,fontSize:'13px',color:r.avFg||'#fff'}},r.initials||''),
+      thumbBg:(r.media&&r.media.url)?'#fff':(r.avBg||'var(--bg)'),
+      thumbEl:(r.media&&r.media.url)
+        ?React.createElement('img',{src:r.media.url,alt:'',style:{width:'100%',height:'100%',objectFit:'contain',padding:'4px'}})
+        :React.createElement('span',{style:{fontFamily:'Outfit,sans-serif',fontWeight:700,fontSize:'13px',color:r.avFg||'#fff'}},r.initials||''),
       hasBadge:false,
       edit:()=>this.openDrawer('reviews',i), del:()=>this.del('reviews',i)
     }));
     if(scr==='logos') rows=s.logos.map((l,i)=>({
-      title:l.name, sub:l.src,
-      thumbBg:'#fff', thumbEl:React.createElement('img',{src:l.src,alt:'',style:{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}),
+      title:l.name, sub:(l.media&&l.media.url)?('Uploaded · '+(l.media.name||'image')):(l.src||'No image yet'),
+      thumbBg:'#fff', thumbEl:React.createElement('img',{src:(l.media&&l.media.url)||l.src,alt:'',style:{maxWidth:'100%',maxHeight:'100%',objectFit:'contain'}}),
       hasBadge:false,
       edit:()=>this.openDrawer('logos',i), del:()=>this.del('logos',i)
     }));
@@ -552,11 +656,12 @@ class Component extends DCLogic {
       {icon:'★',value:s.reviews.length,label:'Client reviews',color:'var(--amber)',go:()=>this.setState({screen:'reviews'})},
       {icon:'⬡',value:s.logos.length,label:'Client logos',color:'var(--red)',go:()=>this.setState({screen:'logos'})}
     ];
+    const stamp=s.savedAt?new Date(s.savedAt).toLocaleString():'—';
     const activity=[
-      {dot:'var(--greent)',text:'Content loaded from tl-content.js',time:'Just now'},
-      {dot:'var(--blue)',text:'Works, Journal & Reviews synced across all pages',time:'Just now'},
-      {dot:'var(--amber)',text:'Demo mode - edits are in-memory this session',time:'Session'},
-      {dot:'var(--red)',text:'Connect a backend to persist changes',time:'Next step'}
+      {dot:'var(--greent)',text:s.live?'Home, Works & Journal are serving Studio content':'Home, Works & Journal are serving the shipped defaults',time:s.live?stamp:'Baseline'},
+      {dot:'var(--blue)',text:'Signed in as '+((s.user&&s.user.name)||'—')+' · '+((this._store&&this._store.ROLE_LABELS[s.user&&s.user.role])||''),time:'This session'},
+      {dot:s.pending.length?'var(--amber)':'var(--greent)',text:s.pending.length?('Draft holds unpublished edits to: '+s.pending.join(', ')):'No unpublished edits — the draft matches the live site',time:s.pending.length?'Hit Publish':'In sync'},
+      {dot:'var(--red)',text:'Stored in this browser. Swap tl-store.js for an API to go multi-user.',time:'Next step'}
     ];
 
     // drawer fields
@@ -619,13 +724,35 @@ class Component extends DCLogic {
       });
     }
 
+    const R=this.rights();
+    const roleLabel=(this._store&&this._store.ROLE_LABELS[s.user&&s.user.role])||'';
+
     return {
-      loginView:!s.authed, appView:s.authed,
-      doLogin:(e)=>{ e.preventDefault(); this.setState({authed:true,screen:'dashboard'}); },
-      logout:()=>this.setState({authed:false, drawer:null}),
+      loginView:!s.user, appView:!!s.user,
+      doLogin:(e)=>{
+        e.preventDefault();
+        if(!this._store) return this.setState({loginErr:'Studio is still loading — try again in a moment.'});
+        const f=e.target;
+        const res=this._store.login(f.email&&f.email.value, f.password&&f.password.value);
+        if(res.ok) this.setState({user:res.user, loginErr:'', screen:'dashboard'});
+        else this.setState({loginErr:res.error});
+      },
+      loginErr:s.loginErr, hasLoginErr:!!s.loginErr,
+      logout:()=>{ if(this._store) this._store.logout(); this.setState({user:null, drawer:null, loginErr:''}); },
+      userName:(s.user&&s.user.name)||'', userEmail:(s.user&&s.user.email)||'',
+      userInitials:(s.user&&s.user.initials)||'', roleLabel,
+      liveState: s.live?'Live — running on Studio content':'Live — running on shipped defaults',
+      liveDot: s.live?'var(--greent)':'var(--faint)',
+      hasPending: s.pending.length>0, noPending: s.pending.length===0,
+      pendingLabel: s.pending.length+' unpublished '+(s.pending.length===1?'change':'changes')+' · '+s.pending.join(', '),
+      publishedLabel: s.savedAt?('Published '+new Date(s.savedAt).toLocaleString()):'Nothing published yet',
+      publishSite:()=>this.publish(), discardDraft:()=>this.discard(),
+      canReset:R.reset, revertSite:()=>this.revert(),
       navItems, pageTitle:titles[scr]||'Dashboard',
       isDashboard:scr==='dashboard', isList:scr!=='dashboard'&&scr!=='featured', isFeatured:scr==='featured',
       showAddBtn:scr!=='dashboard'&&scr!=='featured', addLabel:addLabels[scr]||'Add', addNew:()=>this.openDrawer(scr,null),
+      addPrimary: scr!=='dashboard'&&scr!=='featured'&&s.pending.length===0,
+      addSecondary: scr!=='dashboard'&&scr!=='featured'&&s.pending.length>0,
       featuredList, availableWorks, featFull, featEmpty:s.featured.length===0, availEmpty:availableWorks.length===0, featCount:s.featured.length,
       rows, emptyList:scr!=='dashboard'&&rows.length===0,
       dashStats, activity,

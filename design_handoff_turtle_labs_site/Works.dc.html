@@ -167,7 +167,12 @@ button:focus-visible, a:focus-visible { outline:2px solid var(--green); outline-
             <p style="font-style:italic; color:var(--muted); font-size:15px; margin:6px 0 0 0;">{{ rv.quote }}</p>
           </div>
           <div style="display:flex; align-items:center; gap:13px; border-top:1px solid var(--line); padding-top:16px;">
-            <span style="width:42px; height:42px; border-radius:50%; background:{{ rv.avBg }}; border:1px solid {{ rv.avBorder }}; color:{{ rv.avFg }}; display:inline-flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-weight:700; font-size:14px; flex-shrink:0;">{{ rv.initials }}</span>
+            <span style="width:42px; height:42px; border-radius:50%; overflow:hidden; background:{{ rv.avatarBg }}; border:1px solid {{ rv.avBorder }}; color:{{ rv.avFg }}; display:inline-flex; align-items:center; justify-content:center; font-family:'Outfit',sans-serif; font-weight:700; font-size:14px; flex-shrink:0;">
+              <sc-if value="{{ rv.hasLogo }}" hint-placeholder-val="{{ false }}">
+                <img src="{{ rv.logoSrc }}" alt="{{ rv.name }}" style="width:100%; height:100%; object-fit:contain; padding:5px;">
+              </sc-if>
+              <sc-if value="{{ rv.noLogo }}" hint-placeholder-val="{{ true }}">{{ rv.initials }}</sc-if>
+            </span>
             <span style="display:flex; flex-direction:column;"><strong style="color:var(--text); font-size:14.5px;">{{ rv.name }}</strong><span style="font-size:12.5px; color:var(--muted);">{{ rv.loc }}</span></span>
           </div>
         </div>
@@ -423,6 +428,7 @@ button:focus-visible, a:focus-visible { outline:2px solid var(--green); outline-
         <div style="display:flex; gap:22px;">
           <a href="https://turtlelabs.co.in/privacy-policy/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Privacy</a>
           <a href="https://turtlelabs.co.in/terms-and-conditions/" target="_blank" style="color:var(--faint);" style-hover="color:var(--text)">Terms</a>
+          <a href="TurtleLabs CMS.dc.html" style="color:var(--faint);" style-hover="color:var(--greent)">Studio&nbsp;↗</a>
         </div>
       </div>
     </div>
@@ -487,11 +493,13 @@ class Component extends DCLogic {
   state = { theme:'dark', navOpen:false, filter:'all', workIdx:-1, reviewsShown:9, playbookSent:false, expandedService:-1, caseId:null, page:1, lbItems:null, lbIdx:-1 };
 
   componentDidMount() {
-    import('./tl-content.js').then(m => {
-      this._C = (m && m.TL_CONTENT) || {};
+    import('./tl-store.js').then(m => {
+      this._C = m.loadContent() || {};
       const hash = (location.hash || '').replace('#','');
-      if (hash && (this._C.works || []).some(w => w.id === hash)) this.setState({ caseId: hash });
+      if (hash && (this._C.works || []).some(x => x.id === hash)) this.setState({ caseId: hash });
       else this.forceUpdate();
+      // Re-render when the Studio publishes, in this tab or another.
+      this._offContent = m.onContentChange((C) => { this._C = C || {}; this.forceUpdate(); });
     }).catch(() => { this._C = {}; });
     const saved = localStorage.getItem('tl-theme') || 'dark';
     this.applyTheme(saved);
@@ -510,7 +518,7 @@ class Component extends DCLogic {
     };
     window.addEventListener('keydown', this._onKey);
   }
-  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); }
+  componentWillUnmount() { window.removeEventListener('keydown', this._onKey); if (this._offContent) this._offContent(); }
 
   applyTheme(t) {
     if (t === 'light') document.documentElement.setAttribute('data-theme','light');
@@ -630,11 +638,18 @@ class Component extends DCLogic {
 
     // logo grid
     const logoGrid = logos.map((l,i) => ({
-      el: React.createElement('img', { src:l.src, alt:l.name, title:l.name, style:{ maxHeight:l.half ? '30px' : '48px', maxWidth:'100%', width:'auto', objectFit:'contain', filter:'var(--logo-filter)', opacity:0.75 } })
+      el: React.createElement('img', { src:(l.media && l.media.url) || l.src, alt:l.name, title:l.name, style:{ maxHeight:l.half ? '30px' : '48px', maxWidth:'100%', width:'auto', objectFit:'contain', filter:'var(--logo-filter)', opacity:0.75 } })
     }));
 
     // reviews
-    const shownReviews = reviews.slice(0, s.reviewsShown);
+    // A review can carry an uploaded client logo; initials are the fallback.
+    const shownReviews = reviews.slice(0, s.reviewsShown).map(r => {
+      const logo = (r.media && r.media.url) || r.logo || '';
+      return Object.assign({}, r, {
+        hasLogo: !!logo, noLogo: !logo, logoSrc: logo,
+        avatarBg: logo ? '#FFFFFF' : (r.avBg || 'var(--card)')
+      });
+    });
     const remaining = Math.max(0, reviews.length - s.reviewsShown);
 
     // services accordion
